@@ -1,23 +1,25 @@
 <?php
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-/**
- * Made I.T. 
- * 
+/*
+ * Made I.T.
+ *
  * @package Made I.T.
  * @since 1.0.0
  */
 ?>
 <div class="wrap">
     <h1><?php echo esc_html(__('Settings', 'madeit_security')); ?></h1>
-    <form method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>" id="madeit-security-admin-form-element">
-        <?php if($success) {
-            ?>
+    <form method="post" action="<?php echo str_replace('%7E', '~', $_SERVER['REQUEST_URI']); ?>" id="madeit-security-admin-form-element">
+        <?php if ($success) {
+    ?>
             <div class="updated"><p><strong><?php echo __('The settings are successfully saved.', 'madeit_security'); ?></strong></p></div>
             <?php
-        }
-        if(!empty($error)) {
+}
+        if (!empty($error)) {
             ?>
             <div class="error"><p><strong><?php echo __($error, 'madeit_security'); ?></strong></p></div>
             <?php
@@ -28,12 +30,12 @@ if ( !defined( 'ABSPATH' ) ) exit;
             <div id="post-body" class="metabox-holder columns-2">
                 <div id="postbox-container-1" class="postbox-container">
                     <div id="informationdiv" class="postbox">
-                        <h3><?php echo esc_html(__( 'Information', 'madeit_security')); ?></h3>
+                        <h3><?php echo esc_html(__('Information', 'madeit_security')); ?></h3>
                         <div class="inside">
                             <ul>
-                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url("https://www.madeit.be/producten/wordpress/forms-plugin/#docs"), __('Docs', 'madeit_security'), ""); ?></li>
-                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url("https://www.madeit.be/producten/wordpress/forms-plugin/#faq"), __('F.A.Q.', 'madeit_security'), ""); ?></li>
-                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url("https://www.madeit.be/producten/wordpress/forms-plugin/#support"), __('Support', 'madeit_security'), ""); ?></li>
+                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://www.madeit.be/producten/wordpress/forms-plugin/#docs'), __('Docs', 'madeit_security'), ''); ?></li>
+                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://www.madeit.be/producten/wordpress/forms-plugin/#faq'), __('F.A.Q.', 'madeit_security'), ''); ?></li>
+                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://www.madeit.be/producten/wordpress/forms-plugin/#support'), __('Support', 'madeit_security'), ''); ?></li>
                             </ul>
                         </div>
                     </div><!-- #informationdiv -->
@@ -55,7 +57,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Do fast scan', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_scan_repo_fast" class="" value="1" <?php if($this->defaultSettings['scan']['fast']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_scan_repo_fast" class="" value="1" <?php if ($this->defaultSettings['scan']['fast']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                         <tr>
@@ -63,7 +67,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Scan core files', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_scan_repo_core" class="" value="1" <?php if($this->defaultSettings['scan']['repo']['core']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_scan_repo_core" class="" value="1" <?php if ($this->defaultSettings['scan']['repo']['core']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                         <tr>
@@ -71,7 +77,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Scan theme files', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_scan_repo_theme" class="" value="1" <?php if($this->defaultSettings['scan']['repo']['theme']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_scan_repo_theme" class="" value="1" <?php if ($this->defaultSettings['scan']['repo']['theme']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                         <tr>
@@ -79,7 +87,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Scan plugin files', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_scan_repo_plugin" class="" value="1" <?php if($this->defaultSettings['scan']['repo']['plugin']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_scan_repo_plugin" class="" value="1" <?php if ($this->defaultSettings['scan']['repo']['plugin']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -94,7 +104,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Scan updates', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_scan_update" class="" value="1" <?php if($this->defaultSettings['scan']['update']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_scan_update" class="" value="1" <?php if ($this->defaultSettings['scan']['update']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -133,7 +145,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Let Made I.T. Take over the maintenance', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_maintenance_enable" class="" value="1" <?php if($this->defaultSettings['maintenance']['enable']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_maintenance_enable" class="" value="1" <?php if ($this->defaultSettings['maintenance']['enable']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                         <tr>
@@ -141,7 +155,9 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                                 <label for=""><?php echo esc_html(__('Backup your website', 'madeit_security')); ?></label>
                                             </th>
                                             <td>
-                                                <input type="checkbox" name="madeit_security_maintenance_backup" class="" value="1" <?php if($this->defaultSettings['maintenance']['backup']) echo "CHECKED"; ?> />
+                                                <input type="checkbox" name="madeit_security_maintenance_backup" class="" value="1" <?php if ($this->defaultSettings['maintenance']['backup']) {
+            echo 'CHECKED';
+        } ?> />
                                             </td>
                                         </tr>
                                     </tbody>
