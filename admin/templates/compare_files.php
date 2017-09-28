@@ -1,10 +1,12 @@
 <?php
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-/**
- * Made I.T. 
- * 
+/*
+ * Made I.T.
+ *
  * @package Made I.T.
  * @since 1.0.0
  */
@@ -21,17 +23,19 @@ if ( !defined( 'ABSPATH' ) ) exit;
                         </h4>
                         <div class="card-text">
                             <div class="madeit-row">
-                                <?php if($error == null) { ?>
+                                <?php if ($error == null) {
+    ?>
                                     <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
                                                 <?php
-                                                echo $diff->Render($renderer);
-                                                ?>
+                                                echo $diff->Render($renderer); ?>
                                             </div>
                                         </div>
                                     </div>
-                                <?php } else { ?>
+                                <?php
+} else {
+                                                    ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -39,7 +43,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                <?php
+                                                } ?>
                             </div>
                         </div>
                     </div>
@@ -66,7 +71,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-repo-scan').show();
-                $('#repo-scan-time-ago').html('<?php printf(__("Last scan %s ago.", "madeit_security"), '1s'); ?>');
+                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
                 $('#repo-scan-core-status').html(response.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-plugins-status').html(response.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-themes-status').html(response.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
@@ -85,7 +90,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-update-scan').show();
-                $('#update-scan-time-ago').html('<?php printf(__("Last scan %s ago.", "madeit_security"), '1s'); ?>');
+                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
                 $('#update-scan-core-status').html(response.core);
                 $('#update-scan-plugins-status').html(response.plugin);
                 $('#update-scan-themes-status').html(response.theme);

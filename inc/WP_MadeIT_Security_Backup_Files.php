@@ -1,14 +1,17 @@
 <?php
 
-class WP_MadeIT_Security_Backup_Files {
-    function __construct() {
+class WP_MadeIT_Security_Backup_Files
+{
+    public function __construct()
+    {
     }
 
-    public function doBackup($zipFile, $contentPath, $beginPath, $inlcudeTypes = ['uploads', 'plugins', 'themes'], $excludeDirs = null) {
+    public function doBackup($zipFile, $contentPath, $beginPath, $inlcudeTypes = ['uploads', 'plugins', 'themes'], $excludeDirs = null)
+    {
         if (extension_loaded('zip')) {
             // Initialize archive object
             $zip = new ZipArchive();
-            if($zip->open($zipFile, ZipArchive::CREATE)) {
+            if ($zip->open($zipFile, ZipArchive::CREATE)) {
 
                 // Create recursive directory iterator
                 /** @var SplFileInfo[] $files */
@@ -20,11 +23,10 @@ class WP_MadeIT_Security_Backup_Files {
                         $filePath = $file->getRealPath();
                         $relativePath = substr($filePath, strlen($contentPath) + 1);
 
-
                         $fileType = $this->getTypeOfFile($relativePath);
-                        if(($inlcudeTypes == null || in_array($fileType, $inlcudeTypes)) && $excludeDirs == null) {
+                        if (($inlcudeTypes == null || in_array($fileType, $inlcudeTypes)) && $excludeDirs == null) {
                             // Add current file to archive
-                            $zip->addFile($filePath, $beginPath . '/' . $relativePath);
+                            $zip->addFile($filePath, $beginPath.'/'.$relativePath);
                         }
                     }
                 }
@@ -33,16 +35,17 @@ class WP_MadeIT_Security_Backup_Files {
                 return $zip->close();
             }
         }
+
         return false;
     }
 
-    private function getTypeOfFile($fileRelativePath) {
+    private function getTypeOfFile($fileRelativePath)
+    {
         $types = ['uploads', 'plugins', 'themes', 'madeit-security-backup'];
-        foreach($types as $type) {
-            if(strlen($fileRelativePath) > strlen($type) && substr($fileRelativePath, 0, strlen($type)) == $type) {
+        foreach ($types as $type) {
+            if (strlen($fileRelativePath) > strlen($type) && substr($fileRelativePath, 0, strlen($type)) == $type) {
                 return $type;
             }
         }
     }
-
 }
