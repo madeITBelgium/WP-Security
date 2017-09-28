@@ -1,0 +1,194 @@
+.madeit-card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.madeit-card-body {
+  -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.madeit-card-title {
+    margin-bottom: 0.75rem;
+    margin-top: 0;
+    font-size: 2rem;
+}
+
+.madeit-card-subtitle {
+  margin-top: -0.250rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.madeit-card-text:last-child {
+  margin-bottom: 0;
+}
+
+.madeit-card-link:hover {
+  text-decoration: none;
+}
+
+.madeit-card-link + .madeit-card-link {
+  margin-left: 1.25rem;
+}
+
+.madeit-card > .list-group:first-child .madeit-list-group-item:first-child {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.madeit-card > .list-group:last-child .madeit-list-group-item:last-child {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.madeit-card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.madeit-card-header:first-child {
+  border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+.madeit-card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.madeit-card-footer:last-child {
+  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+}
+
+.madeit-card-header-tabs {
+  margin-right: -0.625rem;
+  margin-bottom: -0.75rem;
+  margin-left: -0.625rem;
+  border-bottom: 0;
+}
+
+.madeit-card-header-pills {
+  margin-right: -0.625rem;
+  margin-left: -0.625rem;
+}
+
+.madeit-card-img-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1.25rem;
+}
+
+.madeit-card-img {
+  width: 100%;
+  border-radius: calc(0.25rem - 1px);
+}
+
+.madeit-card-img-top {
+  width: 100%;
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+}
+
+.madeit-card-img-bottom {
+  width: 100%;
+  border-bottom-right-radius: calc(0.25rem - 1px);
+  border-bottom-left-radius: calc(0.25rem - 1px);
+}
+
+@media (min-width: 576px) {
+  .madeit-card-deck {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+        flex-flow: row wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  .madeit-card-deck .madeit-card {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 1 0 0%;
+        flex: 1 0 0%;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    margin-right: 15px;
+    margin-left: 15px;
+  }
+}
+
+@media (min-width: 576px) {
+  .madeit-card-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+        flex-flow: row wrap;
+  }
+  .madeit-card-group .madeit-card {
+    -ms-flex: 1 0 0%;
+        flex: 1 0 0%;
+  }
+  .madeit-card-group .madeit-card + .madeit-card {
+    margin-left: 0;
+    border-left: 0;
+  }
+  .madeit-card-group .madeit-card:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .madeit-card-group .madeit-card:first-child .madeit-card-img-top {
+    border-top-right-radius: 0;
+  }
+  .madeit-card-group .madeit-card:first-child .madeit-card-img-bottom {
+    border-bottom-right-radius: 0;
+  }
+  .madeit-card-group .madeit-card:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .madeit-card-group .madeit-card:last-child .madeit-card-img-top {
+    border-top-left-radius: 0;
+  }
+  .madeit-card-group .madeit-card:last-child .madeit-card-img-bottom {
+    border-bottom-left-radius: 0;
+  }
+  .madeit-card-group .madeit-card:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+  .madeit-card-group .madeit-card:not(:first-child):not(:last-child) .madeit-card-img-top,
+  .madeit-card-group .madeit-card:not(:first-child):not(:last-child) .madeit-card-img-bottom {
+    border-radius: 0;
+  }
+}
+
+.madeit-card-columns .madeit-card {
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 576px) {
+  .madeit-card-columns {
+    -webkit-column-count: 3;
+            column-count: 3;
+    -webkit-column-gap: 1.25rem;
+            column-gap: 1.25rem;
+  }
+  .madeit-card-columns .madeit-card {
+    display: inline-block;
+    width: 100%;
+  }
+}

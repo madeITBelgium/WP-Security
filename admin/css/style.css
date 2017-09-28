@@ -1,0 +1,143 @@
+.madeit-security-tab-content {
+    display: none;
+}
+
+.madeit-security-tab-content-activate {
+    display: block;
+}
+#titlediv .inside p.description {
+	margin: 8px 2px 0;
+}
+
+#titlediv .inside p.description label {
+	cursor: pointer;
+}
+
+span.shortcode {
+	display: block;
+	margin: 2px 0;
+}
+
+span.shortcode.old {
+	background: #777;
+	color: #fff;
+}
+
+span.shortcode > input {
+	background: inherit;
+	color: inherit;
+	font-size: 12px;
+	border: none;
+	box-shadow: none;
+	padding: 4px 8px;
+	margin: 0;
+}
+
+#submitpost input.copy {
+	margin-bottom: 10px;
+}
+
+#submitpost input.delete {
+	padding: 0;
+	margin: 0;
+	border: none;
+	cursor: pointer;
+	background: inherit;
+	color: #a00;
+}
+
+#submitpost input.delete:hover {
+	color: #f00;
+}
+
+#submitpost input.delete:focus {
+	outline: thin dotted;
+}
+
+.postbox-container .postbox h3 {
+	border-bottom: 1px solid transparent;
+}
+
+.keyboard-interaction {
+	visibility: hidden;
+	color: #23282d;
+}
+
+#misc-publishing-actions .misc-pub-section::before {
+	content: "\f488";
+	-moz-osx-font-smoothing: grayscale;
+	display: inline-block;
+	font: 20px/1 dashicons;
+	left: -1px;
+	padding: 0 2px 0 0;
+	position: relative;
+	text-decoration: none !important;
+	top: 0;
+	vertical-align: top;
+	color: #82878c;
+}
+
+#misc-publishing-actions .misc-pub-section.warning::before {
+	content: "\f534";
+}
+
+#misc-publishing-actions .misc-pub-section.warning a.external {
+	font-style: italic;
+}
+
+div.config-error, span.config-error, ul.config-error {
+	color: #d00;
+	font-style: normal;
+	font-size: 13px;
+}
+
+ul.config-error {
+	margin: 0;
+}
+
+ul.config-error li {
+	padding: 0 4px;
+	margin: 0;
+}
+
+ul.config-error li a.external {
+	font-style: italic;
+}
+
+[data-config-field][aria-invalid="true"] {
+	border-color: #d00;
+}
+
+/*
+ * List Table
+ */
+.fixed .column-title {
+	width: 38%;
+}
+
+.fixed .column-shortcode {
+	width: 38%;
+}
+
+/*
+ * Welcome Panel
+ */
+.welcome-panel h3 {
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 2.1em;
+	margin: 1.33em 0 0;
+}
+
+.welcome-panel p.message {
+	line-height: 1.4em;
+	margin-right: 25px;
+}
+
+.welcome-panel li {
+	margin-bottom: 12px;
+}
+
+.welcome-panel-close {
+	z-index: 2;
+}
