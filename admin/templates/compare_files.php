@@ -39,7 +39,7 @@ if (!defined('ABSPATH')) {
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
-                                                <?php echo $error; ?>
+                                                <?php echo esc_html($error); ?>
                                             </div>
                                         </div>
                                     </div>
