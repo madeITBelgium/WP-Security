@@ -57,7 +57,7 @@ class WP_MadeIT_Security_Admin
         wp_register_style('madeit-card', MADEIT_SECURITY_URL.'/admin/css/card.css', [], null);
         wp_enqueue_style('madeit-card');
 
-        wp_register_style('font-awesome', MADEIT_SECURITY_URL . '/admin/css/font-awesome.min.css', [], null);
+        wp_register_style('font-awesome', MADEIT_SECURITY_URL.'/admin/css/font-awesome.min.css', [], null);
         wp_enqueue_style('font-awesome');
 
         wp_enqueue_script('jquery-ui-core');
