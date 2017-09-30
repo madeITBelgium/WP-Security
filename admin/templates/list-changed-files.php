@@ -35,7 +35,8 @@ if (!defined('ABSPATH')) {
                                             <div class="madeit-col">
                                                 <?php
                                                 foreach ($files as $file) {
-                                                    printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes=bwp-minify&version='.$version.'&file='.$file, $file).'<br>';
+                                                    printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes=' . $plugin . '&version='.$version.'&file='.$file, $file); 
+                                                    echo '<br>';
                                                 } ?>
                                             </div>
                                         </div>

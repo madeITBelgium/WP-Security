@@ -151,7 +151,7 @@ class WP_MadeIT_Security_Admin
     public function show_scan()
     {
         if (isset($_GET['changes'])) {
-            $plugin = $_GET['changes'];
+            $plugin = sanitize_text_field($_GET['changes']);
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
             $wp_plugin = new WP_MadeIT_Security_Plugin();
             $pluginsData = $wp_plugin->getPlugins();
@@ -164,7 +164,7 @@ class WP_MadeIT_Security_Admin
                 }
             }
             if (isset($_GET['file'])) {
-                $file = $_GET['file'];
+                $file = sanitize_text_field($_GET['file']);
                 $localFile = $path.'/'.$file;
                 $error = null;
                 if (!is_file($localFile)) {
@@ -192,7 +192,8 @@ class WP_MadeIT_Security_Admin
                     include_once MADEIT_SECURITY_ADMIN.'/templates/list-changed-files.php';
                 }
             }
-        } elseif (isset($_GET['not_exist'])) {
+        } elseif (isset($_GET['notexist'])) {
+            //TODO
         } else {
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';

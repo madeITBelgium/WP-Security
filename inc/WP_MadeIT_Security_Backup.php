@@ -274,47 +274,13 @@ class WP_MadeIT_Security_Backup
     private function get_hosting_disk_quota_free()
     {
         return false;
-
-        try {
-            if (!is_dir('/usr/local/cpanel') || $this->detect_safe_mode() || !function_exists('popen') || (!is_executable('/usr/local/bin/perl') && !is_executable('/usr/local/cpanel/3rdparty/bin/perl'))) {
-                return false;
-            }
-        } catch (Exception $e) {
-            return false;
-        }
-        $perl = (is_executable('/usr/local/cpanel/3rdparty/bin/perl')) ? '/usr/local/cpanel/3rdparty/bin/perl' : '/usr/local/bin/perl';
-        $exec = "UPDRAFTPLUSKEY=updraftplus $perl ".MADEIT_SECURITY_DIR.'/inc/get-cpanel-quota-usage.pl';
-        $handle = popen($exec, 'r');
-        if (!is_resource($handle)) {
-            return false;
-        }
-
-        $found = false;
-        $lines = 0;
-        while (false === $found && !feof($handle) && $lines < 100) {
-            $lines++;
-            $w = fgets($handle);
-            // Used, limit, remain
-            if (preg_match('/RESULT: (\d+) (\d+) (\d+) /', $w, $matches)) {
-                $found = true;
-            }
-        }
-        $ret = pclose($handle);
-        if (false === $found || $ret != 0) {
-            return false;
-        }
-        if ((int) $matches[2] < 100 || ($matches[1] + $matches[3] != $matches[2])) {
-            return false;
-        }
-
-        return $matches;
     }
 
     private function deleteOlderBackups()
     {
         $dir = $this->backups_dir_location();
         foreach (glob($dir.'/*') as $file) {
-            if (strpos($file, 'index.html') === false && strpos($file, '.htaccess') && strpos($file, 'web.config') && time() - filectime($file) > 60 * 60 * 24 * 7) {
+            if (strpos($file, 'index.html') === false && strpos($file, '.htaccess') && strpos($file, 'web.config') && time() - filectime($file) > 60 * 60 * 24 * 2) {
                 unlink($file);
             }
         }

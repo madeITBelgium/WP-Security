@@ -105,7 +105,7 @@ class WP_MadeIT_Security_Settings
     public function checkTextbox($key)
     {
         if (isset($_POST[$key])) {
-            update_option($key, $_POST[$key]);
+            update_option($key, sanitize_text_field($_POST[$key]));
         } else {
             update_option($key, '');
         }
