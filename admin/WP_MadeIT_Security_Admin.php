@@ -163,26 +163,33 @@ class WP_MadeIT_Security_Admin
                     $path .= '/'.substr($key, 0, strpos($key, '/'));
                 }
             }
-            if (isset($_GET['file'])) {
+            if (isset($_GET['file']) && strlen($version) > 2) {
                 $file = sanitize_text_field($_GET['file']);
                 $localFile = $path.'/'.$file;
                 $error = null;
-                if (!is_file($localFile)) {
-                    $error = __('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security');
+                if (!is_file($localFile) || strpos($file, '../') === false) {
+                    $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security'), $file);
                 }
+                else {
+                    if(true) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
+                        $remoteUrl = 'https://madeit.be/wordpress-onderhoud/api/1.0/wp/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$file;
+                    }
+                    else {
+                        $remoteUrl = "https://plugins.trac.wordpress.org/browser/" . $plugin . "/tags/" . $version . "/" . $file . "?format=txt";
+                    }
 
-                $a = explode("\n", file_get_contents($localFile));
-                $b = explode("\n", file_get_contents('https://madeit.be/wordpress-onderhoud/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$file));
-                if (!class_exists('Diff')) {
-                    require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
+                    $a = explode("\n", file_get_contents($localFile));
+                    $b = explode("\n", file_get_contents($remoteUrl));
+                    if (!class_exists('Diff')) {
+                        require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
+                    }
+                    $diff = new Diff($a, $b, []);
+
+                    if (!class_exists('Diff_Renderer_Html_SideBySide')) {
+                        require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff/Renderer/Html/SideBySide.php';
+                    }
+                    $renderer = new Diff_Renderer_Html_SideBySide();
                 }
-                $diff = new Diff($a, $b, []);
-
-                if (!class_exists('Diff_Renderer_Html_SideBySide')) {
-                    require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff/Renderer/Html/SideBySide.php';
-                }
-                $renderer = new Diff_Renderer_Html_SideBySide();
-
                 include_once MADEIT_SECURITY_ADMIN.'/templates/compare_files.php';
             } else {
                 $repoScanData = get_site_transient('madeit_security_repo_scan');
