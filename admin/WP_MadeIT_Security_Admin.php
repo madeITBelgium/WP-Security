@@ -167,7 +167,7 @@ class WP_MadeIT_Security_Admin
                 $file = sanitize_text_field($_GET['file']);
                 $localFile = $path.'/'.$file;
                 $error = null;
-                if (!is_file($localFile) || strpos($file, '../') === false) {
+                if (!is_file($localFile) || strpos($file, '../') === true) {
                     $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security'), $file);
                 }
                 else {
