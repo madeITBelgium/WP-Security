@@ -12,7 +12,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Secure your WordPress Website.
 
 == Description ==
-'WP Security by Made I.T.' is one of the fastest WordPress security plugins. We daily scan your complete website to check mallware, virusses and files changes.
+'WP Security by Made I.T.' is one of the fastest WordPress security plugins. The plugin daily scan your complete website to check for mallware, virusses and files changes.
 
 This plugin automaticly generates a connection with our servers to generate an API key and update scan listings, mallware and virus databases, ...
 

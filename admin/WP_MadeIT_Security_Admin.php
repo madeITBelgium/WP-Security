@@ -47,24 +47,24 @@ class WP_MadeIT_Security_Admin
 
     public function initStyle()
     {
-        wp_register_style('madeit-security-admin-style', MADEIT_SECURITY_URL.'admin/css/style.css', [], null);
+        wp_register_style('madeit-security-admin-style', MADEIT_SECURITY_ADMIN.'/css/style.css', [], null);
         wp_enqueue_style('madeit-security-admin-style');
 
-        wp_register_style('madeit-tabs', MADEIT_SECURITY_URL.'admin/css/tabs.css', [], null);
+        wp_register_style('madeit-tabs', MADEIT_SECURITY_ADMIN.'/css/tabs.css', [], null);
         wp_enqueue_style('madeit-tabs');
-        wp_register_style('madeit-grid', MADEIT_SECURITY_URL.'admin/css/grid.css', [], null);
+        wp_register_style('madeit-grid', MADEIT_SECURITY_ADMIN.'/css/grid.css', [], null);
         wp_enqueue_style('madeit-grid');
-        wp_register_style('madeit-card', MADEIT_SECURITY_URL.'admin/css/card.css', [], null);
+        wp_register_style('madeit-card', MADEIT_SECURITY_ADMIN.'/css/card.css', [], null);
         wp_enqueue_style('madeit-card');
 
-        wp_register_style('font-awesome', 'https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css', [], null);
+        wp_register_style('font-awesome', MADEIT_SECURITY_ADMIN . '/css/font-awesome.css', [], null);
         wp_enqueue_style('font-awesome');
 
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-tabs');
 
-        wp_enqueue_script('madeit-security-script', MADEIT_SECURITY_URL.'admin/js/script.js', ['jquery'], 1, true);
-        wp_enqueue_script('madeit-tabs', MADEIT_SECURITY_URL.'admin/js/tabs.js', ['jquery'], 1, true);
+        wp_enqueue_script('madeit-security-script', MADEIT_SECURITY_ADMIN.'/js/script.js', ['jquery'], 1, true);
+        wp_enqueue_script('madeit-tabs', MADEIT_SECURITY_ADMIN.'/js/tabs.js', ['jquery'], 1, true);
     }
 
     public function settings()
