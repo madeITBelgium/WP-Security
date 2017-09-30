@@ -37,7 +37,7 @@ class WP_MadeIT_Security_Theme_Scan extends WP_MadeIT_Security_Scan
 
     public function hashTheme($theme)
     {
-        $startDir = ABSPATH.'/wp-content/themes';
+        $startDir = WP_CONTENT_DIR.'/themes';
         $themeDir = $startDir.'/'.substr($theme, 0, strpos($theme, '/'));
         $result = $this->hashDirectory($themeDir);
 
@@ -46,7 +46,7 @@ class WP_MadeIT_Security_Theme_Scan extends WP_MadeIT_Security_Scan
 
     public function fileHashTheme($theme)
     {
-        $startDir = ABSPATH.'/wp-content/themes';
+        $startDir = WP_CONTENT_DIR.'/themes';
         $theme = strpos($theme, '/') > 0 ? substr($theme, 0, strpos($theme, '/')) : $theme;
         $themeDir = $startDir.'/'.$theme;
         $result = $this->fileHashDirectory($themeDir);

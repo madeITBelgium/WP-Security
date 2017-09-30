@@ -156,11 +156,11 @@ class WP_MadeIT_Security_Admin
             $wp_plugin = new WP_MadeIT_Security_Plugin();
             $pluginsData = $wp_plugin->getPlugins();
             $version = '';
-            $path = WP_CONTENT_DIR;
+            $path = WP_PLUGIN_DIR;
             foreach ($pluginsData as $key => $pluginData) {
                 if ($pluginData['slug'] == $plugin) {
                     $version = $pluginData['version'];
-                    $path .= '/plugins/'.substr($key, 0, strpos($key, '/'));
+                    $path .= '/'.substr($key, 0, strpos($key, '/'));
                 }
             }
             if (isset($_GET['file'])) {

@@ -43,7 +43,7 @@ class WP_MadeIT_Security_Plugin_Scan extends WP_MadeIT_Security_Scan
 
     public function hashPlugin($plugin)
     {
-        $startDir = ABSPATH.'/wp-content/plugins';
+        $startDir = WP_PLUGIN_DIR;
         $pluginDir = $startDir.'/'.substr($plugin, 0, strpos($plugin, '/'));
         $exclude = $this->searchExcludes(substr($plugin, 0, strpos($plugin, '/')));
         $result = $this->hashDirectory($pluginDir, $exclude);
@@ -53,7 +53,7 @@ class WP_MadeIT_Security_Plugin_Scan extends WP_MadeIT_Security_Scan
 
     public function fileHashPlugin($plugin)
     {
-        $startDir = ABSPATH.'/wp-content/plugins';
+        $startDir = WP_PLUGIN_DIR;
         $pluginDir = $startDir.'/'.substr($plugin, 0, strpos($plugin, '/'));
         $exclude = $this->searchExcludes(substr($plugin, 0, strpos($plugin, '/')));
         $result = $this->fileHashDirectory($pluginDir, $exclude);

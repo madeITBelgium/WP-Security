@@ -75,6 +75,11 @@ class WP_MadeIT_Security_Settings
 
         //Info
         $data = $systemInfo->getSystemInfo();
+        unset($data['path']);
+        unset($data['apache_version']);
+        unset($data['user_count']);
+        unset($data['site_count']);
+        
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, 'https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/get-key');
