@@ -57,7 +57,7 @@ class WP_MadeIT_Security_Admin
         wp_register_style('madeit-card', MADEIT_SECURITY_URL.'/admin/css/card.css', [], null);
         wp_enqueue_style('madeit-card');
 
-        wp_register_style('font-awesome', MADEIT_SECURITY_URL . '/admin/css/font-awesome.min.css', [], null);
+        wp_register_style('font-awesome', MADEIT_SECURITY_URL.'/admin/css/font-awesome.min.css', [], null);
         wp_enqueue_style('font-awesome');
 
         wp_enqueue_script('jquery-ui-core');
@@ -169,13 +169,11 @@ class WP_MadeIT_Security_Admin
                 $error = null;
                 if (!is_file($localFile) || strpos($file, '../') === true) {
                     $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security'), $file);
-                }
-                else {
-                    if(true) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
+                } else {
+                    if (true) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
                         $remoteUrl = 'https://madeit.be/wordpress-onderhoud/api/1.0/wp/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$file;
-                    }
-                    else {
-                        $remoteUrl = "https://plugins.trac.wordpress.org/browser/" . $plugin . "/tags/" . $version . "/" . $file . "?format=txt";
+                    } else {
+                        $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$file.'?format=txt';
                     }
 
                     $a = explode("\n", file_get_contents($localFile));
