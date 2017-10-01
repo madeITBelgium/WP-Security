@@ -14,7 +14,7 @@ Secure your WordPress Website.
 == Description ==
 'WP Security by Made I.T.' is one of the fastest WordPress security plugins. The plugin daily scan your complete website to check for malware, viruses and files changes.
 
-This plugin relies on a third party service to functionally work. This plugin automatically generates a connection with our server on 'www.madeit.be' to generate an API key to update scan listings, malware and virus databases, ...
+This plugin relies on a third party service to functionally work. This plugin automatically generates a connection with our server on 'www.madeit.be' to generate an API key to update scan listings, malware and virus databases.
 
 = Features =
 * Scan your WordPress website to file changes.
