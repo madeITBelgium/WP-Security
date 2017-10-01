@@ -12,20 +12,20 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Secure your WordPress Website.
 
 == Description ==
-'WP Security by Made I.T.' is one of the fastest WordPress security plugins. The plugin daily scan your complete website to check for mallware, virusses and files changes.
+'WP Security by Made I.T.' is one of the fastest WordPress security plugins. The plugin daily scan your complete website to check for malware, viruses and files changes.
 
-This plugin automaticly generates a connection with our servers to generate an API key and update scan listings, mallware and virus databases, ...
+This plugin relies on a third party service to functionally work. This plugin automatically generates a connection with our server on 'www.madeit.be' to generate an API key to update scan listings, malware and virus databases, ...
 
 = Features =
 * Scan your WordPress website to file changes.
-* Compare the canged files with its original.
-* Backup you Website.
+* Compare the changed files with its original.
+* Backup your Website.
 * Made I.T. WordPress Maintenance integration.
 * Security Alerts
 
 
 = Comming Features =
-* Check for mallware and virusses.
+* Check for malware and viruses.
 * Login prevention
 * Firewall
 
@@ -41,15 +41,16 @@ For basic usage, you can also have a look at the [plugin homepage](https://www.m
 
 == Frequently Asked Questions == 
 
-= Wich data is send to the Made I.T. servers? =
-In the initial activation of te plugin we send the following data to our server to generate an API key to communicate with our servers to download features scan listings, mallware and virus databases.
-Data we collect: php version, mysql version, WordPress version, URL, user count, site count, OS name and version
+= Wich data is sent to the Made I.T. servers? =
+In the initial activation of the plugin, we send the following data to our server to generate an API key to communicate with our servers to download features scan listings, malware and virus databases.
+Data we collect: PHP version, MySQL version, WordPress version, URL, user count, site count, OS name and version.
+When scanning your website, we sent the plugin name and a hash of the plugin files to our server.
 
 = What is Made I.T. Maintenance =
 Made I.T. Maintenance is a paid service. To help you to focus on your real work we do everything for your website. We check updates, security, ... We improve website speed and help you with problems.
 
 = What is fast scanning? =
-When Plugin, Theme or Core scanning is enabled we first do a fast scan. This fast scan generates a hash of each plugin, theme and the WordPress core. The result of this hash is send to our server to check with the hash we have generated. If there is a mismatch we know that there are changed files. Here stops the fast scan. When fast scanning is disabled we check every failed plugin, theme or WordPress core to check wich file is changed and how.
+When Plugin, Theme or Core scanning is enabled we first do a quick scan. This quick scan generates a hash of each plugin, theme and the WordPress core. The result of this hash is sent to our server to check with the hash we have generated. If there is a mismatch, we know that there are changed files. Here stops the fast scan. When fast scanning is disabled, we check every failed plugin, theme or WordPress core to check which file is changed and how.
 
 
 == Changelog ==
