@@ -118,9 +118,11 @@ class WP_MadeIT_Security_Scan
             $this->activateSechduler(true);
         }
     }
-    
-    public function isFileIgnored($plugin, $file) {
+
+    public function isFileIgnored($plugin, $file)
+    {
         $ignoreData = get_site_transient('madeit_security_ignore_scan');
+
         return isset($ignoreData[$plugin][$file]);
     }
 }
