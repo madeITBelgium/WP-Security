@@ -22,7 +22,7 @@ class WP_MadeIT_Security_Plugin_Scan extends WP_MadeIT_Security_Scan
         if ($fast !== true) {
             if ($result['success'] !== true) {
                 //Do longer scan
-                $newResult = ['success' => true, 'plugins' => []];
+                $newResult = ['success' => true, 'plugins' => [], 'count_plugin_errors' => 0];
                 foreach ($plugins as $key => $value) {
                     if (isset($result['plugins'][$value['slug']]) && $result['plugins'][$value['slug']] === false) {
                         $fileHashes = $this->fileHashPlugin($key);
@@ -32,6 +32,18 @@ class WP_MadeIT_Security_Plugin_Scan extends WP_MadeIT_Security_Scan
 
                         $newResult['success'] = $newResult['success'] && $tussenResult['success'];
                         $newResult['plugins'] = array_merge($newResult['plugins'], $tussenResult['plugins']);
+                        
+                        $errors = count($tussenResult['plugins']);
+                        foreach($tussenResult['plugins'] as $plugin => $files) {
+                            foreach($files as $file => $error) {
+                                if($this->isFileIgnored($value['slug'], $file)) {
+                                    $errors--;
+                                }
+                            }
+                        }
+                        if($errors > 0) {
+                            $newResult['count_plugin_errors']++;
+                        }
                     }
                 }
                 $result = $newResult;

@@ -63,7 +63,7 @@ if (!defined('ABSPATH')) {
                                             <div class="madeit-col  madeit-text-center">
                                                 <p class="madeit-card-title" id="repo-scan-plugins-status">
                                                     <?php if (isset($repoScanData['plugin']['success'])) {
-        if ($repoScanData['plugin']['success'] == 1) {
+        if ($repoScanData['plugin']['success'] == 1 || (isset($repoScanData['plugin']['count_plugin_errors']) && $repoScanData['plugin']['count_plugin_errors'] == 0)) {
             ?>
                                                             <i class="fa fa-check madeit-text-success"></i>
                                                             <?php
@@ -432,7 +432,7 @@ if (!defined('ABSPATH')) {
                 $('.do-repo-scan').show();
                 $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
                 $('#repo-scan-core-status').html(response.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
-                $('#repo-scan-plugins-status').html(response.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
+                $('#repo-scan-plugins-status').html(response.plugin.success || (response.plugin.count_plugin_errors != undefined && response.plugin.count_plugin_errors == 0 ) ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-themes-status').html(response.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
             }, 'json');
         });

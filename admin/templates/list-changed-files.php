@@ -36,8 +36,20 @@ if (!defined('ABSPATH')) {
                                                 <?php
                                                 foreach ($files as $file) {
                                                     printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&file='.$file, $file);
+                                                    if(!$this->isFileIgnored($plugin, $file)) {
+                                                        echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore=' . $nonce . '&file='.$file.'">' . __('Ignore this file') . '</a>';
+                                                    }
+                                                    else {
+                                                        echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&deignore=' . $nonce . '&file='.$file.'">' . __('Stop ignoring this file') . '</a>';
+                                                    }
                                                     echo '<br>';
                                                 } ?>
+                                                <br>
+                                                <br>
+                                                <?php
+                                                echo '<a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore_all=' . $nonce . '">' . __('Ignore all the files') . '</a>';
+                                                ?>
+                                                    
                                             </div>
                                         </div>
                                     </div>
