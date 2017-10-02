@@ -32,16 +32,16 @@ class WP_MadeIT_Security_Plugin_Scan extends WP_MadeIT_Security_Scan
 
                         $newResult['success'] = $newResult['success'] && $tussenResult['success'];
                         $newResult['plugins'] = array_merge($newResult['plugins'], $tussenResult['plugins']);
-                        
+
                         $errors = count($tussenResult['plugins']);
-                        foreach($tussenResult['plugins'] as $plugin => $files) {
-                            foreach($files as $file => $error) {
-                                if($this->isFileIgnored($value['slug'], $file)) {
+                        foreach ($tussenResult['plugins'] as $plugin => $files) {
+                            foreach ($files as $file => $error) {
+                                if ($this->isFileIgnored($value['slug'], $file)) {
                                     $errors--;
                                 }
                             }
                         }
-                        if($errors > 0) {
+                        if ($errors > 0) {
                             $newResult['count_plugin_errors']++;
                         }
                     }
