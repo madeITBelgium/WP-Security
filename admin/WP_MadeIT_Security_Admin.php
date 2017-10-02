@@ -110,7 +110,7 @@ class WP_MadeIT_Security_Admin
                 $this->defaultSettings = $this->settings->loadDefaultSettings();
                 update_option('madeit_security_api_key', $this->defaultSettings['maintenance']['key']);
                 update_option('madeit_security_maintenance_enable', true);
-                
+
                 require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Maintenance.php';
                 $wp_maintenance = new WP_MadeIT_Security_Maintenance($this->settings);
                 $wp_maintenance->setUp();
