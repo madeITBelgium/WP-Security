@@ -75,7 +75,7 @@ if (!defined('ABSPATH')) {
                                 </h4>
                                 <h6 class="madeit-card-subtitle" id="repo-scan-time-ago">
                                     <?php if (isset($repoScanData['time'])) {
-        printf(esc_html(__('Last scan %s ago.', 'madeit_security'), $this->timeAgo($repoScanData['time'])));
+        printf(esc_html(__('Last scan %s ago.', 'madeit_security')), $this->timeAgo($repoScanData['time']));
     } else {
         echo esc_html(__('No recent scan data found.', 'madeit_security'));
     } ?>
