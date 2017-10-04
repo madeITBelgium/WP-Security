@@ -1,11 +1,11 @@
-=== Forms ===
+=== WP Security By Made I.T. ===
 Contributors: madeit
 Donate link: http://www.madeit.be/donate/
 Tags: security, maintenance, secure, security plugin, wordpress security, maintenance plugin
 Requires at least: 4.0
 Tested up to: 4.8.2
 Requires PHP: 5.6
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GNU GPL v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
