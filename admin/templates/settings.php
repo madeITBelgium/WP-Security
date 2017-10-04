@@ -33,9 +33,9 @@ if (!defined('ABSPATH')) {
                         <h3><?php echo esc_html(__('Information', 'madeit_security')); ?></h3>
                         <div class="inside">
                             <ul>
-                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://www.madeit.be/producten/wordpress/forms-plugin/#docs'), __('Docs', 'madeit_security'), ''); ?></li>
-                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://www.madeit.be/producten/wordpress/forms-plugin/#faq'), __('F.A.Q.', 'madeit_security'), ''); ?></li>
-                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://www.madeit.be/producten/wordpress/forms-plugin/#support'), __('Support', 'madeit_security'), ''); ?></li>
+                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://madeit.be/wordpress-onderhoud/wp-plugin/#docs'), __('Docs', 'madeit_security'), ''); ?></li>
+                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://madeit.be/wordpress-onderhoud/wp-plugin/#faq'), __('F.A.Q.', 'madeit_security'), ''); ?></li>
+                                <li><?php echo sprintf('<a href="%1$s"%3$s" title="%2$s">%2$s</a>', esc_url('https://madeit.be/wordpress-onderhoud/wp-plugin/#support'), __('Support', 'madeit_security'), ''); ?></li>
                             </ul>
                         </div>
                     </div><!-- #informationdiv -->
