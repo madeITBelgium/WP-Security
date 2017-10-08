@@ -160,8 +160,7 @@ class WP_MadeIT_Security_Admin
     {
         if (isset($_GET['changes'])) {
             $this->showChanges();
-        }
-        elseif (isset($_GET['notexist'])) {
+        } elseif (isset($_GET['notexist'])) {
             //TODO
         } else {
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
@@ -174,7 +173,7 @@ class WP_MadeIT_Security_Admin
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
         }
     }
-    
+
     private function showChanges()
     {
         $plugin = sanitize_text_field($_GET['changes']);
@@ -233,8 +232,7 @@ class WP_MadeIT_Security_Admin
                         $this->disIgnoreFile($plugin, $file);
                         $list = true;
                     }
-                } 
-                elseif (isset($_GET['replace'])) {
+                } elseif (isset($_GET['replace'])) {
                     //Replace the current file with the original
                     $nonce = sanitize_text_field($_GET['replace']);
                     if (!wp_verify_nonce($nonce, 'madeit_security_replace_file')) {
@@ -360,7 +358,7 @@ class WP_MadeIT_Security_Admin
         }
         set_site_transient('madeit_security_ignore_scan', $ignoreData);
     }
-    
+
     private function replace($plugin, $file, $localFile, $version)
     {
         if (false) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
@@ -369,9 +367,9 @@ class WP_MadeIT_Security_Admin
             $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$file.'?format=txt';
         }
         $fileContent = file_get_contents($remoteUrl);
-        
+
         file_put_contents($localFile, $fileContent);
-        
+
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Scan.php';
         $scan = new WP_MadeIT_Security_Scan();
         $scan->fullScanAgainstRepoFiles();

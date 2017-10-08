@@ -187,7 +187,7 @@ class WP_MadeIT_Security_Plugin
         include ABSPATH.WPINC.'/version.php';
         // If running blog-side, bail unless we've not checked in the last 12 hours
         if (!function_exists('get_plugins')) {
-             require_once(ABSPATH.'wp-admin/includes/plugin.php');
+            require_once ABSPATH.'wp-admin/includes/plugin.php';
         }
         $plugins = get_plugins();
 
