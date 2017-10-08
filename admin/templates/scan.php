@@ -280,43 +280,52 @@ if (!defined('ABSPATH')) {
                                                         </div>
                                                     </div>
                                                     <?php foreach ($repoScanData['plugin']['plugins'] as $plugin => $result) {
-                ?>
-                                                        <div class="madeit-row">
-                                                            <div class="madeit-col-2">
-                                                                <?php echo esc_html($plugin); ?>
-                                                            </div>
-                                                            <div class="madeit-col">
-                                                                <?php
-                                                                if (is_array($result)) {
-                                                                    $notFound = 0;
-                                                                    $notFoundFiles = [];
-                                                                    $changed = 0;
-                                                                    $changedFiles = [];
-                                                                    foreach ($result as $file => $error) {
-                                                                        if ($error == 'File changed') {
-                                                                            $changedFiles[] = $file;
-                                                                            $changed++;
-                                                                        } elseif ($error == 'File not exist') {
-                                                                            $notFoundFiles[] = $file;
-                                                                            $notFound++;
-                                                                        }
-                                                                    } ?>
-                                                                    <?php if ($notFound > 0) {
-                                                                        ?>
-                                                                        <?php printf(__('<a href="%s">%s files</a> on your system that not exist in the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&notexist='.$plugin, $notFound); ?>
-                                                                    <?php
-                                                                    } ?>
-                                                                    <?php if ($changed > 0) {
-                                                                        ?>
-                                                                        <?php printf(__('<a href="%s">%s files</a> on your system are different then the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes='.$plugin, $changed); ?>
-                                                                    <?php
-                                                                    }
+                                                        $notFound = 0;
+                                                        $notFoundFiles = [];
+                                                        $changed = 0;
+                                                        $changedFiles = [];
+                                                        $otherError = 0;
+                                                        $otherErrorFiles = [];
+                
+                                                        if (is_array($result)) {
+                                                            foreach ($result as $file => $error) {
+                                                                if ($error == 'File changed') {
+                                                                    $changedFiles[] = $file;
+                                                                    $changed++;
+                                                                } elseif ($error == 'File not exist') {
+                                                                    $notFoundFiles[] = $file;
+                                                                    $notFound++;
                                                                 } else {
-                                                                    echo esc_html(__($result, 'madeit_security'));
-                                                                } ?>
+                                                                    $otherErrorFiles[] = $file;
+                                                                    $otherError++;
+                                                                }
+                                                            }
+                                                        }
+                                                        if(!is_array($result) || ($changed > 0 || $notFound > 0 || $otherError > 0)) {
+                                                            ?>
+                                                            <div class="madeit-row">
+                                                                <div class="madeit-col-2">
+                                                                    <?php echo esc_html($plugin); ?>
+                                                                </div>
+                                                                <div class="madeit-col">
+                                                                    <?php
+                                                                    if (is_array($result)) {
+                                                                        if ($notFound > 0) {
+                                                                            printf(__('<a href="%s">%s files</a> on your system that not exist in the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&notexist='.$plugin, $notFound);
+                                                                        }
+                                                                        if ($changed > 0) {
+                                                                            printf(__('<a href="%s">%s files</a> on your system are different then the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes='.$plugin, $changed);
+                                                                        }
+                                                                        if ($otherError > 0) {
+                                                                            printf(__('%s files on your system has an error.', 'madeit_security'), $otherError);
+                                                                        }
+                                                                    } else {
+                                                                        echo esc_html(__('Some files of the plugin are not equal to the orignal file. Disable fast scanning to check which file.', 'madeit_security'));
+                                                                    } ?>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    <?php
+                                                            <?php
+                                                        }
             } ?>
                                                 
                                                     <div class="madeit-row" style="margin-top: 20px;">

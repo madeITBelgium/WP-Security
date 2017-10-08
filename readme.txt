@@ -57,6 +57,7 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 = 1.1 =
 * Replace file with original version
+* Bug fixes
 
 = 1.0 =
 * Check core, plugins and themes against repository for changes.
