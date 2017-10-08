@@ -55,7 +55,10 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 == Changelog ==
 
-= 0.1 =
+= 1.1 =
+* Replace file with original version
+
+= 1.0 =
 * Check core, plugins and themes against repository for changes.
 * Notify updates to Made I.T.
 * Do daily backup

@@ -159,96 +159,9 @@ class WP_MadeIT_Security_Admin
     public function show_scan()
     {
         if (isset($_GET['changes'])) {
-            $plugin = sanitize_text_field($_GET['changes']);
-            require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
-            $wp_plugin = new WP_MadeIT_Security_Plugin();
-            $pluginsData = $wp_plugin->getPlugins();
-            $version = '';
-            $path = WP_PLUGIN_DIR;
-            foreach ($pluginsData as $key => $pluginData) {
-                if ($pluginData['slug'] == $plugin) {
-                    $version = $pluginData['version'];
-                    $path .= '/'.substr($key, 0, strpos($key, '/'));
-                }
-            }
-            $list = true;
-            if (isset($_GET['ignore_all'])) {
-                $nonce = sanitize_text_field($_GET['ignore_all']);
-                if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
-                    // This nonce is not valid.
-                    wp_die('Security check');
-                } else {
-                    $repoScanData = get_site_transient('madeit_security_repo_scan');
-                    if (isset($repoScanData['plugin']['plugins'][$plugin])) {
-                        $files = array_keys($repoScanData['plugin']['plugins'][$plugin]);
-
-                        foreach ($files as $file) {
-                            $files[$file] = true;
-                        }
-                        $this->ignoreAll($plugin, $files);
-                    }
-                }
-            }
-            if (isset($_GET['file']) && strlen($version) > 2) {
-                $file = sanitize_text_field($_GET['file']);
-                $localFile = $path.'/'.$file;
-                $error = null;
-                $list = false;
-                if (!is_file($localFile) || strpos($file, '../') === true) {
-                    $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security'), $file);
-                } else {
-                    if (isset($_GET['ignore'])) {
-                        $nonce = sanitize_text_field($_GET['ignore']);
-                        if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
-                            // This nonce is not valid.
-                            wp_die('Security check');
-                        } else {
-                            $this->ignoreFile($plugin, $file);
-                            $list = true;
-                        }
-                    } elseif (isset($_GET['deignore'])) {
-                        $nonce = sanitize_text_field($_GET['deignore']);
-                        if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
-                            // This nonce is not valid.
-                            wp_die('Security check');
-                        } else {
-                            $this->disIgnoreFile($plugin, $file);
-                            $list = true;
-                        }
-                    } else {
-                        if (true) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
-                            $remoteUrl = 'https://madeit.be/wordpress-onderhoud/api/1.0/wp/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$file;
-                        } else {
-                            $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$file.'?format=txt';
-                        }
-
-                        $a = explode("\n", file_get_contents($localFile));
-                        $b = explode("\n", file_get_contents($remoteUrl));
-                        if (!class_exists('Diff')) {
-                            require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
-                        }
-                        $diff = new Diff($a, $b, []);
-
-                        if (!class_exists('Diff_Renderer_Html_SideBySide')) {
-                            require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff/Renderer/Html/SideBySide.php';
-                        }
-                        $renderer = new Diff_Renderer_Html_SideBySide();
-                    }
-                }
-                if (!$list) {
-                    include_once MADEIT_SECURITY_ADMIN.'/templates/compare_files.php';
-                }
-            }
-            if ($list) {
-                $repoScanData = get_site_transient('madeit_security_repo_scan');
-                if (isset($repoScanData['plugin']['plugins'][$plugin])) {
-                    $files = array_keys($repoScanData['plugin']['plugins'][$plugin]);
-                    $nonce = wp_create_nonce('madeit_security_ignore_file');
-
-                    include_once MADEIT_SECURITY_ADMIN.'/templates/list-changed-files.php';
-                }
-            }
-        } elseif (isset($_GET['notexist'])) {
+            $this->showChanges();
+        }
+        elseif (isset($_GET['notexist'])) {
             //TODO
         } else {
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
@@ -259,6 +172,114 @@ class WP_MadeIT_Security_Admin
             $updateScanData = get_site_transient('madeit_security_update_scan');
 
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
+        }
+    }
+    
+    private function showChanges()
+    {
+        $plugin = sanitize_text_field($_GET['changes']);
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
+        $wp_plugin = new WP_MadeIT_Security_Plugin();
+        $pluginsData = $wp_plugin->getPlugins();
+        $version = '';
+        $path = WP_PLUGIN_DIR;
+        foreach ($pluginsData as $key => $pluginData) {
+            if ($pluginData['slug'] == $plugin) {
+                $version = $pluginData['version'];
+                $path .= '/'.substr($key, 0, strpos($key, '/'));
+            }
+        }
+        $list = true;
+        if (isset($_GET['ignore_all'])) {
+            $nonce = sanitize_text_field($_GET['ignore_all']);
+            if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
+                // This nonce is not valid.
+                wp_die('Security check');
+            } else {
+                $repoScanData = get_site_transient('madeit_security_repo_scan');
+                if (isset($repoScanData['plugin']['plugins'][$plugin])) {
+                    $files = array_keys($repoScanData['plugin']['plugins'][$plugin]);
+
+                    foreach ($files as $file) {
+                        $files[$file] = true;
+                    }
+                    $this->ignoreAll($plugin, $files);
+                }
+            }
+        }
+        if (isset($_GET['file']) && strlen($version) > 2) {
+            $file = sanitize_text_field($_GET['file']);
+            $localFile = $path.'/'.$file;
+            $error = null;
+            $list = false;
+            if (!is_file($localFile) || strpos($file, '../') === true) {
+                $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security'), $file);
+            } else {
+                if (isset($_GET['ignore'])) {
+                    $nonce = sanitize_text_field($_GET['ignore']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->ignoreFile($plugin, $file);
+                        $list = true;
+                    }
+                } elseif (isset($_GET['deignore'])) {
+                    $nonce = sanitize_text_field($_GET['deignore']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->disIgnoreFile($plugin, $file);
+                        $list = true;
+                    }
+                } 
+                elseif (isset($_GET['replace'])) {
+                    //Replace the current file with the original
+                    $nonce = sanitize_text_field($_GET['replace']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_replace_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->disIgnoreFile($plugin, $file);
+                        $this->replace($plugin, $file, $localFile, $version);
+                        $list = true;
+                        $fileReplacedSuccesfull = $file;
+                    }
+                } else {
+                    if (true) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
+                        $remoteUrl = 'https://madeit.be/wordpress-onderhoud/api/1.0/wp/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$file;
+                    } else {
+                        $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$file.'?format=txt';
+                    }
+
+                    $a = explode("\n", file_get_contents($localFile));
+                    $b = explode("\n", file_get_contents($remoteUrl));
+                    if (!class_exists('Diff')) {
+                        require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
+                    }
+                    $diff = new Diff($a, $b, []);
+
+                    if (!class_exists('Diff_Renderer_Html_SideBySide')) {
+                        require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff/Renderer/Html/SideBySide.php';
+                    }
+                    $renderer = new Diff_Renderer_Html_SideBySide();
+                }
+            }
+            if (!$list) {
+                $nonce = wp_create_nonce('madeit_security_ignore_file');
+                $nonceReplace = wp_create_nonce('madeit_security_replace_file');
+                include_once MADEIT_SECURITY_ADMIN.'/templates/compare_files.php';
+            }
+        }
+        if ($list) {
+            $repoScanData = get_site_transient('madeit_security_repo_scan');
+            if (isset($repoScanData['plugin']['plugins'][$plugin])) {
+                $files = array_keys($repoScanData['plugin']['plugins'][$plugin]);
+                $nonce = wp_create_nonce('madeit_security_ignore_file');
+
+                include_once MADEIT_SECURITY_ADMIN.'/templates/list-changed-files.php';
+            }
         }
     }
 
@@ -338,6 +359,22 @@ class WP_MadeIT_Security_Admin
             unset($ignoreData[$plugin][$file]);
         }
         set_site_transient('madeit_security_ignore_scan', $ignoreData);
+    }
+    
+    private function replace($plugin, $file, $localFile, $version)
+    {
+        if (false) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
+            $remoteUrl = 'https://madeit.be/wordpress-onderhoud/api/1.0/wp/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$file;
+        } else {
+            $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$file.'?format=txt';
+        }
+        $fileContent = file_get_contents($remoteUrl);
+        
+        file_put_contents($localFile, $fileContent);
+        
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Scan.php';
+        $scan = new WP_MadeIT_Security_Scan();
+        $scan->fullScanAgainstRepoFiles();
     }
 
     public function doRepoScan()

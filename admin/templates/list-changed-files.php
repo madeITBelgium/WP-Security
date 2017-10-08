@@ -19,6 +19,21 @@ if (!defined('ABSPATH')) {
             </div>
         </div>
         
+        <?php
+        if(isset($fileReplacedSuccesfull)) {
+            ?>
+            <div class="updated">
+                <p>
+                    <strong>
+                        <?php
+                        printf(__('The file %s is replaced with the original version.', 'madeit_security'), $file);
+                        ?>
+                    </strong>
+                </p>
+            </div>
+            <?php
+        } ?>
+        
         <div class="madeit-row" style="margin-top: 20px;">
             <div class="madeit-col">
                 <div class="madeit-card">

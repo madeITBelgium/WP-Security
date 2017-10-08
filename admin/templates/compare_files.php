@@ -22,30 +22,38 @@ if (!defined('ABSPATH')) {
                             <?php printf(esc_html(__('Compare file %s of %s', 'madeit_security')), $file, $plugin); ?>
                         </h4>
                         <div class="card-text">
-                            <div class="madeit-row">
-                                <?php if ($error == null) {
-    ?>
-                                    <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
-                                        <div class="madeit-row">
-                                            <div class="madeit-col">
-                                                <?php
-                                                echo $diff->Render($renderer); ?>
-                                            </div>
+                            <?php if ($error == null) {
+                            ?>
+                                <div class="madeit-row" style="width: 100%">
+                                    <div class="madeit-col">
+                                        <?php
+                                        echo $diff->Render($renderer); ?>
+                                    </div>
+                                </div>
+                                <div class="madeit-row">
+                                    <div class="madeit-col">
+                                        <?php
+                                        if (!$this->isFileIgnored($plugin, $file)) {
+                                            echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file.'">'.__('Ignore this file').'</a>';
+                                        } else {
+                                            echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&deignore='.$nonce.'&file='.$file.'">'.__('Stop ignoring this file').'</a>';
+                                        }
+                                        echo ' / <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&replace='.$nonceReplace.'&file='.$file.'">'.__('Replace this file with the original version.').'</a>';
+                                        ?>
+                                    </div>
+                                </div>
+                            <?php
+                            } else {
+                            ?>
+                                <div class="card-text">
+                                    <div class="madeit-row">
+                                        <div class="madeit-col">
+                                            <?php echo esc_html($error); ?>
                                         </div>
                                     </div>
-                                <?php
-} else {
-                                                    ?>
-                                    <div class="card-text">
-                                        <div class="madeit-row">
-                                            <div class="madeit-col">
-                                                <?php echo esc_html($error); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php
-                                                } ?>
-                            </div>
+                                </div>
+                            <?php
+                            } ?>
                         </div>
                     </div>
                 </div>
