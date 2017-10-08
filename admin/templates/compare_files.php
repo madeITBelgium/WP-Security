@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
                         </h4>
                         <div class="card-text">
                             <?php if ($error == null) {
-                            ?>
+    ?>
                                 <div class="madeit-row" style="width: 100%">
                                     <div class="madeit-col">
                                         <?php
@@ -38,13 +38,12 @@ if (!defined('ABSPATH')) {
                                         } else {
                                             echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&deignore='.$nonce.'&file='.$file.'">'.__('Stop ignoring this file').'</a>';
                                         }
-                                        echo ' / <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&replace='.$nonceReplace.'&file='.$file.'">'.__('Replace this file with the original version.').'</a>';
-                                        ?>
+    echo ' / <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&replace='.$nonceReplace.'&file='.$file.'">'.__('Replace this file with the original version.').'</a>'; ?>
                                     </div>
                                 </div>
                             <?php
-                            } else {
-                            ?>
+} else {
+        ?>
                                 <div class="card-text">
                                     <div class="madeit-row">
                                         <div class="madeit-col">
@@ -53,7 +52,7 @@ if (!defined('ABSPATH')) {
                                     </div>
                                 </div>
                             <?php
-                            } ?>
+    } ?>
                         </div>
                     </div>
                 </div>

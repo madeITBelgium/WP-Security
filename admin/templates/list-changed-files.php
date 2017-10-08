@@ -20,14 +20,13 @@ if (!defined('ABSPATH')) {
         </div>
         
         <?php
-        if(isset($fileReplacedSuccesfull)) {
+        if (isset($fileReplacedSuccesfull)) {
             ?>
             <div class="updated">
                 <p>
                     <strong>
                         <?php
-                        printf(__('The file %s is replaced with the original version.', 'madeit_security'), $file);
-                        ?>
+                        printf(__('The file %s is replaced with the original version.', 'madeit_security'), $file); ?>
                     </strong>
                 </p>
             </div>
@@ -44,7 +43,7 @@ if (!defined('ABSPATH')) {
                         <div class="card-text">
                             <div class="madeit-row">
                                 <?php if (count($files) > 0) {
-    ?>
+            ?>
                                     <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -67,8 +66,8 @@ if (!defined('ABSPATH')) {
                                         </div>
                                     </div>
                                 <?php
-} else {
-                                                    ?>
+        } else {
+            ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -77,7 +76,7 @@ if (!defined('ABSPATH')) {
                                         </div>
                                     </div>
                                 <?php
-                                                } ?>
+        } ?>
                             </div>
                         </div>
                     </div>
