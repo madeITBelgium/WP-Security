@@ -280,29 +280,29 @@ if (!defined('ABSPATH')) {
                                                         </div>
                                                     </div>
                                                     <?php foreach ($repoScanData['plugin']['plugins'] as $plugin => $result) {
-                                                        $notFound = 0;
-                                                        $notFoundFiles = [];
-                                                        $changed = 0;
-                                                        $changedFiles = [];
-                                                        $otherError = 0;
-                                                        $otherErrorFiles = [];
-                
-                                                        if (is_array($result)) {
-                                                            foreach ($result as $file => $error) {
-                                                                if ($error == 'File changed') {
-                                                                    $changedFiles[] = $file;
-                                                                    $changed++;
-                                                                } elseif ($error == 'File not exist') {
-                                                                    $notFoundFiles[] = $file;
-                                                                    $notFound++;
-                                                                } else {
-                                                                    $otherErrorFiles[] = $file;
-                                                                    $otherError++;
-                                                                }
-                                                            }
-                                                        }
-                                                        if(!is_array($result) || ($changed > 0 || $notFound > 0 || $otherError > 0)) {
-                                                            ?>
+                $notFound = 0;
+                $notFoundFiles = [];
+                $changed = 0;
+                $changedFiles = [];
+                $otherError = 0;
+                $otherErrorFiles = [];
+
+                if (is_array($result)) {
+                    foreach ($result as $file => $error) {
+                        if ($error == 'File changed') {
+                            $changedFiles[] = $file;
+                            $changed++;
+                        } elseif ($error == 'File not exist') {
+                            $notFoundFiles[] = $file;
+                            $notFound++;
+                        } else {
+                            $otherErrorFiles[] = $file;
+                            $otherError++;
+                        }
+                    }
+                }
+                if (!is_array($result) || ($changed > 0 || $notFound > 0 || $otherError > 0)) {
+                    ?>
                                                             <div class="madeit-row">
                                                                 <div class="madeit-col-2">
                                                                     <?php echo esc_html($plugin); ?>
@@ -325,7 +325,7 @@ if (!defined('ABSPATH')) {
                                                                 </div>
                                                             </div>
                                                             <?php
-                                                        }
+                }
             } ?>
                                                 
                                                     <div class="madeit-row" style="margin-top: 20px;">
