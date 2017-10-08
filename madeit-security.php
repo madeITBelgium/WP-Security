@@ -5,7 +5,7 @@
  * Description: Secure your WordPress Website.
  * Author: Made I.T.
  * Author URI: https://www.madeit.be
- * Version: 1.0.1
+ * Version: 1.1
  * Text Domain: madeit_security
  * Domain Path: /languages
  * License: GPLv3.
