@@ -54,31 +54,29 @@ class WP_MadeIT_Security_Backup
                 $zipPath .= '/'.$this->getZipName();
 
                 $this->createCompleteZip($zipPath);
-                
+
                 unlink($this->backups_dir_location().'/'.$this->getDbScriptName());
                 unlink($this->backups_dir_location().'/'.$this->getZipContentName());
-                
+
                 $uploaded = $this->uploadBackupToStorage($this->getZipName(), $this->backups_dir_location(), 'FULL');
-                if($uploaded) {
+                if ($uploaded) {
                     unlink($this->backups_dir_location().'/'.$this->getZipName());
                 }
-            }
-            else {
-                if($resultFile) {
+            } else {
+                if ($resultFile) {
                     $uploaded = $this->uploadBackupToStorage($this->getZipContentName(), $this->backups_dir_location(), 'FILE');
-                    if($uploaded) {
+                    if ($uploaded) {
                         unlink($this->backups_dir_location().'/'.$this->getZipContentName());
                     }
-                }
-                elseif($resultDb) {
+                } elseif ($resultDb) {
                     $uploaded = $this->uploadBackupToStorage($this->getDbScriptName(), $this->backups_dir_location(), 'DB');
-                    if($uploaded) {
+                    if ($uploaded) {
                         unlink($this->backups_dir_location().'/'.$this->getDbScriptName());
                     }
                 }
             }
         }
-        
+
         $data = [
             'time'        => time(),
             'status'      => $resultFile,
@@ -101,16 +99,16 @@ class WP_MadeIT_Security_Backup
             // Initialize archive object
             $zip = new ZipArchive();
             if ($zip->open($zipPath, ZipArchive::CREATE)) {
-                if(! $zip->addFile($this->backups_dir_location().'/'.$this->getDbScriptName(), 'database.sql')) {
-                    error_log('Cannot add database.sql to zip. File: ' . ($this->backups_dir_location().'/'.$this->getDbScriptName()), 0);
+                if (!$zip->addFile($this->backups_dir_location().'/'.$this->getDbScriptName(), 'database.sql')) {
+                    error_log('Cannot add database.sql to zip. File: '.($this->backups_dir_location().'/'.$this->getDbScriptName()), 0);
                 }
-                if(! $zip->addFile($this->backups_dir_location().'/'.$this->getZipContentName(), 'wp-content.zip')) {
-                    error_log('Cannot add content.zip to zip. File: ' . ($this->backups_dir_location().'/'.$this->getZipContentName()), 0);
+                if (!$zip->addFile($this->backups_dir_location().'/'.$this->getZipContentName(), 'wp-content.zip')) {
+                    error_log('Cannot add content.zip to zip. File: '.($this->backups_dir_location().'/'.$this->getZipContentName()), 0);
                 }
-                if(! $zip->addFile(ABSPATH.'/wp-config.php', 'wp-config.php')) {
-                    error_log('Cannot add wp-config.php to zip. File: ' . (ABSPATH.'/wp-config.php'), 0);
+                if (!$zip->addFile(ABSPATH.'/wp-config.php', 'wp-config.php')) {
+                    error_log('Cannot add wp-config.php to zip. File: '.(ABSPATH.'/wp-config.php'), 0);
                 }
-                if(! $zip->addFromString($this->generateRestoreConfigFile(), 'restore-config.php')) {
+                if (!$zip->addFromString($this->generateRestoreConfigFile(), 'restore-config.php')) {
                     error_log('Cannot add restore-config.php to zip.', 0);
                 }
 
@@ -313,50 +311,50 @@ class WP_MadeIT_Security_Backup
         $dir = $this->backups_dir_location();
         foreach (glob($dir.'/*') as $file) {
             if (time() - filemtime($file) >= 60 * 60 * 24 * 2) {
-                if(strpos($file, 'index.html') === false && strpos($file, '.htaccess') === false && strpos($file, 'web.config') === false) {
+                if (strpos($file, 'index.html') === false && strpos($file, '.htaccess') === false && strpos($file, 'web.config') === false) {
                     unlink($file);
                 }
             }
         }
     }
-    
+
     private function uploadBackupToStorage($fileName, $directory, $type)
     {
         $upload = 0;
-        if($this->defaultSettings['maintenance']['backup']) {
+        if ($this->defaultSettings['maintenance']['backup']) {
             //Upload Backup to Made I.T. servers
-            if($this->uploadBackupToMadeIT($fileName, $directory, $type)) {
-                $upload++;
-            }
-        }
-        
-        if($this->defaultSettings['backup']['ftp']['enabled']) {
-            //Upload backup to FTP server
-            if($this->uploadBackupToFTP($fileName, $directory)) {
+            if ($this->uploadBackupToMadeIT($fileName, $directory, $type)) {
                 $upload++;
             }
         }
 
-        if($this->defaultSettings['backup']['s3']['enabled']) {
-            if($this->uploadBackupToS3Bucket($fileName, $directory)) {
+        if ($this->defaultSettings['backup']['ftp']['enabled']) {
+            //Upload backup to FTP server
+            if ($this->uploadBackupToFTP($fileName, $directory)) {
                 $upload++;
             }
         }
-        
+
+        if ($this->defaultSettings['backup']['s3']['enabled']) {
+            if ($this->uploadBackupToS3Bucket($fileName, $directory)) {
+                $upload++;
+            }
+        }
+
         return $upload > 0;
     }
-    
+
     private function uploadBackupToMadeIT($fileName, $directory, $type)
     {
         $key = $this->defaultSettings['maintenance']['key'];
-        if(strlen($key) > 0) {
+        if (strlen($key) > 0) {
             if (function_exists('curl_file_create')) { // php 5.5+
-                $cFile = curl_file_create($directory . "/" . $fileName);
-            } else { // 
-                $cFile = '@' . realpath($directory . "/" . $fileName);
+                $cFile = curl_file_create($directory.'/'.$fileName);
+            } else { //
+                $cFile = '@'.realpath($directory.'/'.$fileName);
             }
-            
-            $post = array('backup' => $cFile, 'type' => $type);
+
+            $post = ['backup' => $cFile, 'type' => $type];
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/upload-backup/'.$key);
@@ -365,14 +363,15 @@ class WP_MadeIT_Security_Backup
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $result = curl_exec($ch);
             curl_close($ch);
-            
+
             $json = json_decode($result, true);
-            
+
             return $json['success'];
         }
+
         return false;
     }
-    
+
     private function uploadBackupToFTP($fileName, $directory)
     {
         $result = false;
@@ -380,13 +379,13 @@ class WP_MadeIT_Security_Backup
         $ftp_password = $this->defaultSettings['backup']['ftp']['password'];
         $ftp_server = $this->defaultSettings['backup']['ftp']['server'];
         $destinationDir = $this->defaultSettings['backup']['ftp']['destination_dir'];
-        
-        if(strlen($ftp_username) > 0 && strlen($ftp_password) > 0 && strlen($ftp_server) > 0) {
-            $remote_file = $fileName;
-            $file = $directory . "/" . $remote_file;
 
-            if(!empty($destinationDir)) {
-                $remote_file = $destinationDir . "/" . $remote_file;
+        if (strlen($ftp_username) > 0 && strlen($ftp_password) > 0 && strlen($ftp_server) > 0) {
+            $remote_file = $fileName;
+            $file = $directory.'/'.$remote_file;
+
+            if (!empty($destinationDir)) {
+                $remote_file = $destinationDir.'/'.$remote_file;
             }
 
             $conn_id = ftp_connect($ftp_server);
@@ -399,16 +398,16 @@ class WP_MadeIT_Security_Backup
             if (ftp_put($conn_id, $remote_file, $file, FTP_ASCII)) {
                 //Upload success delete file
                 $result = true;
-            }
-            else {
+            } else {
                 //Upload failed
                 $result = false;
             }
             ftp_close($conn_id);
         }
+
         return $result;
     }
-    
+
     private function uploadBackupToS3Bucket($fileName, $directory)
     {
         $result = false;
@@ -416,13 +415,15 @@ class WP_MadeIT_Security_Backup
         $awsSecretKey = $this->defaultSettings['backup']['s3']['secret_key'];
         $bucketName = $this->defaultSettings['backup']['s3']['bucket_name'];
 
-        if(strlen($awsSecretKey) > 0 && strlen($awsAccessKey) > 0 && strlen($bucketName) > 0) {
+        if (strlen($awsSecretKey) > 0 && strlen($awsAccessKey) > 0 && strlen($bucketName) > 0) {
             require_once MADEIT_SECURITY_DIR.'/inc/backup/WP_MadeIT_Security_S3.php';
             $s3 = new WP_MadeIT_Security_S3($awsAccessKey, $awsSecretKey);
 
-            $file = $directory . "/" . $remote_file;
+            $file = $directory.'/'.$remote_file;
+
             return $s3->putObject(S3::inputFile($file, false), $bucketName, $remote_file, S3::ACL_PRIVATE);
         }
+
         return $result;
     }
 

@@ -12,7 +12,7 @@ class WP_MadeIT_Security_Settings
     public function loadDefaultSettings()
     {
         $this->generateOptions();
-        
+
         if (trim(get_option('madeit_security_api_key', '')) == '' && MADEIT_SECURITY_API == false) {
             define('MADEIT_SECURITY_API', true);
             update_option('madeit_security_api_key', $this->fetchNewApiKey());
@@ -38,24 +38,24 @@ class WP_MadeIT_Security_Settings
             ],
             'backup' => [
                 'ftp' => [
-                    'enabled' => get_option('madeit_security_backup_ftp_enable', false),
-                    'server' => get_option('madeit_security_backup_ftp_server', ''),
-                    'username' => get_option('madeit_security_backup_ftp_username', ''),
-                    'password' => get_option('madeit_security_backup_ftp_password', ''),
+                    'enabled'         => get_option('madeit_security_backup_ftp_enable', false),
+                    'server'          => get_option('madeit_security_backup_ftp_server', ''),
+                    'username'        => get_option('madeit_security_backup_ftp_username', ''),
+                    'password'        => get_option('madeit_security_backup_ftp_password', ''),
                     'destination_dir' => get_option('madeit_security_backup_ftp_destination_directory', ''),
                 ],
                 's3' => [
-                    'enabled' => get_option('madeit_security_backup_s3_enable', false),
-                    'access_key' => get_option('madeit_security_backup_s3_access_key', ''),
-                    'secret_key' => get_option('madeit_security_backup_s3_secret_key', ''),
+                    'enabled'     => get_option('madeit_security_backup_s3_enable', false),
+                    'access_key'  => get_option('madeit_security_backup_s3_access_key', ''),
+                    'secret_key'  => get_option('madeit_security_backup_s3_secret_key', ''),
                     'bucket_name' => get_option('madeit_security_backup_s3_bucket_name', ''),
                 ],
-            ]
+            ],
         ];
 
         return $this->defaultSettings;
     }
-    
+
     /**
      * @deprecated
      */
