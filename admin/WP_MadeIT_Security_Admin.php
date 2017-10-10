@@ -102,58 +102,57 @@ class WP_MadeIT_Security_Admin
                 $this->defaultSettings = $this->settings->loadDefaultSettings();
 
                 return 'The provided API Key is invalid.';
-            }
-            elseif (isset($checkApiKey['success']) && $checkApiKey['success']) {
+            } elseif (isset($checkApiKey['success']) && $checkApiKey['success']) {
                 update_option('madeit_security_api_key', $newKey);
                 update_option('madeit_security_maintenance_enable', true);
             }
-            
-            
+
             //FTP settings
             $ftp = false;
-            if(isset($_POST['madeit_security_backup_ftp_enable'])) {
+            if (isset($_POST['madeit_security_backup_ftp_enable'])) {
                 $ftp_username = sanitize_text_field($_POST['madeit_security_backup_ftp_username']);
                 $ftp_password = sanitize_text_field($_POST['madeit_security_backup_ftp_password']);
                 $ftp_server = sanitize_text_field($_POST['madeit_security_backup_ftp_server']);
                 $destination = sanitize_text_field($_POST['madeit_security_backup_ftp_destination_directory']);
-                
+
                 $conn_id = ftp_connect($ftp_server);
-                if($conn_id === false) {
-                    return "Cannot connect to the FTP server.";
+                if ($conn_id === false) {
+                    return 'Cannot connect to the FTP server.';
                 }
                 $login_result = ftp_login($conn_id, $ftp_username, $ftp_password);
-                if($login_result === false) {
-                    return "FTP credentials are wrong.";
+                if ($login_result === false) {
+                    return 'FTP credentials are wrong.';
                 }
                 $ftp = true;
             }
-            
+
             //S3 settings
             $s3 = false;
-            if(isset($_POST['madeit_security_backup_s3_enable'])) {
+            if (isset($_POST['madeit_security_backup_s3_enable'])) {
                 $awsAccessKey = sanitize_text_field($_POST['madeit_security_backup_s3_access_key']);
                 $awsSecretKey = sanitize_text_field($_POST['madeit_security_backup_s3_secret_key']);
                 $bucketName = sanitize_text_field($_POST['madeit_security_backup_s3_bucket_name']);
-                
+
                 require_once MADEIT_SECURITY_DIR.'/inc/backup/WP_MadeIT_Security_S3.php';
                 $s3 = new WP_MadeIT_Security_S3($awsAccessKey, $awsSecretKey);
-                
+
                 $error = false;
+
                 try {
-                    if($s3->getBucket($bucketName) === false) {
+                    if ($s3->getBucket($bucketName) === false) {
                         $error = true;
                     }
-                } catch(Exception $e) {
+                } catch (Exception $e) {
                     return $e->getMessage();
                 }
-                if($error) {
-                    return "Cannot connect to S3 bucket";
+                if ($error) {
+                    return 'Cannot connect to S3 bucket';
                 }
-                
+
                 //check if S3 is available
                 $s3 = true;
             }
-            
+
             //Backup settings
             update_option('madeit_security_backup_ftp_enable', $ftp);
             $this->settings->checkTextbox('madeit_security_backup_ftp_username');
@@ -164,19 +163,18 @@ class WP_MadeIT_Security_Admin
             $this->settings->checkTextbox('madeit_security_backup_s3_access_key');
             $this->settings->checkTextbox('madeit_security_backup_s3_secret_key');
             $this->settings->checkTextbox('madeit_security_backup_s3_bucket_name');
-            
+
             //General settings
             $this->settings->checkCheckbox('madeit_security_scan_repo_fast');
             $this->settings->checkCheckbox('madeit_security_scan_repo_core');
             $this->settings->checkCheckbox('madeit_security_scan_repo_theme');
             $this->settings->checkCheckbox('madeit_security_scan_repo_plugin');
             $this->settings->checkTextbox('madeit_security_api_key');
-            
+
             //Maintenance settings
             $this->settings->checkCheckbox('madeit_security_scan_update');
             $this->settings->checkCheckbox('madeit_security_maintenance_backup');
 
-            
             $this->defaultSettings = $this->settings->loadDefaultSettings();
 
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Maintenance.php';
@@ -193,7 +191,7 @@ class WP_MadeIT_Security_Admin
 
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
             $wpBackup = new WP_MadeIT_Security_Backup($this->settings);
-            if ($this->defaultSettings['maintenance']['backup'] === true  || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
+            if ($this->defaultSettings['maintenance']['backup'] === true || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
                 $wpBackup->activateSechduler(false);
             } else {
                 $wpBackup->activateSechduler(true);

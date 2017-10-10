@@ -13,7 +13,7 @@ class WP_MadeIT_Security_Maintenance
 
     public function setUp()
     {
-        if($this->defaultSettings['maintenance']['enable']) {
+        if ($this->defaultSettings['maintenance']['enable']) {
             //Create user if not exist
             $user_name = 'madeit_support';
             $user_email = 'support@madeit.be';
