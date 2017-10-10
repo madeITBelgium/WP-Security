@@ -94,7 +94,7 @@ class WP_MadeIT_Security_Admin
             wp_die('Security check');
         } else {
             //$this->settings->checkTextbox('madeit_security_api_key');
-            
+
             //Check API Key
             $newKey = sanitize_text_field($_POST['madeit_security_maintenance_api_key']);
             $checkApiKey = $this->settings->checkApiKey($newKey);
