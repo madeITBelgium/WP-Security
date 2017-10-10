@@ -93,6 +93,8 @@ class WP_MadeIT_Security_Admin
             // This nonce is not valid.
             wp_die('Security check');
         } else {
+            //$this->settings->checkTextbox('madeit_security_api_key');
+            
             //Check API Key
             $newKey = sanitize_text_field($_POST['madeit_security_maintenance_api_key']);
             $checkApiKey = $this->settings->checkApiKey($newKey);
@@ -103,6 +105,7 @@ class WP_MadeIT_Security_Admin
 
                 return 'The provided API Key is invalid.';
             } elseif (isset($checkApiKey['success']) && $checkApiKey['success']) {
+                update_option('madeit_security_maintenance_api_key', $newKey);
                 update_option('madeit_security_api_key', $newKey);
                 update_option('madeit_security_maintenance_enable', true);
             }
@@ -169,7 +172,6 @@ class WP_MadeIT_Security_Admin
             $this->settings->checkCheckbox('madeit_security_scan_repo_core');
             $this->settings->checkCheckbox('madeit_security_scan_repo_theme');
             $this->settings->checkCheckbox('madeit_security_scan_repo_plugin');
-            $this->settings->checkTextbox('madeit_security_api_key');
 
             //Maintenance settings
             $this->settings->checkCheckbox('madeit_security_scan_update');
