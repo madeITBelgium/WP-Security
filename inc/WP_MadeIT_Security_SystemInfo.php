@@ -19,9 +19,17 @@ class WP_MadeIT_Security_SystemInfo
 
     public function getApacheVersion()
     {
-        preg_match('/[0-9\.]+/', apache_get_version(), $matches);
-
-        return $matches[0];
+        $result = "";
+        try {
+            if(function_exists('apache_get_version')) {
+                preg_match('/[0-9\.]+/', apache_get_version(), $matches);
+                $result = $matches[0];
+            }
+        }
+        catch(Exception $e) {
+            
+        }
+        return $result;
     }
 
     public function getHomeUrl()
