@@ -43,10 +43,10 @@ class WP_MadeIT_Security_Admin
         if ($alerts > 0) {
             $new = "<span class='update-plugins'><span class='update-count'>".number_format_i18n($alerts).'</span></span>';
         }
-        add_menu_page(__('Security & Maintenance', 'madeit_security'), __('Security', 'madeit_security').' '.$new, 'manage_options', 'madeit_security', [$this, 'show_dashboard'], MADEIT_SECURITY_URL.'assets/icon-16x16.png', 9999);
-        add_submenu_page('madeit_security', __('Security Dashboard', 'madeit_security'), __('Dashboard', 'madeit_security'), 'manage_options', 'madeit_security', [$this, 'show_dashboard']);
-        add_submenu_page('madeit_security', __('Security Scan', 'madeit_security'), __('Scan', 'madeit_security'), 'manage_options', 'madeit_security_scan', [$this, 'show_scan']);
-        add_submenu_page('madeit_security', __('Security Settings', 'madeit_security'), __('Settings', 'madeit_security'), 'manage_options', 'madeit_security_settings', [$this, 'settings']);
+        add_menu_page(__('Security & Maintenance', 'wp-security-by-made-it'), __('Security', 'wp-security-by-made-it').' '.$new, 'manage_options', 'madeit_security', [$this, 'show_dashboard'], MADEIT_SECURITY_URL.'assets/icon-16x16.png', 9999);
+        add_submenu_page('madeit_security', __('Security Dashboard', 'wp-security-by-made-it'), __('Dashboard', 'wp-security-by-made-it'), 'manage_options', 'madeit_security', [$this, 'show_dashboard']);
+        add_submenu_page('madeit_security', __('Security Scan', 'wp-security-by-made-it'), __('Scan', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_scan', [$this, 'show_scan']);
+        add_submenu_page('madeit_security', __('Security Settings', 'wp-security-by-made-it'), __('Settings', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_settings', [$this, 'settings']);
     }
 
     public function initStyle()
@@ -272,7 +272,7 @@ class WP_MadeIT_Security_Admin
             $error = null;
             $list = false;
             if (!is_file($localFile) || strpos($file, '../') === true) {
-                $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'madeit_security'), $file);
+                $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'wp-security-by-made-it'), $file);
             } else {
                 if (isset($_GET['ignore'])) {
                     $nonce = sanitize_text_field($_GET['ignore']);
@@ -346,15 +346,15 @@ class WP_MadeIT_Security_Admin
         $etime = time() - $ptime;
 
         if ($etime < 1) {
-            return __('less than 1 second', 'madeit_security');
+            return __('less than 1 second', 'wp-security-by-made-it');
         }
 
-        $a = [12 * 30 * 24 * 60 * 60 => __('year', 'madeit_security'),
-                   30 * 24 * 60 * 60 => __('month', 'madeit_security'),
-                   24 * 60 * 60      => __('day', 'madeit_security'),
-                   60 * 60           => __('hour', 'madeit_security'),
-                   60                => __('minute', 'madeit_security'),
-                   1                 => __('second', 'madeit_security'),
+        $a = [12 * 30 * 24 * 60 * 60 => __('year', 'wp-security-by-made-it'),
+                   30 * 24 * 60 * 60 => __('month', 'wp-security-by-made-it'),
+                   24 * 60 * 60      => __('day', 'wp-security-by-made-it'),
+                   60 * 60           => __('hour', 'wp-security-by-made-it'),
+                   60                => __('minute', 'wp-security-by-made-it'),
+                   1                 => __('second', 'wp-security-by-made-it'),
         ];
 
         foreach ($a as $secs => $str) {

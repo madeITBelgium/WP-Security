@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     <div class="madeit-container-fluid">
         <div class="madeit-row">
             <div class="madeit-col">
-                <h1><?php echo esc_html(__('Security Scan results', 'madeit_security')); ?></h1>
+                <h1><?php echo esc_html(__('Security Scan results', 'wp-security-by-made-it')); ?></h1>
             </div>
         </div>
         
@@ -27,13 +27,13 @@ if (!defined('ABSPATH')) {
                         <div class="madeit-card">
                             <div class="madeit-card-body">
                                 <h4 class="madeit-card-title">
-                                    <?php echo esc_html(__('Scan summary', 'madeit_security')); ?>
+                                    <?php echo esc_html(__('Scan summary', 'wp-security-by-made-it')); ?>
                                 </h4>
                                 <h6 class="madeit-card-subtitle" id="repo-scan-time-ago">
                                     <?php if (isset($repoScanData['time'])) {
-    printf(__('Last scan %s ago.', 'madeit_security'), $this->timeAgo($repoScanData['time']));
+    printf(__('Last scan %s ago.', 'wp-security-by-made-it'), $this->timeAgo($repoScanData['time']));
 } else {
-    echo esc_html(__('No recent scan data found.', 'madeit_security'));
+    echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it'));
 } ?>
                                 </h6>
                                 <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) {
@@ -53,11 +53,11 @@ if (!defined('ABSPATH')) {
                                                             <?php
         }
     } else {
-        echo esc_html(__('N/A', 'madeit_security'));
+        echo esc_html(__('N/A', 'wp-security-by-made-it'));
     } ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('WordPress Core', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('WordPress Core', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                             <div class="madeit-col  madeit-text-center">
@@ -73,11 +73,11 @@ if (!defined('ABSPATH')) {
                                                             <?php
         }
     } else {
-        echo esc_html(__('N/A', 'madeit_security'));
+        echo esc_html(__('N/A', 'wp-security-by-made-it'));
     } ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('Plugins', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('Plugins', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                             <div class="madeit-col madeit-text-center">
@@ -93,23 +93,23 @@ if (!defined('ABSPATH')) {
                                                             <?php
         }
     } else {
-        echo esc_html(__('N/A', 'madeit_security'));
+        echo esc_html(__('N/A', 'wp-security-by-made-it'));
     } ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('Themes', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('Themes', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#" class="card-link do-repo-scan"><?php echo esc_html(__('Do scan now', 'madeit_security')); ?></a>
+                                    <a href="#" class="card-link do-repo-scan"><?php echo esc_html(__('Do scan now', 'wp-security-by-made-it')); ?></a>
                                 <?php
 } else {
         ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
-                                                <?php echo esc_html(__('Scanning changes against repo disabled.', 'madeit_security')); ?>
+                                                <?php echo esc_html(__('Scanning changes against repo disabled.', 'wp-security-by-made-it')); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -129,13 +129,13 @@ if (!defined('ABSPATH')) {
                         <div class="madeit-card">
                             <div class="madeit-card-body">
                                 <h4 class="madeit-card-title">
-                                    <?php echo esc_html(__('Update summary', 'madeit_security')); ?>
+                                    <?php echo esc_html(__('Update summary', 'wp-security-by-made-it')); ?>
                                 </h4>
                                 <h6 class="madeit-card-subtitle" id="update-scan-time-ago">
                                     <?php if (isset($updateScanData['time'])) {
-        printf(__('Last scan %s ago.', 'madeit_security'), $this->timeAgo($updateScanData['time']));
+        printf(__('Last scan %s ago.', 'wp-security-by-made-it'), $this->timeAgo($updateScanData['time']));
     } else {
-        echo esc_html(__('No recent scan data found.', 'madeit_security'));
+        echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it'));
     } ?>
                                 </h6>
                                 <?php if ($this->defaultSettings['scan']['update'] || $this->defaultSettings['maintenance']['enable']) {
@@ -147,11 +147,11 @@ if (!defined('ABSPATH')) {
                                                     <?php if (isset($updateScanData['core'])) {
             echo esc_html($updateScanData['core']);
         } else {
-            echo esc_html(__('N/A', 'madeit_security'));
+            echo esc_html(__('N/A', 'wp-security-by-made-it'));
         } ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('WordPress Core', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('WordPress Core', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                             <div class="madeit-col  madeit-text-center">
@@ -159,11 +159,11 @@ if (!defined('ABSPATH')) {
                                                     <?php if (isset($updateScanData['plugin'])) {
             echo esc_html($updateScanData['plugin']);
         } else {
-            echo esc_html(__('N/A', 'madeit_security'));
+            echo esc_html(__('N/A', 'wp-security-by-made-it'));
         } ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('Plugins', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('Plugins', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                             <div class="madeit-col madeit-text-center">
@@ -171,23 +171,23 @@ if (!defined('ABSPATH')) {
                                                    <?php if (isset($updateScanData['theme'])) {
             echo esc_html($updateScanData['theme']);
         } else {
-            echo esc_html(__('N/A', 'madeit_security'));
+            echo esc_html(__('N/A', 'wp-security-by-made-it'));
         } ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('Themes', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('Themes', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#" class="card-link do-update-scan"><?php echo esc_html(__('Do scan now', 'madeit_security')); ?></a>
+                                    <a href="#" class="card-link do-update-scan"><?php echo esc_html(__('Do scan now', 'wp-security-by-made-it')); ?></a>
                                 <?php
     } else {
         ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
-                                                <?php echo esc_html(__('Scanning plugin updates disabled.', 'madeit_security')); ?>
+                                                <?php echo esc_html(__('Scanning plugin updates disabled.', 'wp-security-by-made-it')); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -207,15 +207,15 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
-                            <?php echo esc_html(__('Scan result', 'madeit_security')); ?>
+                            <?php echo esc_html(__('Scan result', 'wp-security-by-made-it')); ?>
                         </h4>
                         <div class="card-text">
                             <div class="madeit-row">
                                 <h6 class="madeit-card-subtitle" id="repo-scan-time-ago">
                                     <?php if (isset($repoScanData['time'])) {
-        printf(__('Last scan %s ago.', 'madeit_security'), $this->timeAgo($repoScanData['time']));
+        printf(__('Last scan %s ago.', 'wp-security-by-made-it'), $this->timeAgo($repoScanData['time']));
     } else {
-        echo esc_html(__('No recent scan data found.', 'madeit_security'));
+        echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it'));
     } ?>
                                 </h6>
                                 <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) {
@@ -238,12 +238,12 @@ if (!defined('ABSPATH')) {
                                                                     <?php
                 }
             } else {
-                echo esc_html(__('N/A', 'madeit_security'));
+                echo esc_html(__('N/A', 'wp-security-by-made-it'));
             } ?>
                                                         </div>
                                                         <div class="madeit-col">
                                                             <h3 style="margin: 0">
-                                                                <?php echo esc_html(__('WordPress Core', 'madeit_security')); ?>
+                                                                <?php echo esc_html(__('WordPress Core', 'wp-security-by-made-it')); ?>
                                                             </h3>
                                                         </div>
                                                     </div>
@@ -251,7 +251,7 @@ if (!defined('ABSPATH')) {
                 ?>
                                                         <div class="madeit-row">
                                                             <div class="madeit-col">
-                                                                <?php echo esc_html(__($result, 'madeit_security')); ?>
+                                                                <?php echo esc_html(__($result, 'wp-security-by-made-it')); ?>
                                                             </div>
                                                         </div>
                                                     <?php
@@ -270,12 +270,12 @@ if (!defined('ABSPATH')) {
                                                                     <?php
                 }
             } else {
-                echo esc_html(__('N/A', 'madeit_security'));
+                echo esc_html(__('N/A', 'wp-security-by-made-it'));
             } ?>
                                                         </div>
                                                         <div class="madeit-col">
                                                             <h3 style="margin: 0">
-                                                                <?php echo esc_html(__('Plugins', 'madeit_security')); ?>
+                                                                <?php echo esc_html(__('Plugins', 'wp-security-by-made-it')); ?>
                                                             </h3>
                                                         </div>
                                                     </div>
@@ -311,16 +311,16 @@ if (!defined('ABSPATH')) {
                                                                     <?php
                                                                     if (is_array($result)) {
                                                                         if ($notFound > 0) {
-                                                                            printf(__('<a href="%s">%s files</a> on your system that not exist in the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&notexist='.$plugin, $notFound);
+                                                                            printf(__('<a href="%s">%s files</a> on your system that not exist in the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&notexist='.$plugin, $notFound);
                                                                         }
                                                                         if ($changed > 0) {
-                                                                            printf(__('<a href="%s">%s files</a> on your system are different then the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes='.$plugin, $changed);
+                                                                            printf(__('<a href="%s">%s files</a> on your system are different then the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&changes='.$plugin, $changed);
                                                                         }
                                                                         if ($otherError > 0) {
-                                                                            printf(__('%s files on your system has an error.', 'madeit_security'), $otherError);
+                                                                            printf(__('%s files on your system has an error.', 'wp-security-by-made-it'), $otherError);
                                                                         }
                                                                     } else {
-                                                                        echo esc_html(__('Some files of the plugin are not equal to the orignal file. Disable fast scanning to check which file.', 'madeit_security'));
+                                                                        echo esc_html(__('Some files of the plugin are not equal to the orignal file. Disable fast scanning to check which file.', 'wp-security-by-made-it'));
                                                                     } ?>
                                                                 </div>
                                                             </div>
@@ -341,12 +341,12 @@ if (!defined('ABSPATH')) {
                                                                     <?php
                 }
             } else {
-                echo esc_html(__('N/A', 'madeit_security'));
+                echo esc_html(__('N/A', 'wp-security-by-made-it'));
             } ?>
                                                         </div>
                                                         <div class="madeit-col">
                                                             <h3 style="margin: 0">
-                                                                <?php echo esc_html(__('Themes', 'madeit_security')); ?>
+                                                                <?php echo esc_html(__('Themes', 'wp-security-by-made-it')); ?>
                                                             </h3>
                                                         </div>
                                                     </div>
@@ -374,7 +374,7 @@ if (!defined('ABSPATH')) {
                                                                     } ?>
                                                                     <?php if ($notFound > 0) {
                                                                         ?>
-                                                                        <?php printf(__('%s files on your system that not exist in the original version.', 'madeit_security'), $notFound); ?>
+                                                                        <?php printf(__('%s files on your system that not exist in the original version.', 'wp-security-by-made-it'), $notFound); ?>
                                                                     <?php
                                                                     } ?>
                                                                     <?php if ($notFound > 0 && $changed > 0) {
@@ -382,11 +382,11 @@ if (!defined('ABSPATH')) {
                                                                     } ?>
                                                                     <?php if ($changed > 0) {
                                                                         ?>
-                                                                        <?php printf(__('%s files on your system are different then the original version.', 'madeit_security'), $changed); ?>
+                                                                        <?php printf(__('%s files on your system are different then the original version.', 'wp-security-by-made-it'), $changed); ?>
                                                                     <?php
                                                                     }
                                                                 } else {
-                                                                    echo esc_html(__($result, 'madeit_security'));
+                                                                    echo esc_html(__($result, 'wp-security-by-made-it'));
                                                                 } ?>
                                                             </div>
                                                         </div>
@@ -395,7 +395,7 @@ if (!defined('ABSPATH')) {
                                                 <?php
         } else {
             ?>
-                                                    <?php echo esc_html(__('No recent scan data found.', 'madeit_security')); ?>
+                                                    <?php echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it')); ?>
                                                 <?php
         } ?>
                                             </div>
@@ -407,7 +407,7 @@ if (!defined('ABSPATH')) {
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
-                                                <?php echo esc_html(__('Scanning changes against repo disabled.', 'madeit_security')); ?>
+                                                <?php echo esc_html(__('Scanning changes against repo disabled.', 'wp-security-by-made-it')); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -439,7 +439,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-repo-scan').show();
-                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
+                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
                 $('#repo-scan-core-status').html(response.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-plugins-status').html(response.plugin.success || (response.plugin.count_plugin_errors != undefined && response.plugin.count_plugin_errors == 0 ) ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-themes-status').html(response.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
@@ -458,7 +458,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-update-scan').show();
-                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
+                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
                 $('#update-scan-core-status').html(response.core);
                 $('#update-scan-plugins-status').html(response.plugin);
                 $('#update-scan-themes-status').html(response.theme);

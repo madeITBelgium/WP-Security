@@ -238,10 +238,10 @@ class WP_MadeIT_Security_Backup
 
         $memlim = $this->memory_check_current();
         if ($memlim < 65 && $memlim > 0) {
-            $error = sprintf(__('The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should increase it to avoid failures due to insufficient memory (consult your web hosting company for more help)', 'madeit_security'), round($memlim, 1));
+            $error = sprintf(__('The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should increase it to avoid failures due to insufficient memory (consult your web hosting company for more help)', 'wp-security-by-made-it'), round($memlim, 1));
         }
         if ($max_execution_time > 0 && $max_execution_time < 20) {
-            $error = sprintf(__('The amount of time allowed for WordPress plugins to run is very low (%s seconds) - you should increase it to avoid backup failures due to time-outs (consult your web hosting company for more help - it is the max_execution_time PHP setting; the recommended value is %s seconds or more)', 'madeit_security'), $max_execution_time, 90);
+            $error = sprintf(__('The amount of time allowed for WordPress plugins to run is very low (%s seconds) - you should increase it to avoid backup failures due to time-outs (consult your web hosting company for more help - it is the max_execution_time PHP setting; the recommended value is %s seconds or more)', 'wp-security-by-made-it'), $max_execution_time, 90);
         }
 
         //can zip
@@ -257,7 +257,7 @@ class WP_MadeIT_Security_Backup
             $freeDiskSpace = round($hosting_bytes_free[3] / 1048576, 1);
 
             if ($hosting_bytes_free[3] < 1048576 * 50) {
-                $error = sprintf(__('Your free space in your hosting account is very low - only %s Mb remain', 'madeit_security'), $freeDiskSpace);
+                $error = sprintf(__('Your free space in your hosting account is very low - only %s Mb remain', 'wp-security-by-made-it'), $freeDiskSpace);
             }
         }
 

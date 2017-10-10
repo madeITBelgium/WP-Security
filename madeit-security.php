@@ -6,7 +6,7 @@
  * Author: Made I.T.
  * Author URI: https://www.madeit.be
  * Version: 1.2
- * Text Domain: madeit_security
+ * Text Domain: wp-security-by-made-it
  * Domain Path: /languages
  * License: GPLv3.
  */
@@ -30,6 +30,11 @@ if (!defined('MADEIT_SECURITY_FRONT')) {
 if (!defined('MADEIT_SECURITY_API')) {
     define('MADEIT_SECURITY_API', false); // Admin Dir
 }
+
+function wp_security_by_madeit_load_plugin_textdomain() {
+    load_plugin_textdomain( 'wp-security-by-made-it', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+add_action('plugins_loaded', 'wp_security_by_madeit_load_plugin_textdomain');
 
 require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
 $wp_madeit_security_settings = new WP_MadeIT_Security_Settings();

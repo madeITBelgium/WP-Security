@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     <div class="madeit-container-fluid">
         <div class="madeit-row">
             <div class="madeit-col">
-                <h1><?php echo esc_html(__('Changed files', 'madeit_security')); ?></h1>
+                <h1><?php echo esc_html(__('Changed files', 'wp-security-by-made-it')); ?></h1>
             </div>
         </div>
         
@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
                 <p>
                     <strong>
                         <?php
-                        printf(__('The file %s is replaced with the original version.', 'madeit_security'), $file); ?>
+                        printf(__('The file %s is replaced with the original version.', 'wp-security-by-made-it'), $file); ?>
                     </strong>
                 </p>
             </div>
@@ -38,7 +38,7 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
-                            <?php printf(esc_html(__('Changed files of %s', 'madeit_security')), $plugin); ?>
+                            <?php printf(esc_html(__('Changed files of %s', 'wp-security-by-made-it')), $plugin); ?>
                         </h4>
                         <div class="card-text">
                             <div class="madeit-row">
@@ -49,7 +49,7 @@ if (!defined('ABSPATH')) {
                                             <div class="madeit-col">
                                                 <?php
                                                 foreach ($files as $file) {
-                                                    printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'madeit_security'), 'admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&file='.$file, $file);
+                                                    printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&file='.$file, $file);
                                                     if (!$this->isFileIgnored($plugin, $file)) {
                                                         echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file.'">'.__('Ignore this file').'</a>';
                                                     } else {
@@ -71,7 +71,7 @@ if (!defined('ABSPATH')) {
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
-                                                <?php echo esc_html(__('No changed files found.', 'madeit_security')); ?>
+                                                <?php echo esc_html(__('No changed files found.', 'wp-security-by-made-it')); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -103,7 +103,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-repo-scan').show();
-                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
+                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
                 $('#repo-scan-core-status').html(response.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-plugins-status').html(response.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-themes-status').html(response.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
@@ -122,7 +122,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-update-scan').show();
-                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
+                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
                 $('#update-scan-core-status').html(response.core);
                 $('#update-scan-plugins-status').html(response.plugin);
                 $('#update-scan-themes-status').html(response.theme);

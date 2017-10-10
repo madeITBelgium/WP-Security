@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
-                            <?php printf(esc_html(__('Compare file %s of %s', 'madeit_security')), $file, $plugin); ?>
+                            <?php printf(esc_html(__('Compare file %s of %s', 'wp-security-by-made-it')), $file, $plugin); ?>
                         </h4>
                         <div class="card-text">
                             <?php if ($error == null) {
@@ -78,7 +78,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-repo-scan').show();
-                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
+                $('#repo-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
                 $('#repo-scan-core-status').html(response.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-plugins-status').html(response.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                 $('#repo-scan-themes-status').html(response.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
@@ -97,7 +97,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.do-update-scan').show();
-                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'madeit_security'), '1s'); ?>');
+                $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
                 $('#update-scan-core-status').html(response.core);
                 $('#update-scan-plugins-status').html(response.plugin);
                 $('#update-scan-themes-status').html(response.theme);
