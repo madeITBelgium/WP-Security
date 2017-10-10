@@ -45,6 +45,7 @@ if (!defined('ABSPATH')) {
                     <div id="madeit-tab">
                         <ul id="madeit-tab-tabs">
                             <li id="general-settings-tab"><a href="#general-settings"><?php echo esc_html(__('General settings', 'madeit_security')); ?></a></li>
+                            <li id="backup-tab"><a href="#backup-settings"><?php echo esc_html(__('Back-up settings', 'madeit_security')); ?></a></li>
                             <li id="maintenance-settings-tab"><a href="#maintenance-panel"><?php echo esc_html(__('Maintenance', 'madeit_security')); ?></a></li>
                         </ul>
                         <div class="madeit-tab-panel" id="general-settings">
@@ -125,6 +126,98 @@ if (!defined('ABSPATH')) {
                                                 <p>
                                                     <?php echo esc_html(__('This API key is auto generated. The API key is required to communicate with our server to update file scan listing, Virus/Mallware databases, ...', 'madeit_security')); ?>
                                                 </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                        <div class="madeit-tab-panel" id="backup-settings">
+                            <section class="section">
+                                <h3><?php echo esc_html(__('Send the backup to your FTP server.', 'madeit_security')); ?></h3>
+                                <table class="form-table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Enable FTP Backup', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="checkbox" name="madeit_security_backup_ftp_enable" class="" value="1" <?php if ($this->defaultSettings['backup']['ftp']['enabled']) {
+            echo 'CHECKED';
+        } ?> />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('FTP server', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_ftp_server" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['ftp']['server']; ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('FTP username', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_ftp_username" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['ftp']['username']; ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('FTP password', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="password" name="madeit_security_backup_ftp_password" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['ftp']['password']; ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('FTP destination directory', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_ftp_destination_directory" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['ftp']['destination_dir']; ?>" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                            <section class="section">
+                                <h3><?php echo esc_html(__('Send the backup to your S3 bucket.', 'madeit_security')); ?></h3>
+                                <table class="form-table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Enable S3 Backup', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="checkbox" name="madeit_security_backup_s3_enable" class="" value="1" <?php if ($this->defaultSettings['backup']['s3']['enabled']) {
+            echo 'CHECKED';
+        } ?> />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Access key', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_s3_access_key" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['s3']['access_key']; ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Secret key', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_s3_secret_key" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['s3']['secret_key']; ?>" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Bucket', 'madeit_security')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_s3_bucket_name" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['s3']['bucket_name']; ?>" />
                                             </td>
                                         </tr>
                                     </tbody>

@@ -11,6 +11,56 @@ class WP_MadeIT_Security_Settings
 
     public function loadDefaultSettings()
     {
+        $this->generateOptions();
+        
+        if (trim(get_option('madeit_security_api_key', '')) == '' && MADEIT_SECURITY_API == false) {
+            define('MADEIT_SECURITY_API', true);
+            update_option('madeit_security_api_key', $this->fetchNewApiKey());
+        }
+
+        $this->defaultSettings = [
+            'scan' => [
+                'fast' => get_option('madeit_security_scan_repo_fast', false),
+                'repo' => [
+                    'core'   => get_option('madeit_security_scan_repo_core', false),
+                    'theme'  => get_option('madeit_security_scan_repo_theme', false),
+                    'plugin' => get_option('madeit_security_scan_repo_plugin', false),
+                ],
+                'update' => get_option('madeit_security_scan_update', false),
+            ],
+            'api' => [
+                'key' => get_option('madeit_security_api_key', ''),
+            ],
+            'maintenance' => [
+                'enable' => get_option('madeit_security_maintenance_enable', false),
+                'key'    => get_option('madeit_security_maintenance_api_key', ''),
+                'backup' => get_option('madeit_security_maintenance_backup', false),
+            ],
+            'backup' => [
+                'ftp' => [
+                    'enabled' => get_option('madeit_security_backup_ftp_enable', false),
+                    'server' => get_option('madeit_security_backup_ftp_server', ''),
+                    'username' => get_option('madeit_security_backup_ftp_username', ''),
+                    'password' => get_option('madeit_security_backup_ftp_password', ''),
+                    'destination_dir' => get_option('madeit_security_backup_ftp_destination_directory', ''),
+                ],
+                's3' => [
+                    'enabled' => get_option('madeit_security_backup_s3_enable', false),
+                    'access_key' => get_option('madeit_security_backup_s3_access_key', ''),
+                    'secret_key' => get_option('madeit_security_backup_s3_secret_key', ''),
+                    'bucket_name' => get_option('madeit_security_backup_s3_bucket_name', ''),
+                ],
+            ]
+        ];
+
+        return $this->defaultSettings;
+    }
+    
+    /**
+     * @deprecated
+     */
+    private function generateOptions()
+    {
         if (get_option('madeit_security_scan_repo_fast', null) === null) {
             update_option('madeit_security_scan_repo_fast', false);
         }
@@ -38,33 +88,33 @@ class WP_MadeIT_Security_Settings
         if (get_option('madeit_security_maintenance_backup', null) === null) {
             update_option('madeit_security_maintenance_backup', false);
         }
-
-        if (trim(get_option('madeit_security_api_key', '')) == '' && MADEIT_SECURITY_API == false) {
-            define('MADEIT_SECURITY_API', true);
-            update_option('madeit_security_api_key', $this->fetchNewApiKey());
+        if (get_option('madeit_security_backup_ftp_enable', null) === null) {
+            update_option('madeit_security_backup_ftp_enable', false);
         }
-
-        $this->defaultSettings = [
-            'scan' => [
-                'fast' => get_option('madeit_security_scan_repo_fast', false),
-                'repo' => [
-                    'core'   => get_option('madeit_security_scan_repo_core', false),
-                    'theme'  => get_option('madeit_security_scan_repo_theme', false),
-                    'plugin' => get_option('madeit_security_scan_repo_plugin', false),
-                ],
-                'update' => get_option('madeit_security_scan_update', false),
-            ],
-            'api' => [
-                'key' => get_option('madeit_security_api_key', ''),
-            ],
-            'maintenance' => [
-                'enable' => get_option('madeit_security_maintenance_enable', false),
-                'key'    => get_option('madeit_security_maintenance_api_key', ''),
-                'backup' => get_option('madeit_security_maintenance_backup', false),
-            ],
-        ];
-
-        return $this->defaultSettings;
+        if (get_option('madeit_security_backup_ftp_server', null) === null) {
+            update_option('madeit_security_backup_ftp_server', '');
+        }
+        if (get_option('madeit_security_backup_ftp_username', null) === null) {
+            update_option('madeit_security_backup_ftp_username', '');
+        }
+        if (get_option('madeit_security_backup_ftp_password', null) === null) {
+            update_option('madeit_security_backup_ftp_password', '');
+        }
+        if (get_option('madeit_security_backup_ftp_destination_directory', null) === null) {
+            update_option('madeit_security_backup_ftp_destination_directory', '');
+        }
+        if (get_option('madeit_security_backup_s3_enable', null) === null) {
+            update_option('madeit_security_backup_s3_enable', false);
+        }
+        if (get_option('madeit_security_backup_s3_access_key', null) === null) {
+            update_option('madeit_security_backup_s3_access_key', '');
+        }
+        if (get_option('madeit_security_backup_s3_secret_key', null) === null) {
+            update_option('madeit_security_backup_s3_secret_key', '');
+        }
+        if (get_option('madeit_security_backup_s3_bucket_name', null) === null) {
+            update_option('madeit_security_backup_s3_bucket_name', '');
+        }
     }
 
     private function fetchNewApiKey()

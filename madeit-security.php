@@ -5,7 +5,7 @@
  * Description: Secure your WordPress Website.
  * Author: Made I.T.
  * Author URI: https://www.madeit.be
- * Version: 1.1
+ * Version: 1.2
  * Text Domain: madeit_security
  * Domain Path: /languages
  * License: GPLv3.
@@ -50,7 +50,7 @@ if ($scan) {
     $wp_madeit_security_scan->addHooks($wp_madeit_security_settings);
 }
 
-if ($settings['maintenance']['backup']) {
+if ($settings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {
     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
     $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings);
     $wp_madeit_security_backup->addHooks();
