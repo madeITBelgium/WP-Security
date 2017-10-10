@@ -7,7 +7,7 @@ class WP_MadeIT_Security_Theme
         $themes = $this->getAllThemes(false);
         $count = 0;
         foreach ($themes as $theme) {
-            if ($theme['version'] != $theme['latest_version'] && $theme['latest_version'] != null) {
+            if (version_compare($theme['version'], $theme['latest_version'], '<') && $theme['latest_version'] != null) {
                 if ($theme['active'] || !$activeThemesOnly) {
                     $count++;
                 }

@@ -7,7 +7,7 @@ class WP_MadeIT_Security_Plugin
         $plugins = $this->getPlugins(false);
         $count = 0;
         foreach ($plugins as $plugin) {
-            if ($plugin['version'] != $plugin['latest_version'] && $plugin['latest_version'] != null) {
+            if (version_compare($plugin['version'], $plugin['latest_version'], '<') && $plugin['latest_version'] != null) {
                 if ($plugin['active'] || !$activePluginsOnly) {
                     $count++;
                 }
