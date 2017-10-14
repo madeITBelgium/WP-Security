@@ -443,7 +443,7 @@ class WP_MadeIT_Security_Admin
     public function doFileScan()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
-        $scan = new WP_MadeIT_Security_LoadFiles($this->db);
+        $scan = new WP_MadeIT_Security_LoadFiles($this->settings, $this->db);
         $scan->startLoadingFiles();
         echo json_encode(['success' => true]);
         wp_die();
@@ -452,7 +452,7 @@ class WP_MadeIT_Security_Admin
     public function stopFileScan()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
-        $scan = new WP_MadeIT_Security_LoadFiles($this->db);
+        $scan = new WP_MadeIT_Security_LoadFiles($this->settings, $this->db);
         $scan->stopLoadingFiles();
         echo json_encode(['success' => true]);
         wp_die();

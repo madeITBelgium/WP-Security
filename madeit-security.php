@@ -48,8 +48,8 @@ if (defined('DOING_CRON')) {
     $scan = $settings['scan']['repo']['core'] && $settings['scan']['repo']['theme'] && $settings['scan']['repo']['plugin'];
     if ($scan) {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
-        $wp_madeit_security_loadfiles = new WP_MadeIT_Security_LoadFiles($wp_madeit_security_db);
-        $wp_madeit_security_loadfiles->addHooks($wp_madeit_security_settings);
+        $wp_madeit_security_loadfiles = new WP_MadeIT_Security_LoadFiles($wp_madeit_security_settings, $wp_madeit_security_db);
+        $wp_madeit_security_loadfiles->addHooks();
     }
 
     if ($settings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {

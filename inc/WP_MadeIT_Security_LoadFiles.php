@@ -2,10 +2,14 @@
 
 class WP_MadeIT_Security_LoadFiles
 {
+    private $defaultSettings = [];
+    private $settings;
     private $db;
 
-    public function __construct($db)
+    public function __construct($settings, $db)
     {
+        $this->settings = $settings;
+        $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
     }
     
@@ -592,7 +596,7 @@ class WP_MadeIT_Security_LoadFiles
                              );
     }
 
-    public function addHooks($settings)
+    public function addHooks()
     {
         add_action('madeit_security_loadfiles', [$this, 'loadfiles']);
 
@@ -601,7 +605,7 @@ class WP_MadeIT_Security_LoadFiles
             wp_schedule_event(time(), 'daily', 'madeit_security_loadfiles');
         }
 
-        if ($settings->loadDefaultSettings()['scan']['repo']['core'] || $settings->loadDefaultSettings()['scan']['repo']['theme'] || $settings->loadDefaultSettings()['scan']['repo']['plugin']) {
+        if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['theme'] || $this->defaultSettings['scan']['repo']['plugin']) {
             $this->activateSechduler(false);
         } else {
             $this->activateSechduler(true);
