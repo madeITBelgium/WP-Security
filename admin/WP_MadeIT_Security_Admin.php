@@ -24,8 +24,8 @@ class WP_MadeIT_Security_Admin
         $themes = new WP_MadeIT_Security_Theme();
 
         $count = 0;
-        $errors = $this->db->querySingleRecord("SELECT count(*) as aantal FROM `" . $this->db->prefix() . "madeit_sec_filelist` WHERE reason IS NOT NULL AND `ignore` != 1");
-        if(isset($errors['aantal'])) {
+        $errors = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE reason IS NOT NULL AND `ignore` != 1');
+        if (isset($errors['aantal'])) {
             $count = $errors['aantal'];
         }
 
@@ -224,38 +224,36 @@ class WP_MadeIT_Security_Admin
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme.php';
-            
+
             $lastScan = get_site_transient('madeit_security_scan');
-            $plugins = $this->db->querySelect("SELECT * FROM `" . $this->db->prefix() . "madeit_sec_filelist` WHERE plugin_file = 1 AND reason IS NOT NULL AND `ignore` != 1 ORDER BY `plugin_theme` ASC");
+            $plugins = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1 AND reason IS NOT NULL AND `ignore` != 1 ORDER BY `plugin_theme` ASC');
             $pluginScanData = [];
-            $plugin = "";
-            foreach($plugins as $value) {
-                if($plugin != $value['plugin_theme']) {
+            $plugin = '';
+            foreach ($plugins as $value) {
+                if ($plugin != $value['plugin_theme']) {
                     $plugin = $value['plugin_theme'];
                     $pluginScanData[$plugin] = [];
                 }
-                if(!isset($pluginScanData[$plugin][$value['reason']])) {
+                if (!isset($pluginScanData[$plugin][$value['reason']])) {
                     $pluginScanData[$plugin][$value['reason']] = [];
                 }
                 $pluginScanData[$plugin][$value['reason']][] = $value['filename'];
             }
-            
-            
-            $themes = $this->db->querySelect("SELECT * FROM `" . $this->db->prefix() . "madeit_sec_filelist` WHERE theme_file = 1 AND reason IS NOT NULL AND `ignore` != 1 ORDER BY `plugin_theme` ASC");
+
+            $themes = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE theme_file = 1 AND reason IS NOT NULL AND `ignore` != 1 ORDER BY `plugin_theme` ASC');
             $themeScanData = [];
-            $theme = "";
-            foreach($themes as $value) {
-                if($theme != $value['plugin_theme']) {
+            $theme = '';
+            foreach ($themes as $value) {
+                if ($theme != $value['plugin_theme']) {
                     $theme = $value['plugin_theme'];
                     $themeScanData[$plugin] = [];
                 }
-                if(!isset($themeScanData[$plugin][$value['reason']])) {
+                if (!isset($themeScanData[$plugin][$value['reason']])) {
                     $themeScanData[$plugin][$value['reason']] = [];
                 }
                 $themeScanData[$plugin][$value['reason']][] = $value['filename'];
             }
-            
-            
+
             $updateScanData = get_site_transient('madeit_security_update_scan');
 
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
@@ -288,21 +286,19 @@ class WP_MadeIT_Security_Admin
         }
         if (isset($_GET['file']) && strlen($version) > 2) {
             $file = sanitize_text_field($_GET['file']);
-            $fileData = $this->db->querySingleRecord("SELECT * FROM `" . $this->db->prefix() . "madeit_sec_filelist` WHERE filename_md5 = %s", $file);
-            
+            $fileData = $this->db->querySingleRecord('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE filename_md5 = %s', $file);
+
             $localFile = ABSPATH.$fileData['filename'];
-            
+
             $pluginName = $fileData['plugin_theme'];
             $startDir = WP_PLUGIN_DIR;
-            if(strpos($pluginName, '/') > 0) {
-                $pluginDir = str_replace(ABSPATH, '', $startDir.'/'.substr($pluginName, 0, strpos($pluginName, '/'))) . "/";
+            if (strpos($pluginName, '/') > 0) {
+                $pluginDir = str_replace(ABSPATH, '', $startDir.'/'.substr($pluginName, 0, strpos($pluginName, '/'))).'/';
+            } else {
+                $pluginDir = str_replace(ABSPATH, '', $startDir.'/'.$pluginName).'/';
             }
-            else {
-                $pluginDir = str_replace(ABSPATH, '', $startDir.'/'.$pluginName) . "/";
-            }
-            $fileName = preg_replace('/' . preg_quote($pluginDir, '/') . '/', '', $fileData['filename'], 1);
-            
-            
+            $fileName = preg_replace('/'.preg_quote($pluginDir, '/').'/', '', $fileData['filename'], 1);
+
             $error = null;
             $list = false;
             if (!is_file($localFile) || strpos($file, '../') === true) {
@@ -365,12 +361,12 @@ class WP_MadeIT_Security_Admin
         }
         if ($list) {
             $nonce = wp_create_nonce('madeit_security_ignore_file');
-            
-            $files = $this->db->querySelect("SELECT * FROM `" . $this->db->prefix() . "madeit_sec_filelist` WHERE plugin_file = 1 AND reason IS NOT NULL AND `ignore` != 1 AND plugin_theme = %s", $plugin);
+
+            $files = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1 AND reason IS NOT NULL AND `ignore` != 1 AND plugin_theme = %s', $plugin);
             include_once MADEIT_SECURITY_ADMIN.'/templates/list-changed-files.php';
         }
     }
-    
+
     private function notExist()
     {
         $plugin = sanitize_text_field($_GET['notexist']);
@@ -387,7 +383,7 @@ class WP_MadeIT_Security_Admin
         }
         $nonce = wp_create_nonce('madeit_security_ignore_file');
 
-        $files = $this->db->querySelect("SELECT * FROM `" . $this->db->prefix() . "madeit_sec_filelist` WHERE plugin_file = 1 AND reason = 'File not exist in repo' AND `ignore` != 1 AND plugin_theme = %s", $plugin);
+        $files = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix()."madeit_sec_filelist` WHERE plugin_file = 1 AND reason = 'File not exist in repo' AND `ignore` != 1 AND plugin_theme = %s", $plugin);
         include_once MADEIT_SECURITY_ADMIN.'/templates/list-not-exist-files.php';
     }
 
@@ -419,17 +415,17 @@ class WP_MadeIT_Security_Admin
 
     private function ignoreFile($plugin, $file)
     {
-        $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist SET `ignore` = 1 WHERE reason IS NOT NULL AND filename_md5 = %s AND plugin_theme = %s", $file, $plugin);
+        $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET `ignore` = 1 WHERE reason IS NOT NULL AND filename_md5 = %s AND plugin_theme = %s', $file, $plugin);
     }
 
     private function ignoreAll($plugin)
     {
-        $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist SET `ignore` = 1 WHERE reason IS NOT NULL AND plugin_theme = %s", $plugin);
+        $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET `ignore` = 1 WHERE reason IS NOT NULL AND plugin_theme = %s', $plugin);
     }
 
     private function disIgnoreFile($plugin, $file)
     {
-        $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist SET `ignore` = 0 WHERE reason IS NOT NULL AND filename_md5 = %s AND plugin_theme = %s", $file, $plugin);
+        $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET `ignore` = 0 WHERE reason IS NOT NULL AND filename_md5 = %s AND plugin_theme = %s', $file, $plugin);
     }
 
     private function replace($plugin, $file, $localFile, $version)
@@ -443,7 +439,7 @@ class WP_MadeIT_Security_Admin
 
         file_put_contents($localFile, $fileContent);
     }
-    
+
     public function doFileScan()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
@@ -452,7 +448,7 @@ class WP_MadeIT_Security_Admin
         echo json_encode(['success' => true]);
         wp_die();
     }
-    
+
     public function stopFileScan()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
@@ -461,33 +457,32 @@ class WP_MadeIT_Security_Admin
         echo json_encode(['success' => true]);
         wp_die();
     }
-    
+
     public function checkFileScan()
     {
         $result = get_site_transient('madeit_security_scan');
-        
-        if($result === false) {
+
+        if ($result === false) {
             $data = ['success' => true, 'completed' => false, 'running' => false];
-        }
-        else {
-            $lastTimeAgo = "";
-            if(isset($result['last_com_time'])) {
+        } else {
+            $lastTimeAgo = '';
+            if (isset($result['last_com_time'])) {
                 $lastTimeAgo = sprintf(esc_html(__('Last result %s ago.', 'wp-security-by-made-it')), $this->timeAgo($result['last_com_time']));
             }
             $data = [
-                'success' => true, 
-                'completed' => $result['done'],
-                'running' => !$result['done'] && !$result['stop'],
-                'result' => $result,
-                'time_ago' => sprintf(esc_html(__('Last scan %s ago.', 'wp-security-by-made-it')), $this->timeAgo($result['start_time'])),
+                'success'       => true,
+                'completed'     => $result['done'],
+                'running'       => !$result['done'] && !$result['stop'],
+                'result'        => $result,
+                'time_ago'      => sprintf(esc_html(__('Last scan %s ago.', 'wp-security-by-made-it')), $this->timeAgo($result['start_time'])),
                 'last_time_ago' => $lastTimeAgo,
             ];
         }
-        
+
         echo json_encode($data);
         wp_die();
     }
-    
+
     public function doUpdateScan()
     {
         do_action('madeit_security_check_plugin_updates');
