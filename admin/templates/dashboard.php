@@ -76,7 +76,8 @@ if (!defined('ABSPATH')) {
                                 <h6 class="madeit-card-subtitle" id="repo-scan-time-ago">
                                     <?php echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it')); ?>
                                 </h6>
-                                <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) { ?>
+                                <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) {
+        ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col madeit-text-center">
@@ -107,7 +108,9 @@ if (!defined('ABSPATH')) {
                                     </div>
                                     <span class="scan-step pull-right"></span>
                                     <a href="#" class="card-link do-repo-scan"><?php echo esc_html(__('Do scan now', 'wp-security-by-made-it')); ?></a>  <a href="#" class="card-link stop-repo-scan"><?php echo esc_html(__('Stop scan now', 'wp-security-by-made-it')); ?></a>
-                                <?php } else { ?>
+                                <?php
+    } else {
+        ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -115,7 +118,8 @@ if (!defined('ABSPATH')) {
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                <?php
+    } ?>
                             </div>
                         </div>
                     </div>
