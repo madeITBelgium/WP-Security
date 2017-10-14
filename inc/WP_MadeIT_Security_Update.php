@@ -4,11 +4,13 @@ class WP_MadeIT_Security_Update
 {
     private $defaultSettings = [];
     private $settings;
+    private $db;
 
-    public function __construct($settings)
+    public function __construct($settings, $db)
     {
         $this->settings = $settings;
         $this->defaultSettings = $this->settings->loadDefaultSettings();
+        $this->db = $db;
     }
 
     public function activateSechduler($deactivate)

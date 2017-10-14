@@ -37,27 +37,33 @@ function wp_security_by_madeit_load_plugin_textdomain()
 }
 add_action('plugins_loaded', 'wp_security_by_madeit_load_plugin_textdomain');
 
+require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_DB.php';
+$wp_madeit_security_db = new WP_MadeIT_Security_DB();
+
 require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
 $wp_madeit_security_settings = new WP_MadeIT_Security_Settings();
 
-require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Admin.php';
-$wp_madeit_security_admin = new WP_MadeIT_Security_Admin($wp_madeit_security_settings);
-$wp_madeit_security_admin->addHooks();
+if(defined('DOING_CRON')) {
+    $settings = $wp_madeit_security_settings->loadDefaultSettings();
+    $scan = $settings['scan']['repo']['core'] && $settings['scan']['repo']['theme'] && $settings['scan']['repo']['plugin'];
+    if ($scan) {
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
+        $wp_madeit_security_loadfiles = new WP_MadeIT_Security_LoadFiles($wp_madeit_security_db);
+        $wp_madeit_security_loadfiles->addHooks($wp_madeit_security_settings);
+    }
 
-require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
-$wp_madeit_security_plugin = new WP_MadeIT_Security_Update($wp_madeit_security_settings);
-$wp_madeit_security_plugin->addHooks();
-
-$settings = $wp_madeit_security_settings->loadDefaultSettings();
-$scan = $settings['scan']['repo']['core'] && $settings['scan']['repo']['theme'] && $settings['scan']['repo']['plugin'];
-if ($scan) {
-    require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Scan.php';
-    $wp_madeit_security_scan = new WP_MadeIT_Security_Scan();
-    $wp_madeit_security_scan->addHooks($wp_madeit_security_settings);
+    if ($settings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
+        $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings, $wp_madeit_security_db);
+        $wp_madeit_security_backup->addHooks();
+    }
 }
+else {
+    require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Admin.php';
+    $wp_madeit_security_admin = new WP_MadeIT_Security_Admin($wp_madeit_security_settings, $wp_madeit_security_db);
+    $wp_madeit_security_admin->addHooks();
 
-if ($settings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {
-    require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
-    $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings);
-    $wp_madeit_security_backup->addHooks();
+    require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
+    $wp_madeit_security_plugin = new WP_MadeIT_Security_Update($wp_madeit_security_settings, $wp_madeit_security_db);
+    $wp_madeit_security_plugin->addHooks();
 }

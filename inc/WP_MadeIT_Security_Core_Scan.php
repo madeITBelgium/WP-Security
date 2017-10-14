@@ -1,10 +1,12 @@
 <?php
 
-if (!class_exists('WP_MadeIT_Security_Scan')) {
-    include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Scan.php';
-}
-class WP_MadeIT_Security_Core_Scan extends WP_MadeIT_Security_Scan
+class WP_MadeIT_Security_Core_Scan
 {
+    private $db;
+    function __construct($db = null) {
+        $this->db = $db;
+    }
+    
     public function scan($fast = false)
     {
         if (!class_exists('WP_MadeIT_Security_Core')) {
@@ -13,266 +15,64 @@ class WP_MadeIT_Security_Core_Scan extends WP_MadeIT_Security_Scan
         $systemInfo = new WP_MadeIT_Security_Core();
         $currentWPVersion = $systemInfo->getCurrentWPVersion();
 
-        $hash = $this->hash();
-
-        $hashes = ['wordpress' => ['version' => $currentWPVersion, 'hash' => $hash]];
-
-        $result = $this->postInfoToMadeIT($hashes);
-        if ($fast !== true) {
-            if ($result['success'] !== true || true) {
-                //Do longer scan
-                $fileHashes = $this->fileHash();
-                $hashes = ['wordpress' => ['version' => $currentWPVersion, 'files' => $fileHashes]];
-                $result = $this->postInfoToMadeIT($hashes);
-            }
-        }
-
+        $result = $this->scanChanges($currentWPVersion, $fast);
         return $result;
     }
 
-    //Return array with all files
-    public function allFiles()
-    {
-        $directory = ABSPATH;
-        $files = [];
-        $dir = dir($directory);
-        $wpHeadFiles = [
-            'wp-admin',
-            'wp-content',
-            'wp-includes',
-            'index.php',
-            'license.txt',
-            'readme.html',
-            'wp-activate.php',
-            'wp-blog-header.php',
-            'wp-comments-post.php',
-            'wp-config-sample.php',
-            'wp-cron.php',
-            'wp-links-opml.php',
-            'wp-load.php',
-            'wp-login.php',
-            'wp-mail.php',
-            'wp-settings.php',
-            'wp-signup.php',
-            'wp-trackback.php',
-            'xmlrpc.php',
-        ];
-
-        while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
-                if (in_array($file, $wpHeadFiles)) {
-                    if ($file == 'wp-content') {
-                        $files[$file] = $this->arrayWpContent($directory.'/'.$file);
-                    } elseif (is_dir($directory.'/'.$file)) {
-                        $files[$file] = $this->arrayDirectory($directory.'/'.$file);
-                    } else {
-                        $files[$file] = $file;
-                    }
-                }
-            }
-        }
-
-        $dir->close();
-
-        return $files;
-    }
-
-    public function arrayWpContent($directory)
-    {
-        if (!is_dir($directory)) {
-            return false;
-        }
-
-        $files = [];
-        $dir = dir($directory);
-
-        $wpHeadFiles = [
-            'index.php',
-            /*'plugins',
-            'themes',*/
-        ];
-
-        while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
-                if (in_array($file, $wpHeadFiles)) {
-                    if (is_dir($directory.'/'.$file)) {
-                        $files[$file] = $this->arrayDirectory($directory.'/'.$file);
-                    } else {
-                        $files[$file] = $file;
-                    }
-                }
-            }
-        }
-
-        $dir->close();
-
-        return $files;
-    }
-
-    //return hash op WP
-    public function hash()
-    {
-        $directory = ABSPATH;
-        $files = [];
-        $dir = dir($directory);
-        $wpHeadFiles = [
-            'wp-admin',
-            'wp-content',
-            'wp-includes',
-            'index.php',
-            'license.txt',
-            'readme.html',
-            'wp-activate.php',
-            'wp-blog-header.php',
-            'wp-comments-post.php',
-            'wp-config-sample.php',
-            'wp-cron.php',
-            'wp-links-opml.php',
-            'wp-load.php',
-            'wp-login.php',
-            'wp-mail.php',
-            'wp-settings.php',
-            'wp-signup.php',
-            'wp-trackback.php',
-            'xmlrpc.php',
-        ];
-
-        while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
-                if (in_array($file, $wpHeadFiles)) {
-                    if ($file == 'wp-content') {
-                        $files[$file] = $this->hashWpContent($directory.'/'.$file);
-                    } elseif (is_dir($directory.'/'.$file)) {
-                        $files[$file] = $this->hashDirectory($directory.'/'.$file);
-                    } else {
-                        $files[$file] = md5_file($directory.'/'.$file);
-                    }
-                }
-            }
-        }
-
-        $dir->close();
-
-        return md5(implode('', $files));
-    }
-
-    public function hashWpContent($directory)
-    {
-        if (!is_dir($directory)) {
-            return false;
-        }
-
-        $files = [];
-        $dir = dir($directory);
-
-        $wpHeadFiles = [
-            'index.php',
-            /*'plugins',
-            'themes',*/
-        ];
-
-        while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
-                if (in_array($file, $wpHeadFiles)) {
-                    if (is_dir($directory.'/'.$file)) {
-                        $files[] = $this->hashDirectory($directory.'/'.$file);
-                    } else {
-                        $files[] = md5_file($directory.'/'.$file);
-                    }
-                }
-            }
-        }
-
-        $dir->close();
-
-        return md5(implode('', $files));
-    }
-
     //Return array with files and there hash
-    public function fileHash()
+    public function scanChanges($currentWPVersion, $fast = false, $fileCount = 1000)
     {
-        $directory = ABSPATH;
-        $files = [];
-        $dir = dir($directory);
-        $wpHeadFiles = [
-            'wp-admin',
-            'wp-content',
-            'wp-includes',
-            'index.php',
-            'license.txt',
-            'readme.html',
-            'wp-activate.php',
-            'wp-blog-header.php',
-            'wp-comments-post.php',
-            'wp-config-sample.php',
-            'wp-cron.php',
-            'wp-links-opml.php',
-            'wp-load.php',
-            'wp-login.php',
-            'wp-mail.php',
-            'wp-settings.php',
-            'wp-signup.php',
-            'wp-trackback.php',
-            'xmlrpc.php',
-        ];
-
-        while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
-                if (in_array($file, $wpHeadFiles)) {
-                    if ($file == 'wp-content') {
-                        $files[$file] = $this->fileHashWpContent($directory.'/'.$file);
-                    } elseif (is_dir($directory.'/'.$file)) {
-                        $files[$file] = $this->fileHashDirectory($directory.'/'.$file);
-                    } else {
-                        $files[$file] = md5_file($directory.'/'.$file);
-                    }
-                }
+        $fileData = [];
+        $deletedFiles = [];
+        $files = $this->db->querySelect("SELECT * FROM " . $this->db->prefix() . "madeit_sec_filelist WHERE core_file = 1 AND (file_checked = 0 OR file_checked IS NULL) LIMIT " . $fileCount);
+        $i = 0;
+        $lastI = 0;
+        $fileList = [];
+        foreach($files as $file) {
+            $fileList[] = $file['filename_md5'];
+            if($file['file_deleted'] == 0 || $file['file_deleted'] == null) {
+                $fileData[$file['filename']] = $file['new_md5'];
+            }
+            else {
+                $deletedFiles[$file['filename']] = $file['new_md5'];
+            }
+            
+            if(!$fast) {
+                //Check other things in the file
+            }
+            $i++;
+            
+            if($i % 50 == 0) {
+                $result = get_site_transient('madeit_security_scan');
+                $result['result']['core']['files_checked'] = $result['result']['core']['files_checked'] + ($i - $lastI);
+                $lastI = $i;
+                set_site_transient('madeit_security_scan', $result);
+                
+                $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set file_checked = %s WHERE filename_md5 IN ('" . implode("', '", $fileList) . "')", time());
+                $fileList = [];
             }
         }
-
-        $dir->close();
-
-        return $files;
+        $result = get_site_transient('madeit_security_scan');
+        $result['result']['core']['files_checked'] = $result['result']['core']['files_checked'] + ($i - $lastI);
+        $lastI = $i;
+        set_site_transient('madeit_security_scan', $result);
+        
+        $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set file_checked = %s WHERE filename_md5 IN ('" . implode("', '", $fileList) . "')", time());
+        
+        
+        $this->postInfoToMadeIT($currentWPVersion, $fileData, $deletedFiles);
     }
-
-    public function fileHashWpContent($directory)
-    {
-        if (!is_dir($directory)) {
-            return false;
-        }
-
-        $files = [];
-        $dir = dir($directory);
-
-        $wpHeadFiles = [
-            'index.php',
-            /*'plugins',
-            'themes',*/
-        ];
-
-        while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
-                if (in_array($file, $wpHeadFiles)) {
-                    if (is_dir($directory.'/'.$file)) {
-                        $files[] = $this->fileHashDirectory($directory.'/'.$file);
-                    } else {
-                        $files[] = md5_file($directory.'/'.$file);
-                    }
-                }
-            }
-        }
-
-        $dir->close();
-
-        return $files;
-    }
-
+    
     //Check the founded hashes online.
-    private function postInfoToMadeIT($plugins)
+    private function postInfoToMadeIT($version, $changedFiles, $deletedFiles)
     {
         global $wp_madeit_security_settings;
         $settings = $wp_madeit_security_settings->loadDefaultSettings();
-        $data = ['plugins' => json_encode($plugins)];
+        $data = [
+            'version' => $version, 
+            'changedFiles' => json_encode($changedFiles), 
+            'deletedFiles' => json_encode($deletedFiles)
+        ];
         if (strlen($settings['api']['key']) > 0) {
             $data['key'] = $settings['api']['key'];
         }

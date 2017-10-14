@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     <div class="madeit-container-fluid">
         <div class="madeit-row">
             <div class="madeit-col">
-                <h1><?php echo esc_html(__('Changed files', 'wp-security-by-made-it')); ?></h1>
+                <h1><?php echo esc_html(__('Not existing files', 'wp-security-by-made-it')); ?></h1>
             </div>
         </div>
         
@@ -38,7 +38,7 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
-                            <?php printf(esc_html(__('Changed files of %s', 'wp-security-by-made-it')), $plugin); ?>
+                            <?php printf(esc_html(__('Files of %s that not exist', 'wp-security-by-made-it')), $plugin); ?>
                         </h4>
                         <div class="card-text">
                             <div class="madeit-row">
@@ -49,15 +49,15 @@ if (!defined('ABSPATH')) {
                                             <div class="madeit-col">
                                                 <?php
                                                 foreach ($files as $file) {
-                                                    printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&file='.$file['filename_md5'], $file['filename']);
-                                                    echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file['filename_md5'].'">'.__('Ignore this file').'</a>';
+                                                    printf(__('The file <a href="%s">%s</a> do not exist in the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&notexist='.$plugin.'&version='.$version.'&file='.$file['filename_md5'], $file['filename']);
+                                                    echo ' <a href="admin.php?page=madeit_security_scan&notexist='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file['filename_md5'].'">'.__('Ignore this file').'</a>';
                                                    
                                                     echo '<br>';
                                                 } ?>
                                                 <br>
                                                 <br>
                                                 <?php
-                                                echo '<a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore_all='.$nonce.'">'.__('Ignore all the files').'</a>'; ?>
+                                                echo '<a href="admin.php?page=madeit_security_scan&notexist='.$plugin.'&version='.$version.'&ignore_all='.$nonce.'">'.__('Ignore all the files').'</a>'; ?>
                                                     
                                             </div>
                                         </div>

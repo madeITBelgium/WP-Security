@@ -8,11 +8,13 @@ class WP_MadeIT_Security_Backup
 
     private $defaultSettings = [];
     private $settings;
+    private $db;
 
-    public function __construct($settings)
+    public function __construct($settings, $db)
     {
         $this->settings = $settings;
         $this->defaultSettings = $this->settings->loadDefaultSettings();
+        $this->db = $db;
     }
 
     public function activateSechduler($deactivate)
@@ -21,7 +23,7 @@ class WP_MadeIT_Security_Backup
             wp_clear_scheduled_hook('madeit_security_backup');
         } else {
             if (!wp_next_scheduled('madeit_security_backup')) {
-                wp_schedule_event(time(), 'daily', 'madeit_security_backup');
+                wp_schedule_event(strtotime(date('Y-m-d 00:00:00')) + rand(0, 25000), 'daily', 'madeit_security_backup');
             }
         }
     }

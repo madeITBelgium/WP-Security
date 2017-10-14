@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
-                            <?php printf(esc_html(__('Compare file %s of %s', 'wp-security-by-made-it')), $file, $plugin); ?>
+                            <?php printf(esc_html(__('Compare file %s of %s', 'wp-security-by-made-it')), $fileName, $plugin); ?>
                         </h4>
                         <div class="card-text">
                             <?php if ($error == null) {
@@ -33,7 +33,7 @@ if (!defined('ABSPATH')) {
                                 <div class="madeit-row">
                                     <div class="madeit-col">
                                         <?php
-                                        if (!$this->isFileIgnored($plugin, $file)) {
+                                        if ($fileData['ignore'] == 0) {
                                             echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file.'">'.__('Ignore this file').'</a>';
                                         } else {
                                             echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&deignore='.$nonce.'&file='.$file.'">'.__('Stop ignoring this file').'</a>';

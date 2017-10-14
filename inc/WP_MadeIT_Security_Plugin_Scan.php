@@ -1,95 +1,151 @@
 <?php
-
-if (!class_exists('WP_MadeIT_Security_Scan')) {
-    include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Scan.php';
-}
-class WP_MadeIT_Security_Plugin_Scan extends WP_MadeIT_Security_Scan
+class WP_MadeIT_Security_Plugin_Scan
 {
+    private $db;
+    function __construct($db = null) {
+        $this->db = $db;
+    }
+    
     public function scan($fast = false)
     {
+        $result = $this->scanChanges($fast);
+        return $result;
+    }
+    
+    //Return array with files and there hash
+    public function scanChanges($fast = false, $fileCount = 1000)
+    {
+        $fileData = [];
+        $deletedFiles = [];
+        $checkedFileList = [];
+        $files = $this->db->querySelect("SELECT * FROM " . $this->db->prefix() . "madeit_sec_filelist WHERE plugin_file = 1 AND (file_checked = 0 OR file_checked IS NULL) ORDER BY plugin_theme LIMIT " . $fileCount);
+        $i = 0;
+        $lastI = 0;
+        $fileList = [];
+        $pluginName = null;
+        $pluginDir = null;
+        foreach($files as $file) {
+            if($pluginName == null) {
+                $pluginName = $file['plugin_theme'];
+                $startDir = WP_PLUGIN_DIR;
+                if(strpos($pluginName, '/') > 0) {
+                    $pluginDir = str_replace(ABSPATH, '', $startDir.'/'.substr($pluginName, 0, strpos($pluginName, '/'))) . "/";
+                }
+                else {
+                    $pluginDir = str_replace(ABSPATH, '', $startDir.'/'.$pluginName) . "/";
+                }
+            }
+            if($pluginName != $file['plugin_theme']) {
+                break;
+            }
+            $fileList[] = $file['filename_md5'];
+            
+            
+            $fileName = preg_replace('/' . preg_quote($pluginDir, '/') . '/', '', $file['filename'], 1);
+            $checkedFileList[$fileName] = $file['filename_md5'];
+            
+            if($file['file_deleted'] == null) {
+                $fileData[$fileName] = $file['new_md5'];
+            }
+            else {
+                error_log(print_r($file, true));
+                $deletedFiles[$fileName] = $file['new_md5'];
+            }
+            
+            if(!$fast) {
+                //Check other things in the file
+            }
+            $i++;
+            
+            if($i % 50 == 0) {
+                $result = get_site_transient('madeit_security_scan');
+                $result['result']['plugin']['files_checked'] = $result['result']['plugin']['files_checked'] + ($i - $lastI);
+                $lastI = $i;
+                set_site_transient('madeit_security_scan', $result);
+                
+                $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set file_checked = %s WHERE filename_md5 IN ('" . implode("', '", $fileList) . "')", time());
+                $fileList = [];
+            }
+        }
+        $result = get_site_transient('madeit_security_scan');
+        $result['result']['plugin']['files_checked'] = $result['result']['plugin']['files_checked'] + ($i - $lastI);
+        $lastI = $i;
+        set_site_transient('madeit_security_scan', $result);
+        
+        $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set file_checked = %s WHERE filename_md5 IN ('" . implode("', '", $fileList) . "')", time());
+        
+        $pluginInfo = [];
         if (!class_exists('WP_MadeIT_Security_Plugin')) {
             include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
         }
         $plugins = new WP_MadeIT_Security_Plugin();
         $plugins = $plugins->getPlugins(false);
-        $hashes = [];
-        foreach ($plugins as $key => $value) {
-            $hash = $this->hashPlugin($key);
-            $hashes[$value['slug']] = ['version' => $value['version'], 'hash' => $hash];
+        foreach ($plugins as $plugin => $value) {
+            if(substr($plugin, 0, strpos($plugin, '/')) == $pluginName) {
+                $pluginInfo = $value;
+            }
         }
-
-        $result = $this->postInfoToMadeIT($hashes);
-        if ($fast !== true) {
-            if ($result['success'] !== true) {
-                //Do longer scan
-                $newResult = ['success' => true, 'plugins' => [], 'count_plugin_errors' => 0];
-                foreach ($plugins as $key => $value) {
-                    if (isset($result['plugins'][$value['slug']]) && $result['plugins'][$value['slug']] === false) {
-                        $fileHashes = $this->fileHashPlugin($key);
-                        $hashes = [];
-                        $hashes[$value['slug']] = ['version' => $value['version'], 'files' => $fileHashes];
-                        $tussenResult = $this->postInfoToMadeIT($hashes);
-
-                        $newResult['success'] = $newResult['success'] && $tussenResult['success'];
-                        $newResult['plugins'] = array_merge($newResult['plugins'], $tussenResult['plugins']);
-
-                        $errors = count($tussenResult['plugins']);
-                        foreach ($tussenResult['plugins'] as $plugin => $files) {
-                            foreach ($files as $file => $error) {
-                                if ($this->isFileIgnored($value['slug'], $file)) {
-                                    $errors--;
-                                }
-                            }
+        
+        $result = $this->postInfoToMadeIT($pluginInfo, $fileData, $deletedFiles);
+        if(isset($result['success']) && $result['success'] == true) {            
+            if(isset($result['changedFiles'])) {
+                foreach($result['changedFiles'] as $file => $result) {
+                    if(isset($checkedFileList[$file])) {
+                        if($result == "File not equal") {
+                            $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set is_safe = 0, reason = 'File not equal to repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
                         }
-                        if ($errors > 0) {
-                            $newResult['count_plugin_errors']++;
+                        elseif($result == "File not exist") {
+                            $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set is_safe = 0, reason = 'File not exist in repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
                         }
                     }
                 }
-                $result = $newResult;
+            }
+            
+            if(isset($result['deletedFiles'])) {
+                foreach($result['deletedFiles'] as $file => $result) {
+                    if(isset($checkedFileList[$file])) {
+                        if($result == "File required and changed") {
+                            $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set is_safe = 0, reason = 'File required and changed' WHERE filename_md5 = %s", $checkedFileList[$file]);
+                        }
+                        elseif($result == "File required") {
+                            $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist set is_safe = 0, reason = 'File required' WHERE filename_md5 = %s", $checkedFileList[$file]);
+                        }
+                    }
+                }
             }
         }
-
-        return $result;
-    }
-
-    public function hashPlugin($plugin)
-    {
-        $startDir = WP_PLUGIN_DIR;
-        $pluginDir = $startDir.'/'.substr($plugin, 0, strpos($plugin, '/'));
-        $exclude = $this->searchExcludes(substr($plugin, 0, strpos($plugin, '/')));
-        $result = $this->hashDirectory($pluginDir, $exclude);
-
-        return $result;
-    }
-
-    public function fileHashPlugin($plugin)
-    {
-        $startDir = WP_PLUGIN_DIR;
-        $pluginDir = $startDir.'/'.substr($plugin, 0, strpos($plugin, '/'));
-        $exclude = $this->searchExcludes(substr($plugin, 0, strpos($plugin, '/')));
-        $result = $this->fileHashDirectory($pluginDir, $exclude);
-
-        return $result;
-    }
-
-    private function searchExcludes($plugin)
-    {
-        if ($plugin == 'bwp-minify') {
-            return ['cache'];
+        else {
+            if(isset($result['error']) && $result['error'] == "Custom plugin") {
+                //custom plugin is currently not possible to scan.
+            }
+            else {
+                //scan files later again.
+                $result = get_site_transient('madeit_security_scan_again');
+                if($result == false) {
+                    $result = [];
+                }
+                if(isset($pluginInfo['slug'])) {
+                    if(isset($result[$pluginInfo['slug']])) {
+                        $result[$pluginInfo['slug']] = array_merge($result[$pluginInfo['slug']], $checkedFileList);
+                    }
+                    else {
+                        $result[$pluginInfo['slug']] = $checkedFileList;
+                    }
+                    set_site_transient('madeit_security_scan_again', $result);
+                }
+            }
         }
-        if ($plugin == 'forms-by-made-it') {
-            return ['.git'];
-        }
-
-        return [];
     }
-
-    private function postInfoToMadeIT($plugins)
+    
+    private function postInfoToMadeIT($pluginInfo, $changedFiles, $deletedFiles)
     {
         global $wp_madeit_security_settings;
         $settings = $wp_madeit_security_settings->loadDefaultSettings();
-        $data = ['plugins' => json_encode($plugins)];
+        $data = [
+            'changedFiles' => json_encode($changedFiles),
+            'deletedFiles' => json_encode($deletedFiles),
+            'pluginInfo' => $pluginInfo,
+        ];
         if (strlen($settings['api']['key']) > 0) {
             $data['key'] = $settings['api']['key'];
         }
