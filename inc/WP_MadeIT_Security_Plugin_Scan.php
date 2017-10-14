@@ -56,72 +56,72 @@ class WP_MadeIT_Security_Plugin_Scan
             if (!$fast && false) {
                 //Check other things in the file
                 $pattern = json_decode('https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/getPatterns/APIKEY', true);
-                $filePath = ABSPATH . $file['filename'];
-                if(file_exists($filePath)) {
+                $filePath = ABSPATH.$file['filename'];
+                if (file_exists($filePath)) {
                     $fileExt = '';
-                    if(preg_match('/\.([a-zA-Z\d\-]{1,7})$/', $filePath, $matches)) {
+                    if (preg_match('/\.([a-zA-Z\d\-]{1,7})$/', $filePath, $matches)) {
                         $fileExt = strtolower($matches[1]);
                     }
                     $isPHP = false;
-                    if(preg_match('/^(?:php|phtml|php\d+)$/', $fileExt)){ 
+                    if (preg_match('/^(?:php|phtml|php\d+)$/', $fileExt)) {
                         $isPHP = true;
                     }
                     $scanForURLs = true;
-                    if(preg_match('/^(?:\.htaccess|wp\-config\.php)$/', $filePath) || preg_match('/^(?:sql|tbz|tgz|gz|tar|log|err\d+)$/', $fileExt)) {
+                    if (preg_match('/^(?:\.htaccess|wp\-config\.php)$/', $filePath) || preg_match('/^(?:sql|tbz|tgz|gz|tar|log|err\d+)$/', $fileExt)) {
                         $scanForURLs = false;
                     }
                     $scanImages = false;
-                    if(!preg_match('/^(?:jpg|jpeg|mp3|avi|m4v|gif|png)$/', $fileExt)) {
-                        $scanImages = true;   
+                    if (!preg_match('/^(?:jpg|jpeg|mp3|avi|m4v|gif|png)$/', $fileExt)) {
+                        $scanImages = true;
                     }
                     $filesize = filesize($filePath); //Checked if too big above
-                    if($filesize > 1000000) {
-                        $filesize = sprintf('%.2f', ($filesize / 1000000)) . "M";
+                    if ($filesize > 1000000) {
+                        $filesize = sprintf('%.2f', ($filesize / 1000000)).'M';
                     } else {
-                        $filesize = $filesize . "B";
+                        $filesize = $filesize.'B';
                     }
                     $fh = @fopen($filePath, 'r');
-                    if($fh) {
+                    if ($fh) {
                         $totalRead = 0;
-                        while(!feof($fh)) {
+                        while (!feof($fh)) {
                             $data = fread($fh, 1 * 1024 * 1024); //read 1 megs max per chunk
                             $totalRead += strlen($data);
-                            if($totalRead < 1){
+                            if ($totalRead < 1) {
                                 break;
                             }
-                            if($isPHP) {
-                                if(preg_match($patterns['sigPattern'], $data, $matches)) {
-                                    $errorTitle = "File appears to be malicious: " . $filePath;
-                                    $error = "This file appears to be installed by a hacker to perform malicious activity. If you know about this file you can choose to ignore it to exclude it from future scans. The text we found in this file that matches a known malicious file is: <strong style=\"color: #F00;\">\"" . $matches[1] . "\"</strong>.";
+                            if ($isPHP) {
+                                if (preg_match($patterns['sigPattern'], $data, $matches)) {
+                                    $errorTitle = 'File appears to be malicious: '.$filePath;
+                                    $error = 'This file appears to be installed by a hacker to perform malicious activity. If you know about this file you can choose to ignore it to exclude it from future scans. The text we found in this file that matches a known malicious file is: <strong style="color: #F00;">"'.$matches[1].'"</strong>.';
                                 }
-                                if(preg_match($patterns['pat2'], $data)) {
-                                    $errorTitle = "This file may contain malicious executable code: " . $filePath;
-                                    $error = "This file is a PHP executable file and contains an " . $patterns['word1'] . " function and " . $patterns['word2'] . " decoding function on the same line. This is a common technique used by hackers to hide and execute code. If you know about this file you can choose to ignore it to exclude it from future scans.";
+                                if (preg_match($patterns['pat2'], $data)) {
+                                    $errorTitle = 'This file may contain malicious executable code: '.$filePath;
+                                    $error = 'This file is a PHP executable file and contains an '.$patterns['word1'].' function and '.$patterns['word2'].' decoding function on the same line. This is a common technique used by hackers to hide and execute code. If you know about this file you can choose to ignore it to exclude it from future scans.';
                                 }
-                                
+
                                 $badStringFound = false;
-                                if(strpos($data, $patterns['badstrings'][0]) !== false) {
-                                    for($i = 1; $i < sizeof($patterns['badstrings']); $i++) {
-                                        if(strpos($data, $patterns['badstrings'][$i]) !== false) {
+                                if (strpos($data, $patterns['badstrings'][0]) !== false) {
+                                    for ($i = 1; $i < count($patterns['badstrings']); $i++) {
+                                        if (strpos($data, $patterns['badstrings'][$i]) !== false) {
                                             $badStringFound = $patterns['badstrings'][$i];
                                         }
                                     }
                                 }
-                                if($badStringFound) {
-                                    if(! $this->isSafeFile($this->path . $file)){
-                                        $title = "This file may contain malicious executable code" . $filePath;
-                                        $error = "This file is a PHP executable file and contains the word 'eval' (without quotes) and the word '" . $badStringFound . "' (without quotes). The eval() function along with an encoding function like the one mentioned are commonly used by hackers to hide their code. If you know about this file you can choose to ignore it to exclude it from future scans.";
+                                if ($badStringFound) {
+                                    if (!$this->isSafeFile($this->path.$file)) {
+                                        $title = 'This file may contain malicious executable code'.$filePath;
+                                        $error = "This file is a PHP executable file and contains the word 'eval' (without quotes) and the word '".$badStringFound."' (without quotes). The eval() function along with an encoding function like the one mentioned are commonly used by hackers to hide their code. If you know about this file you can choose to ignore it to exclude it from future scans.";
                                     }
                                 }
-                                if($scanForURLs) {
+                                if ($scanForURLs) {
                                     //TODO
                                 }
                             } else {
-                                if($scanForURLs) {
+                                if ($scanForURLs) {
                                     //TODO
                                 }
                             }
-                            if($totalRead > 2 * 1024 * 1024) {
+                            if ($totalRead > 2 * 1024 * 1024) {
                                 //Break loop
                             }
                         }
@@ -185,8 +185,7 @@ class WP_MadeIT_Security_Plugin_Scan
                     }
                 }
             }
-        }
-        else {
+        } else {
             if (isset($result['error']) && $result['error'] == 'Custom plugin') {
                 //custom plugin is currently not possible to scan.
             } else {
