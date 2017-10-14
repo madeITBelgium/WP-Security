@@ -102,6 +102,9 @@ class WP_MadeIT_Security_SystemInfo
             'path'           => $path,
             'os_name'        => isset($osInfo['name']) ? $osInfo['name'] : null,
             'os_version'     => isset($osInfo['version_id']) ? $osInfo['version_id'] : null,
+            'memory_limit'   => $this->getMemoryLimit(),
+            'free_disk_space' => $this->freeDiskSpace(),
+            'total_disk_space' => $this->totalDiskSpace(),
         ];
 
         return $systeminfo;
@@ -141,5 +144,25 @@ class WP_MadeIT_Security_SystemInfo
                 'version_id' => trim(shell_exec('grep -o "[0-9\.]*" /etc/redhat-release |head -n1')),
             ];
         }
+    }
+    
+    public function getMemoryLimit()
+    {
+        return ini_get("memory_limit");
+    }
+    
+    public function getMemoryPeak()
+    {
+        return memory_get_peak_usage();
+    }
+    
+    public function freeDiskSpace()
+    {
+        return disk_free_space(ABSPATH);
+    }
+    
+    public function totalDiskSpace()
+    {
+        return disk_total_space(ABSPATH);
     }
 }
