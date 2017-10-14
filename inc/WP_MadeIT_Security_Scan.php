@@ -3,11 +3,12 @@
 class WP_MadeIT_Security_Scan
 {
     public $db;
-    
-    function __construct($db) {
+
+    public function __construct($db)
+    {
         $this->db = $db;
     }
-    
+
     public function arrayDirectory($directory)
     {
         if (!is_dir($directory)) {

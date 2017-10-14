@@ -32,7 +32,8 @@ if (!defined('ABSPATH')) {
                                 <h6 class="madeit-card-subtitle" id="repo-scan-time-ago">
                                     <?php echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it')); ?>
                                 </h6>
-                                <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) { ?>
+                                <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) {
+    ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col madeit-text-center">
@@ -63,7 +64,9 @@ if (!defined('ABSPATH')) {
                                     </div>
                                     <span class="scan-step pull-right"></span>
                                     <a href="#" class="card-link do-repo-scan"><?php echo esc_html(__('Do scan now', 'wp-security-by-made-it')); ?></a>  <a href="#" class="card-link stop-repo-scan"><?php echo esc_html(__('Stop scan now', 'wp-security-by-made-it')); ?></a>
-                                <?php } else { ?>
+                                <?php
+} else {
+        ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -71,7 +74,8 @@ if (!defined('ABSPATH')) {
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                <?php
+    } ?>
                             </div>
                         </div>
                     </div>
@@ -234,7 +238,8 @@ if (!defined('ABSPATH')) {
                                                         </div>
                                                     </div>
                                                     <?php
-                                                        foreach ($pluginScanData as $plugin => $files) { ?>
+                                                        foreach ($pluginScanData as $plugin => $files) {
+                                                            ?>
                                                             <div class="madeit-row">
                                                                 <div class="madeit-col-3">
                                                                     <?php echo esc_html($plugin); ?>
@@ -259,23 +264,24 @@ if (!defined('ABSPATH')) {
                                                                     } ?>
                                                                 </div>
                                                             </div>
-                                                        <?php } ?>
+                                                        <?php
+                                                        } ?>
                                                 
                                                     <div class="madeit-row" style="margin-top: 20px;">
                                                         <div class="madeit-col-1 madeit-text-center">
                                                             <?php if (isset($lastScan['result']['theme']['success'])) {
-                if ($lastScan['result']['theme']['success'] == 1) {
-                    ?>
+                                                            if ($lastScan['result']['theme']['success'] == 1) {
+                                                                ?>
                                                                     <i class="fa fa-2x fa-check madeit-text-success"></i>
                                                                     <?php
-                } else {
-                    ?>
+                                                            } else {
+                                                                ?>
                                                                     <i class="fa fa-2x fa-times madeit-text-danger"></i>
                                                                     <?php
-                }
-            } else {
-                echo esc_html(__('N/A', 'wp-security-by-made-it'));
-            } ?>
+                                                            }
+                                                        } else {
+                                                            echo esc_html(__('N/A', 'wp-security-by-made-it'));
+                                                        } ?>
                                                         </div>
                                                         <div class="madeit-col">
                                                             <h3 style="margin: 0">
@@ -284,7 +290,7 @@ if (!defined('ABSPATH')) {
                                                         </div>
                                                     </div>
                                                     <?php foreach ($themeScanData as $theme => $result) {
-                ?>
+                                                            ?>
                                                         <div class="madeit-row">
                                                             <div class="madeit-col-2">
                                                                 <?php echo esc_html($theme); ?>
@@ -299,7 +305,7 @@ if (!defined('ABSPATH')) {
                                                             </div>
                                                         </div>
                                                     <?php
-            } ?>
+                                                        } ?>
                                                 <?php
         } else {
             ?>

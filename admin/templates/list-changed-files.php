@@ -51,7 +51,7 @@ if (!defined('ABSPATH')) {
                                                 foreach ($files as $file) {
                                                     printf(__('Compare the file <a href="%s">%s</a> with the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&file='.$file['filename_md5'], $file['filename']);
                                                     echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file['filename_md5'].'">'.__('Ignore this file').'</a>';
-                                                   
+
                                                     echo '<br>';
                                                 } ?>
                                                 <br>
