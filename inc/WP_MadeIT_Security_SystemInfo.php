@@ -19,16 +19,16 @@ class WP_MadeIT_Security_SystemInfo
 
     public function getApacheVersion()
     {
-        $result = "";
+        $result = '';
+
         try {
-            if(function_exists('apache_get_version')) {
+            if (function_exists('apache_get_version')) {
                 preg_match('/[0-9\.]+/', apache_get_version(), $matches);
                 $result = $matches[0];
             }
+        } catch (Exception $e) {
         }
-        catch(Exception $e) {
-            
-        }
+
         return $result;
     }
 
