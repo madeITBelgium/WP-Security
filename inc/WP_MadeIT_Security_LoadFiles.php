@@ -8,6 +8,33 @@ class WP_MadeIT_Security_LoadFiles
     {
         $this->db = $db;
     }
+    
+    public static function log_error($num, $str, $file, $line, $context = null)
+    {
+        WP_MadeIT_Security_LoadFiles::log_exception(new ErrorException($str, 0, $num, $file, $line));
+    }
+    
+    public static function log_exception(Exception $e)
+    {
+        //Stop scan
+        $result = get_site_transient('madeit_security_scan');
+        $result['stop'] = true;
+        set_site_transient('madeit_security_scan', $result);
+        
+        
+        $message = "Type: " . get_class($e) . "; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
+        file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', $message . PHP_EOL, FILE_APPEND);
+        //header( "Location: {$config["error_page"]}" );
+        exit();
+    }
+    
+    public static function check_for_fatal()
+    {
+        $error = error_get_last();
+        if ($error["type"] == E_ERROR) {
+            WP_MadeIT_Security_LoadFiles::log_error($error["type"], $error["message"], $error["file"], $error["line"]);
+        }
+    }
 
     public function activateSechduler($deactivate)
     {
@@ -80,6 +107,13 @@ class WP_MadeIT_Security_LoadFiles
 
     public function loadfiles()
     {
+        //Fetch all errors
+        register_shutdown_function("WP_MadeIT_Security_LoadFiles::check_for_fatal");
+        set_error_handler("WP_MadeIT_Security_LoadFiles::log_error", E_ALL);
+        set_exception_handler("WP_MadeIT_Security_LoadFiles::log_exception");
+        ini_set("display_errors", "off");
+        error_reporting( E_ALL );
+        
         $bigRun = false;
         $scanForBackup = false;
 
