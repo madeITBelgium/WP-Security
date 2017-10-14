@@ -84,6 +84,9 @@ class WP_MadeIT_Security_LoadFiles
             $result['result'] = $emptyResult;
             set_site_transient('madeit_security_scan', $result);
 
+            //Clear error log
+            file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', "");
+            
             //start job
             wp_schedule_single_event(time(), 'madeit_security_loadfiles');
         }
