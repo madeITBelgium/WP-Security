@@ -30,7 +30,7 @@ if (!defined('ABSPATH')) {
                             <div class="madeit-row">
                                 <?php foreach ([
                                      __('Scan repo changes', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_loadfiles') ? 'OK' : 'NOK',
-                                    __('Fast scan', 'wp-security-by-made-it') => $this->defaultSettings['scan']['fast'] ? 'OK' : 'NOK',
+                                     __('Fast scan', 'wp-security-by-made-it') => $this->defaultSettings['scan']['fast'] ? 'OK' : 'NOK',
                                      __('Scan core changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['core'] ? 'OK' : 'NOK',
                                      __('Scan plugin changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['plugin'] ? 'OK' : 'NOK',
                                      __('Scan theme changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['theme'] ? 'OK' : 'NOK',
@@ -134,31 +134,14 @@ if (!defined('ABSPATH')) {
                                     <?php echo esc_html(__('Backup summary', 'wp-security-by-made-it')); ?>
                                 </h4>
                                 <h6 class="madeit-card-subtitle" id="backup-time-ago">
-                                    <?php if (isset($backupExecutionData['time'])) {
-        printf(__('Last backup %s ago.', 'wp-security-by-made-it'), $this->timeAgo($backupExecutionData['time']));
-    } else {
-        echo esc_html(__('No recent backup completed.', 'wp-security-by-made-it'));
-    } ?>
+                                    <?php echo esc_html(__('No recent backup completed.', 'wp-security-by-made-it')); ?>
                                 </h6>
-                                <?php if ($this->defaultSettings['maintenance']['backup']) {
-        ?>
+                                <?php if ($this->defaultSettings['maintenance']['backup']) { ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col-3 madeit-text-center">
                                                 <p class="madeit-card-title" id="backup-status">
-                                                    <?php if (isset($backupExecutionData['time'])) {
-            if ($backupExecutionData['status'] == true) {
-                ?>
-                                                            <i class="fa fa-check madeit-text-success"></i>
-                                                            <?php
-            } else {
-                ?>
-                                                            <i class="fa fa-times madeit-text-danger"></i>
-                                                            <?php
-            }
-        } else {
-            echo esc_html(__('N/A', 'wp-security-by-made-it'));
-        } ?>
+                                                    <?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>
                                                 </p>
                                                 <p>
                                                     <?php echo esc_html(__('Backup', 'wp-security-by-made-it')); ?>
@@ -169,41 +152,14 @@ if (!defined('ABSPATH')) {
                                                     <?php echo esc_html(__('Backup info', 'wp-security-by-made-it')); ?>
                                                 </h3>
                                                 <div id="backup-result">
-                                                    <?php echo esc_html(__('Pre check:'), 'wp-security-by-made-it'); ?>
-                                                    <?php if ($backupExecutionData['preCheck']) {
-            ?><i class="fa fa-check madeit-text-success"></i><?php
-        } else {
-            echo $backupExecutionData['check_error'];
-        } ?>
-                                                    <br>
-                                                    
-                                                    <?php echo esc_html(__('Download backup:'), 'wp-security-by-made-it'); ?>
-                                                    <?php if (!empty($backupExecutionData['url'])) {
-            ?>
-                                                        <a href="<?php echo esc_html($backupExecutionData['url']); ?>"><?php echo esc_html(__('Download', 'wp-security-by-made-it')); ?></a>
-                                                    <?php
-        } else {
-            echo esc_html(__('N/A', 'wp-security-by-made-it'));
-        } ?>
-                                                    <br>
-                                                    
-                                                    <?php echo esc_html(__('Runtime:'), 'wp-security-by-made-it'); ?>
-                                                    <?php if (!empty($backupExecutionData['runtime'])) {
-            ?>
-                                                        <?php printf(__('%ss', 'wp-security-by-made-it'), round($backupExecutionData['runtime'])); ?>
-                                                    <?php
-        } else {
-            echo esc_html(__('N/A', 'wp-security-by-made-it'));
-        } ?>
+                                                    <?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>
                                                     <br>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="#" class="card-link do-backup"><?php echo esc_html(__('Do backup', 'wp-security-by-made-it')); ?></a>
-                                <?php
-    } else {
-        ?>
+                                    <a href="#" class="card-link do-backup"><?php echo esc_html(__('Do backup', 'wp-security-by-made-it')); ?></a> <a href="#" class="card-link stop-backup"><?php echo esc_html(__('Stop backup', 'wp-security-by-made-it')); ?></a>
+                                <?php } else { ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -211,8 +167,7 @@ if (!defined('ABSPATH')) {
                                             </div>
                                         </div>
                                     </div>
-                                <?php
-    } ?>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
@@ -425,9 +380,12 @@ if (!defined('ABSPATH')) {
             }, 'json');
         });
         
+        
+        var backupInterval = null;
         $('.do-backup').click(function(e) {
             e.preventDefault();
-            $(this).hide();
+            $('.do-backup').hide();
+            $('.stop-backup').show();
             $('#backup-status').html('<i class="fa fa-spinner fa-pulse"></i>');
             $('#backup-result').html('<i class="fa fa-spinner fa-pulse"></i>');
             var data = {
@@ -435,22 +393,80 @@ if (!defined('ABSPATH')) {
             };
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-                $('.do-backup').show();
-                $('#backup-time-ago').html('<?php printf(__('Last backup %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
-                $('#backup-status').html(response.status ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
-                $('#backup-result').html(
-                    '<?php echo esc_html(__('Pre check:'), 'wp-security-by-made-it'); ?>' +
-                    (response.preCheck ? '<i class="fa fa-check madeit-text-success"></i>' : response.check_error) + '<br>' +
-                    
-                    '<?php echo esc_html(__('Download backup:'), 'wp-security-by-made-it'); ?>' +
-                    (response.url.length > 0 ? 
-                        '<a href="' + response.url + '"><?php echo esc_html(__('Download', 'wp-security-by-made-it')); ?></a>' :
-                        '<?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>') + '<br>' +
-                    
-                    '<?php echo esc_html(__('Runtime:'), 'wp-security-by-made-it'); ?>' +
-                    (response.runtime > 0 ? Math.round(response.runtime * 100) / 100 : '<?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>') + '<br>'
-                );
+                backupInterval = setInterval(function(){ checkBackup(); }, 15000);
             }, 'json');
         });
+        
+        $('.stop-backup').click(function(e) {
+            e.preventDefault();
+            $(this).hide();
+            var data = {
+                'action': 'madeit_security_backup_stop',
+            };
+            // We can also pass the url value separately from ajaxurl for front end AJAX implementations
+            jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
+                clearInterval(interval);
+                $('.stop-backup').hide();
+                $('.do-backup').show();
+                $('#backup-status').html('<?php  echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>');
+                $('#backup-result').html('<?php  echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>');
+            }, 'json');
+        });
+        
+        function checkBackup() {
+            var data = {
+                'action': 'madeit_security_backup_check',
+            };
+            
+            jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
+                if(response.completed == true) {
+                    clearInterval(backupInterval);
+                    $('.do-backup').show();
+                    $('.stop-backup').hide();
+                    $('#backup-time-ago').html(response.time_ago);
+                    $('#backup-status').html(response.result.done && response.result.check_error == null ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
+                    $('#backup-result').html(
+                        '<?php echo esc_html(__('Pre check:'), 'wp-security-by-made-it'); ?>' +
+                        (response.result.preCheck ? '<i class="fa fa-check madeit-text-success"></i>' : response.result.check_error) + '<br>' +
+
+                        '<?php echo esc_html(__('Download backup:'), 'wp-security-by-made-it'); ?>' +
+                        (response.result.url.length > 0 ? 
+                            '<a href="' + response.result.url + '"><?php echo esc_html(__('Download', 'wp-security-by-made-it')); ?></a>' :
+                            '<?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>') + '<br>' +
+
+                        '<?php echo esc_html(__('Runtime:'), 'wp-security-by-made-it'); ?>' +
+                        (response.result.runtime > 0 ? Math.round(response.result.runtime * 100) / 100 : '<?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>') + '<br>'
+                    );
+                }
+                else if(response.running) {
+                    if(backupInterval == null) {
+                        backupInterval = setInterval(function(){ checkBackup(); }, 15000);
+                    }
+                    $('.do-backup').hide();
+                    $('.stop-backup').show();
+                    $('#backup-status').html('<i class="fa fa-spinner fa-pulse"></i>');
+                    $('#backup-result').html('<i class="fa fa-spinner fa-pulse"></i>');
+                }
+                else {
+                    $('.do-backup').show();
+                    $('.stop-backup').hide();
+                    $('#backup-time-ago').html(response.time_ago);
+                    $('#backup-status').html(response.result.status ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
+                    $('#backup-result').html(
+                        '<?php echo esc_html(__('Pre check:'), 'wp-security-by-made-it'); ?>' +
+                        (response.result.preCheck ? '<i class="fa fa-check madeit-text-success"></i>' : response.result.check_error) + '<br>' +
+
+                        '<?php echo esc_html(__('Download backup:'), 'wp-security-by-made-it'); ?>' +
+                        (response.result.url.length > 0 ? 
+                            '<a href="' + response.result.url + '"><?php echo esc_html(__('Download', 'wp-security-by-made-it')); ?></a>' :
+                            '<?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>') + '<br>' +
+
+                        '<?php echo esc_html(__('Runtime:'), 'wp-security-by-made-it'); ?>' +
+                        (response.result.runtime > 0 ? Math.round(response.result.runtime * 100) / 100 : '<?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>') + '<br>'
+                    );
+                }
+            }, 'json');
+        }
+        checkBackup();
     });
 </script>

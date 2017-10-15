@@ -475,7 +475,7 @@ class WP_MadeIT_Security_LoadFiles
         $directory = ABSPATH;
         $files = [];
         $dir = dir($directory);
-
+        
         $wpHeadFiles = [
             'wp-admin',
             'wp-content',
@@ -501,18 +501,18 @@ class WP_MadeIT_Security_LoadFiles
         while (false !== ($file = $dir->read())) {
             if ($file != '.' and $file != '..') {
                 if (in_array($file, $wpHeadFiles)) {
-                    if ($directory.'/'.$file == WP_CONTENT_DIR) {
-                        $this->fileLoadDirectory($directory.'/'.$file, 'WP_CONTENT');
-                    } elseif (is_dir($directory.'/'.$file)) {
-                        $this->fileLoadDirectory($directory.'/'.$file, 'CORE');
+                    if ($directory.$file == WP_CONTENT_DIR) {
+                        $this->fileLoadDirectory($directory.$file, 'WP_CONTENT');
+                    } elseif (is_dir($directory.$file)) {
+                        $this->fileLoadDirectory($directory.$file, 'CORE');
                     } else {
-                        $this->updateFileToDB($directory.'/'.$file, md5_file($directory.'/'.$file), 'CORE');
+                        $this->updateFileToDB($directory.$file, md5_file($directory.'/'.$file), 'CORE');
                     }
                 } elseif (false && $scanOutsideWP) {
-                    if (is_dir($directory.'/'.$file)) {
-                        $this->fileLoadDirectory($directory.'/'.$file, 'OTHER');
+                    if (is_dir($directory.$file)) {
+                        $this->fileLoadDirectory($directory.$file, 'OTHER');
                     } else {
-                        $this->updateFileToDB($directory.'/'.$file, md5_file($directory.'/'.$file), 'OTHER');
+                        $this->updateFileToDB($directory.$file, md5_file($directory.'/'.$file), 'OTHER');
                     }
                 }
             }
@@ -585,6 +585,9 @@ class WP_MadeIT_Security_LoadFiles
         $contentFile = $type == 'WP_CONTENT' ? 1 : 0;
 
         $need_backup = $pluginFile == 1 || $themeFile == 1 || $contentFile == 1;
+        if(strpos($filename, "madeit-security-backup") !== false) {
+            $need_backup = false;
+        }
 
         $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_filelist '.
                               '(filename_md5, filename, old_md5, new_md5, file_created, file_checked, file_loaded, exist_in_orig, changed, is_safe, need_backup, in_backup, has_url, safe_url, `ignore`, core_file, plugin_file, theme_file, content_file, plugin_theme) VALUES ('.

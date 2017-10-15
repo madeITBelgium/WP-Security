@@ -492,11 +492,48 @@ class WP_MadeIT_Security_Admin
 
     public function doBackup()
     {
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
+        $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($this->settings, $this->db);
+        $wp_madeit_security_backup->addHooks();
+        
         do_action('madeit_security_backup');
         echo json_encode(get_site_transient('madeit_security_backup'));
         wp_die();
     }
+    
+    public function checkBackup() {
+        $result = get_site_transient('madeit_security_backup');
 
+        if ($result === false) {
+            $data = ['success' => true, 'completed' => false, 'running' => false];
+        } else {
+            $lastTimeAgo = '';
+            if (isset($result['last_com_time'])) {
+                $lastTimeAgo = sprintf(esc_html(__('Last change %s ago.', 'wp-security-by-made-it')), $this->timeAgo($result['last_com_time']));
+            }
+            $data = [
+                'success'       => true,
+                'completed'     => $result['done'],
+                'running'       => !$result['done'] && !$result['stop'],
+                'time_ago'      => sprintf(esc_html(__('Last backup %s ago.', 'wp-security-by-made-it')), $this->timeAgo($result['time'])),
+                'last_time_ago' => $lastTimeAgo,
+                'result'        => $result,
+            ];
+        }
+
+        echo json_encode($data);
+        wp_die();
+    }
+
+    public function stopBackup()
+    {
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
+        $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($this->settings, $this->db);
+        $wp_madeit_security_backup->stopBackup();
+        echo json_encode(['success' => true]);
+        wp_die();
+    }
+    
     public function addHooks()
     {
         add_action('admin_menu', [$this, 'initMenu']);
@@ -506,6 +543,8 @@ class WP_MadeIT_Security_Admin
         add_action('wp_ajax_madeit_security_stop_scan', [$this, 'stopFileScan']);
         add_action('wp_ajax_madeit_security_update_scan', [$this, 'doUpdateScan']);
         add_action('wp_ajax_madeit_security_backup', [$this, 'doBackup']);
+        add_action('wp_ajax_madeit_security_backup_check', [$this, 'checkBackup']);
+        add_action('wp_ajax_madeit_security_backup_stop', [$this, 'stopBackup']);
         add_action('wp_ajax_madeit_security_check_scan', [$this, 'checkFileScan']);
     }
 }
