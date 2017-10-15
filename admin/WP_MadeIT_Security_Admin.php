@@ -495,13 +495,14 @@ class WP_MadeIT_Security_Admin
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
         $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($this->settings, $this->db);
         $wp_madeit_security_backup->addHooks();
-        
+
         do_action('madeit_security_backup');
         echo json_encode(get_site_transient('madeit_security_backup'));
         wp_die();
     }
-    
-    public function checkBackup() {
+
+    public function checkBackup()
+    {
         $result = get_site_transient('madeit_security_backup');
 
         if ($result === false) {
@@ -533,7 +534,7 @@ class WP_MadeIT_Security_Admin
         echo json_encode(['success' => true]);
         wp_die();
     }
-    
+
     public function addHooks()
     {
         add_action('admin_menu', [$this, 'initMenu']);

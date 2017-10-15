@@ -136,7 +136,8 @@ if (!defined('ABSPATH')) {
                                 <h6 class="madeit-card-subtitle" id="backup-time-ago">
                                     <?php echo esc_html(__('No recent backup completed.', 'wp-security-by-made-it')); ?>
                                 </h6>
-                                <?php if ($this->defaultSettings['maintenance']['backup']) { ?>
+                                <?php if ($this->defaultSettings['maintenance']['backup']) {
+        ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col-3 madeit-text-center">
@@ -159,7 +160,9 @@ if (!defined('ABSPATH')) {
                                         </div>
                                     </div>
                                     <a href="#" class="card-link do-backup"><?php echo esc_html(__('Do backup', 'wp-security-by-made-it')); ?></a> <a href="#" class="card-link stop-backup"><?php echo esc_html(__('Stop backup', 'wp-security-by-made-it')); ?></a>
-                                <?php } else { ?>
+                                <?php
+    } else {
+        ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col">
@@ -167,7 +170,8 @@ if (!defined('ABSPATH')) {
                                             </div>
                                         </div>
                                     </div>
-                                <?php } ?>
+                                <?php
+    } ?>
                             </div>
                         </div>
                     </div>
