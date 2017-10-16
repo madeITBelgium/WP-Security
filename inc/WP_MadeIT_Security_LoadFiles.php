@@ -475,7 +475,7 @@ class WP_MadeIT_Security_LoadFiles
         $directory = ABSPATH;
         $files = [];
         $dir = dir($directory);
-        
+
         $wpHeadFiles = [
             'wp-admin',
             'wp-content',
@@ -585,7 +585,7 @@ class WP_MadeIT_Security_LoadFiles
         $contentFile = $type == 'WP_CONTENT' ? 1 : 0;
 
         $need_backup = $pluginFile == 1 || $themeFile == 1 || $contentFile == 1;
-        if(strpos($filename, "madeit-security-backup") !== false) {
+        if (strpos($filename, 'madeit-security-backup') !== false) {
             $need_backup = false;
         }
 

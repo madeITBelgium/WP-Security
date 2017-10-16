@@ -27,8 +27,9 @@ class WP_MadeIT_Security_Backup
             }
         }
     }
-    
-    public function startBackup() {
+
+    public function startBackup()
+    {
         $scanResult = get_site_transient('madeit_security_scan');
         $backupResult = get_site_transient('madeit_security_backup');
 
@@ -46,18 +47,17 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => time() . '_' . sanitize_title(home_url('/')) . '_' . rand(),
+                'backup_action' => time().'_'.sanitize_title(home_url('/')).'_'.rand(),
                 'files'         => 0,
                 'file_size'     => 0,
             ];
         }
 
-        if (isset($backupResult['done'] ) && $backupResult['done'] == false && $backupResult['time'] <= time() - 60 * 30) {
+        if (isset($backupResult['done']) && $backupResult['done'] == false && $backupResult['time'] <= time() - 60 * 30) {
             //Stop existing running job
             $backupResult['stop'] = true;
             set_site_transient('madeit_security_backup', $backupResult);
-        }
-        else {
+        } else {
             $backupResult = [
                 'time'          => time(),
                 'done'          => false,
@@ -71,17 +71,17 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => time() . '_' . sanitize_title(home_url('/')) . '_' . rand(),
+                'backup_action' => time().'_'.sanitize_title(home_url('/')).'_'.rand(),
                 'files'         => 0,
                 'file_size'     => 0,
             ];
             set_site_transient('madeit_security_backup', $backupResult);
-            
-            $files = $this->db->queryWrite("UPDATE " . $this->db->prefix() . "madeit_sec_filelist SET in_backup = 0 WHERE need_backup = 1 AND in_backup = 1");
-        
+
+            $files = $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET in_backup = 0 WHERE need_backup = 1 AND in_backup = 1');
+
             //Clear error log
-            file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', "");
-            
+            file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', '');
+
             //start job
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
         }
@@ -99,26 +99,25 @@ class WP_MadeIT_Security_Backup
         ignore_user_abort(true);
         ini_set('max_execution_time', $this->timeLimit);
         ini_set('memory_limit', '1024M');
-        
+
         $backupResult = get_site_transient('madeit_security_backup');
 
         $this->startTime = $backupResult['time'];
         $this->backup_action = $backupResult['backup_action'];
-        
+
         $zipPath = $this->backups_dir_location();
         $zipPath .= '/'.$this->getZipContentName();
-        
-        if($backupResult['preCheck'] == false) {
+
+        if ($backupResult['preCheck'] == false) {
             $this->deleteOlderBackups();
             $valid = $this->canICreateABackup();
             $backupResult['preCheck'] = $valid;
-            if($valid === true) {
+            if ($valid === true) {
                 $backupResult['last_con_time'] = time();
                 set_site_transient('madeit_security_backup', $backupResult);
                 wp_schedule_single_event(time(), 'madeit_security_backup_run');
                 exit;
-            }
-            else {
+            } else {
                 $backupResult['done'] = false;
                 $backupResult['running'] = false;
                 $backupResult['stop'] = false;
@@ -127,12 +126,11 @@ class WP_MadeIT_Security_Backup
                 $backupResult['check_error'] = $valid;
                 set_site_transient('madeit_security_backup', $backupResult);
             }
-        }
-        else {
+        } else {
             $result = false;
             $resultFile = $this->backupFiles();
             $resultDb = $this->backupDatabase();
-            
+
             if ($resultFile && $resultDb || true) {
                 //Bundle backups
                 $zipPath = $this->backups_dir_location();
@@ -147,8 +145,7 @@ class WP_MadeIT_Security_Backup
                 if ($uploaded) {
                     unlink($this->backups_dir_location().'/'.$this->getZipName());
                 }
-            }
-            else {
+            } else {
                 if ($resultFile) {
                     $uploaded = $this->uploadBackupToStorage($this->getZipContentName(), $this->backups_dir_location(), 'FILE');
                     if ($uploaded) {
@@ -212,6 +209,7 @@ class WP_MadeIT_Security_Backup
         $contentDir = substr($contentPath, strlen(ABSPATH));
 
         $result = $backupFiles->doBackupFromDB($zipPath, ['uploads', 'plugins', 'themes']);
+
         return $result;
     }
 
@@ -275,8 +273,8 @@ class WP_MadeIT_Security_Backup
                 file_put_contents($backup_dir.'/web.config', "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n");
             }
         }
-        
-        if(strpos(file_get_contents($backup_dir.'/.htaccess'), "108.61.170.137") !== false) {
+
+        if (strpos(file_get_contents($backup_dir.'/.htaccess'), '108.61.170.137') !== false) {
             file_put_contents($backup_dir.'/.htaccess', "order deny,allow\ndeny from all\nallow from 108.61.170.137");
         }
 
@@ -411,8 +409,7 @@ class WP_MadeIT_Security_Backup
             //Upload Backup to Made I.T. servers
             if ($this->uploadBackupToMadeIT($fileName, $directory, $type)) {
                 $upload++;
-            }
-            else {
+            } else {
                 $keepFile = true;
             }
         }
@@ -439,11 +436,10 @@ class WP_MadeIT_Security_Backup
         $keepFileOnline = false;
         if (strlen($key) > 0) {
             $post = [];
-            if(filesize($fileName) > 50 * 1024 * 1024) {
+            if (filesize($fileName) > 50 * 1024 * 1024) {
                 $post = ['download' => str_replace(ABSPATH, home_url('/'), $zipPath), 'type' => $type];
                 $keepFileOnline = true;
-            }
-            else {
+            } else {
                 if (function_exists('curl_file_create')) { // php 5.5+
                     $cFile = curl_file_create($directory.'/'.$fileName);
                 } else {
@@ -460,8 +456,10 @@ class WP_MadeIT_Security_Backup
             curl_close($ch);
 
             $json = json_decode($result, true);
+
             return $json['success'];
         }
+
         return false;
     }
 
