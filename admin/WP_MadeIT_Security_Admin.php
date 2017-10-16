@@ -180,7 +180,7 @@ class WP_MadeIT_Security_Admin
             $wp_maintenance->setUp();
 
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
-            $wpNotify = new WP_MadeIT_Security_Update($this->settings);
+            $wpNotify = new WP_MadeIT_Security_Update($this->settings, $this->db);
             if ($this->defaultSettings['maintenance']['enable'] === true || $this->defaultSettings['scan']['update']) {
                 $wpNotify->activateSechduler(false);
             } else {
@@ -188,7 +188,7 @@ class WP_MadeIT_Security_Admin
             }
 
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
-            $wpBackup = new WP_MadeIT_Security_Backup($this->settings);
+            $wpBackup = new WP_MadeIT_Security_Backup($this->settings, $this->db);
             if ($this->defaultSettings['maintenance']['backup'] === true || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
                 $wpBackup->activateSechduler(false);
             } else {
