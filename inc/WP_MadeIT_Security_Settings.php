@@ -14,7 +14,7 @@ class WP_MadeIT_Security_Settings
         $this->generateOptions();
 
         if (trim(get_option('madeit_security_api_key', '')) == '' && MADEIT_SECURITY_API == false) {
-            define('MADEIT_SECURITY_API', true);
+            @define('MADEIT_SECURITY_API', true);
             update_option('madeit_security_api_key', $this->fetchNewApiKey());
         }
 
