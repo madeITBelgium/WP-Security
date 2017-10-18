@@ -1,0 +1,573 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-18 19:45+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: inc/WP_MadeIT_Security_Backup.php:385
+#, php-format
+msgid ""
+"The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should "
+"increase it to avoid failures due to insufficient memory (consult your web "
+"hosting company for more help)"
+msgstr ""
+
+#: inc/WP_MadeIT_Security_Backup.php:388
+#, php-format
+msgid ""
+"The amount of time allowed for WordPress plugins to run is very low (%s "
+"seconds) - you should increase it to avoid backup failures due to time-outs "
+"(consult your web hosting company for more help - it is the "
+"max_execution_time PHP setting; the recommended value is %s seconds or more)"
+msgstr ""
+
+#: inc/WP_MadeIT_Security_Backup.php:404
+#, php-format
+msgid "Your free space in your hosting account is very low - only %s Mb remain"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:42
+msgid "Security & Maintenance"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:42
+msgid "Security"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:43 admin/templates/dashboard.php:18
+msgid "Security Dashboard"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:43
+msgid "Dashboard"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:44
+msgid "Security Scan"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:44
+msgid "Scan"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:45
+msgid "Security Settings"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:45 admin/templates/settings.php:15
+msgid "Settings"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:305
+#, php-format
+msgid "Local file %s doesn't exist on your WordPress installation."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:395
+msgid "less than 1 second"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:398
+msgid "year"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:399
+msgid "month"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:400
+msgid "day"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:401
+msgid "hour"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:402
+msgid "minute"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:403
+msgid "second"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:470
+#, php-format
+msgid "Last result %s ago."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:477
+#: admin/templates/list-not-exist-files.php:103
+#: admin/templates/list-not-exist-files.php:122
+#: admin/templates/list-changed-files.php:103
+#: admin/templates/list-changed-files.php:122
+#: admin/templates/compare_files.php:81 admin/templates/compare_files.php:100
+#: admin/templates/scan.php:97 admin/templates/scan.php:177
+#: admin/templates/scan.php:459 admin/templates/dashboard.php:194
+#: admin/templates/dashboard.php:381
+#, php-format
+msgid "Last scan %s ago."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:513
+#, php-format
+msgid "Last change %s ago."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:519
+#, php-format
+msgid "Last backup %s ago."
+msgstr ""
+
+#: admin/templates/settings.php:19
+msgid "The settings are successfully saved."
+msgstr ""
+
+#: admin/templates/settings.php:33
+msgid "Information"
+msgstr ""
+
+#: admin/templates/settings.php:36
+msgid "Docs"
+msgstr ""
+
+#: admin/templates/settings.php:37
+msgid "F.A.Q."
+msgstr ""
+
+#: admin/templates/settings.php:38
+msgid "Support"
+msgstr ""
+
+#: admin/templates/settings.php:47
+msgid "General settings"
+msgstr ""
+
+#: admin/templates/settings.php:48
+msgid "Back-up settings"
+msgstr ""
+
+#: admin/templates/settings.php:49 admin/templates/settings.php:228
+msgid "Maintenance"
+msgstr ""
+
+#: admin/templates/settings.php:53
+msgid "Scan files against repository versions for changes"
+msgstr ""
+
+#: admin/templates/settings.php:58
+msgid "Do fast scan"
+msgstr ""
+
+#: admin/templates/settings.php:68 admin/templates/scan.php:411
+#: admin/templates/dashboard.php:333
+msgid "Scan core files"
+msgstr ""
+
+#: admin/templates/settings.php:78 admin/templates/scan.php:418
+#: admin/templates/dashboard.php:340
+msgid "Scan theme files"
+msgstr ""
+
+#: admin/templates/settings.php:88 admin/templates/scan.php:414
+#: admin/templates/dashboard.php:336
+msgid "Scan plugin files"
+msgstr ""
+
+#: admin/templates/settings.php:100
+msgid "Updates"
+msgstr ""
+
+#: admin/templates/settings.php:105 admin/templates/dashboard.php:37
+msgid "Scan updates"
+msgstr ""
+
+#: admin/templates/settings.php:117 admin/templates/settings.php:260
+msgid "API Integration"
+msgstr ""
+
+#: admin/templates/settings.php:122
+msgid "Made I.T. API Key"
+msgstr ""
+
+#: admin/templates/settings.php:127
+msgid ""
+"This API key is auto generated. The API key is required to communicate with "
+"our server to update file scan listing, Virus/Mallware databases, ..."
+msgstr ""
+
+#: admin/templates/settings.php:137
+msgid "Send the backup to your FTP server."
+msgstr ""
+
+#: admin/templates/settings.php:142
+msgid "Enable FTP Backup"
+msgstr ""
+
+#: admin/templates/settings.php:152
+msgid "FTP server"
+msgstr ""
+
+#: admin/templates/settings.php:160
+msgid "FTP username"
+msgstr ""
+
+#: admin/templates/settings.php:168
+msgid "FTP password"
+msgstr ""
+
+#: admin/templates/settings.php:176
+msgid "FTP destination directory"
+msgstr ""
+
+#: admin/templates/settings.php:186
+msgid "Send the backup to your S3 bucket."
+msgstr ""
+
+#: admin/templates/settings.php:191
+msgid "Enable S3 Backup"
+msgstr ""
+
+#: admin/templates/settings.php:201
+msgid "Access key"
+msgstr ""
+
+#: admin/templates/settings.php:209
+msgid "Secret key"
+msgstr ""
+
+#: admin/templates/settings.php:217
+msgid "Bucket"
+msgstr ""
+
+#: admin/templates/settings.php:230
+msgid "Prevent your website from hacking"
+msgstr ""
+
+#: admin/templates/settings.php:232
+msgid ""
+" Prevent your website from hacking. Made I.T. can take care of your "
+"WordPress website to take the control of the updates and optimizations."
+msgstr ""
+
+#: admin/templates/settings.php:238
+msgid "Let Made I.T. Take over the maintenance"
+msgstr ""
+
+#: admin/templates/settings.php:248
+msgid "Backup your website"
+msgstr ""
+
+#: admin/templates/settings.php:265
+msgid "Made I.T. WordPress Maintenance API Key"
+msgstr ""
+
+#: admin/templates/settings.php:281
+msgid "Save"
+msgstr ""
+
+#: admin/templates/list-not-exist-files.php:18
+msgid "Not existing files"
+msgstr ""
+
+#: admin/templates/list-not-exist-files.php:29
+#: admin/templates/list-changed-files.php:29
+#, php-format
+msgid "The file %s is replaced with the original version."
+msgstr ""
+
+#: admin/templates/list-not-exist-files.php:41
+#, php-format
+msgid "Files of %s that not exist"
+msgstr ""
+
+#: admin/templates/list-not-exist-files.php:52
+#, php-format
+msgid "The file <a href=\"%s\">%s</a> do not exist in the original version."
+msgstr ""
+
+#: admin/templates/list-not-exist-files.php:71
+#: admin/templates/list-changed-files.php:71
+msgid "No changed files found."
+msgstr ""
+
+#: admin/templates/list-changed-files.php:18
+msgid "Changed files"
+msgstr ""
+
+#: admin/templates/list-changed-files.php:41
+#, php-format
+msgid "Changed files of %s"
+msgstr ""
+
+#: admin/templates/list-changed-files.php:52
+#, php-format
+msgid "Compare the file <a href=\"%s\">%s</a> with the original version."
+msgstr ""
+
+#: admin/templates/compare_files.php:22
+#, php-format
+msgid "Compare file %s of %s"
+msgstr ""
+
+#: admin/templates/scan.php:18
+msgid "Security Scan results"
+msgstr ""
+
+#: admin/templates/scan.php:30 admin/templates/dashboard.php:74
+msgid "Scan summary"
+msgstr ""
+
+#: admin/templates/scan.php:33 admin/templates/scan.php:99
+#: admin/templates/scan.php:179 admin/templates/scan.php:312
+#: admin/templates/dashboard.php:77 admin/templates/dashboard.php:196
+msgid "No recent scan data found."
+msgstr ""
+
+#: admin/templates/scan.php:41 admin/templates/scan.php:49
+#: admin/templates/scan.php:57 admin/templates/scan.php:111
+#: admin/templates/scan.php:123 admin/templates/scan.php:135
+#: admin/templates/scan.php:202 admin/templates/scan.php:231
+#: admin/templates/scan.php:283 admin/templates/scan.php:372
+#: admin/templates/scan.php:373 admin/templates/scan.php:374
+#: admin/templates/scan.php:439 admin/templates/scan.php:440
+#: admin/templates/scan.php:441 admin/templates/dashboard.php:85
+#: admin/templates/dashboard.php:93 admin/templates/dashboard.php:101
+#: admin/templates/dashboard.php:145 admin/templates/dashboard.php:156
+#: admin/templates/dashboard.php:208 admin/templates/dashboard.php:220
+#: admin/templates/dashboard.php:232 admin/templates/dashboard.php:294
+#: admin/templates/dashboard.php:295 admin/templates/dashboard.php:296
+#: admin/templates/dashboard.php:361 admin/templates/dashboard.php:362
+#: admin/templates/dashboard.php:363 admin/templates/dashboard.php:416
+#: admin/templates/dashboard.php:417 admin/templates/dashboard.php:466
+#: admin/templates/dashboard.php:469 admin/templates/dashboard.php:493
+#: admin/templates/dashboard.php:496
+msgid "N/A"
+msgstr ""
+
+#: admin/templates/scan.php:44 admin/templates/scan.php:115
+#: admin/templates/scan.php:207 admin/templates/dashboard.php:88
+#: admin/templates/dashboard.php:212
+msgid "WordPress Core"
+msgstr ""
+
+#: admin/templates/scan.php:52 admin/templates/scan.php:127
+#: admin/templates/scan.php:236 admin/templates/dashboard.php:96
+#: admin/templates/dashboard.php:224
+msgid "Plugins"
+msgstr ""
+
+#: admin/templates/scan.php:60 admin/templates/scan.php:139
+#: admin/templates/scan.php:288 admin/templates/dashboard.php:104
+#: admin/templates/dashboard.php:236
+msgid "Themes"
+msgstr ""
+
+#: admin/templates/scan.php:66 admin/templates/scan.php:144
+#: admin/templates/dashboard.php:110 admin/templates/dashboard.php:241
+msgid "Do scan now"
+msgstr ""
+
+#: admin/templates/scan.php:66 admin/templates/dashboard.php:110
+msgid "Stop scan now"
+msgstr ""
+
+#: admin/templates/scan.php:73 admin/templates/scan.php:324
+#: admin/templates/dashboard.php:117
+msgid "Scanning changes against repo disabled."
+msgstr ""
+
+#: admin/templates/scan.php:93 admin/templates/dashboard.php:190
+msgid "Update summary"
+msgstr ""
+
+#: admin/templates/scan.php:151 admin/templates/dashboard.php:248
+msgid "Scanning plugin updates disabled."
+msgstr ""
+
+#: admin/templates/scan.php:171
+msgid "Scan result"
+msgstr ""
+
+#: admin/templates/scan.php:251
+#, php-format
+msgid ""
+"<a href=\"%s\">%s files</a> on your system that not exist in the original "
+"version."
+msgstr ""
+
+#: admin/templates/scan.php:254
+#, php-format
+msgid ""
+"<a href=\"%s\">%s files</a> on your system are different then the original "
+"version."
+msgstr ""
+
+#: admin/templates/scan.php:257 admin/templates/scan.php:260
+#, php-format
+msgid ""
+"<a href=\"%s\">%s files</a> on your system are deleted but are required in "
+"the plugin."
+msgstr ""
+
+#: admin/templates/scan.php:263
+msgid ""
+"Some files of the plugin are not equal to the orignal file. Disable fast "
+"scanning to check which file."
+msgstr ""
+
+#: admin/templates/scan.php:302
+#, php-format
+msgid "%s files on your system that not exist in the original version."
+msgstr ""
+
+#: admin/templates/scan.php:396 admin/templates/dashboard.php:318
+msgid "Starting scan"
+msgstr ""
+
+#: admin/templates/scan.php:399 admin/templates/dashboard.php:321
+msgid "Loading core files"
+msgstr ""
+
+#: admin/templates/scan.php:402 admin/templates/dashboard.php:324
+msgid "Loading plugin files"
+msgstr ""
+
+#: admin/templates/scan.php:405 admin/templates/dashboard.php:327
+msgid "Loading theme files"
+msgstr ""
+
+#: admin/templates/scan.php:408 admin/templates/dashboard.php:330
+msgid "Prepare to start scan"
+msgstr ""
+
+#: admin/templates/scan.php:422 admin/templates/dashboard.php:344
+msgid "Complete scan"
+msgstr ""
+
+#: admin/templates/dashboard.php:27
+msgid "Feature status"
+msgstr ""
+
+#: admin/templates/dashboard.php:32
+msgid "Scan repo changes"
+msgstr ""
+
+#: admin/templates/dashboard.php:33
+msgid "Fast scan"
+msgstr ""
+
+#: admin/templates/dashboard.php:34
+msgid "Scan core changes"
+msgstr ""
+
+#: admin/templates/dashboard.php:35
+msgid "Scan plugin changes"
+msgstr ""
+
+#: admin/templates/dashboard.php:36
+msgid "Scan theme changes"
+msgstr ""
+
+#: admin/templates/dashboard.php:38
+msgid "Maintenance by Made I.T."
+msgstr ""
+
+#: admin/templates/dashboard.php:39
+msgid "Scan plugin updates"
+msgstr ""
+
+#: admin/templates/dashboard.php:40 admin/templates/dashboard.php:148
+msgid "Backup"
+msgstr ""
+
+#: admin/templates/dashboard.php:134
+msgid "Backup summary"
+msgstr ""
+
+#: admin/templates/dashboard.php:137
+msgid "No recent backup completed."
+msgstr ""
+
+#: admin/templates/dashboard.php:153
+msgid "Backup info"
+msgstr ""
+
+#: admin/templates/dashboard.php:163
+msgid "Do backup"
+msgstr ""
+
+#: admin/templates/dashboard.php:163
+msgid "Stop backup"
+msgstr ""
+
+#: admin/templates/dashboard.php:170
+msgid "Automatic backup disabled."
+msgstr ""
+
+#: admin/templates/dashboard.php:428
+msgid "Starting backup"
+msgstr ""
+
+#: admin/templates/dashboard.php:431
+#, php-format
+msgid "Backing up files. %s / %d"
+msgstr ""
+
+#: admin/templates/dashboard.php:434
+msgid "Backking up database"
+msgstr ""
+
+#: admin/templates/dashboard.php:437
+msgid "Creating zip file"
+msgstr ""
+
+#: admin/templates/dashboard.php:440
+msgid "Upload to Made I.T."
+msgstr ""
+
+#: admin/templates/dashboard.php:443
+msgid "Upload to FTP server"
+msgstr ""
+
+#: admin/templates/dashboard.php:446
+msgid "Upload to S3"
+msgstr ""
+
+#: admin/templates/dashboard.php:449
+msgid "Complete backup"
+msgstr ""
+
+#: admin/templates/dashboard.php:465 admin/templates/dashboard.php:492
+msgid "Download"
+msgstr ""
+
+#. Name of the plugin
+msgid "WP Security by Made I.T."
+msgstr ""
+
+#. Description of the plugin
+msgid "Secure your WordPress Website."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://www.madeit.be/wordpress-onderhoud"
+msgstr ""
+
+#. Author of the plugin
+msgid "Made I.T."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.madeit.be"
+msgstr ""
