@@ -1,59 +1,56 @@
 language: php
-
 sudo: false
 dist: trusty
-
 php:
 - 5.4
 - 5.5
 - 5.6
 - 7.0
-
 env:
 - WP_VERSION=latest WP_MULTISITE=0
 - WP_VERSION=4.7 WP_MULTISITE=0
 - WP_VERSION=4.6 WP_MULTISITE=0
 - WP_VERSION=4.5 WP_MULTISITE=0
 - WP_VERSION=4.4 WP_MULTISITE=0
-
 matrix:
   include:
-    - php: 7.1
-      env: WP_VERSION=latest WP_MULTISITE=0
-    - php: 7.1
-      env: WP_VERSION=4.7 WP_MULTISITE=0
-    - php: 5.6
-      env: WP_VERSION=latest WP_MULTISITE=1
-    - php: 5.3
-      env: WP_VERSION=latest WP_MULTISITE=0
-      dist: precise
-    - php: 5.3
-      env: WP_VERSION=4.7 WP_MULTISITE=0
-      dist: precise
-    - php: 5.3
-      env: WP_VERSION=4.6 WP_MULTISITE=0
-      dist: precise
-    - php: 5.3
-      env: WP_VERSION=4.5 WP_MULTISITE=0
-      dist: precise
-    - php: 5.3
-      env: WP_VERSION=4.4 WP_MULTISITE=0
-      dist: precise
-
+  - php: 7.1
+    env: WP_VERSION=latest WP_MULTISITE=0
+  - php: 7.1
+    env: WP_VERSION=4.7 WP_MULTISITE=0
+  - php: 5.6
+    env: WP_VERSION=latest WP_MULTISITE=1
+  - php: 5.3
+    env: WP_VERSION=latest WP_MULTISITE=0
+    dist: precise
+  - php: 5.3
+    env: WP_VERSION=4.7 WP_MULTISITE=0
+    dist: precise
+  - php: 5.3
+    env: WP_VERSION=4.6 WP_MULTISITE=0
+    dist: precise
+  - php: 5.3
+    env: WP_VERSION=4.5 WP_MULTISITE=0
+    dist: precise
+  - php: 5.3
+    env: WP_VERSION=4.4 WP_MULTISITE=0
+    dist: precise
 before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
-      composer global require "phpunit/phpunit=5.7.*"
-    else
-      composer global require "phpunit/phpunit=4.8.*"
-    fi
+- bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+- export PATH="$HOME/.composer/vendor/bin:$PATH"
+- |
+  if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
+    composer global require "phpunit/phpunit=5.7.*"
+  else
+    composer global require "phpunit/phpunit=4.8.*"
+  fi
 script:
 - phpenv config-rm xdebug.ini
 - phpunit
-
 branches:
   only:
-    - master
-    - /^release\/.*$/
+  - master
+  - "/^release\\/.*$/"
+notifications:
+  slack:
+    secure: SYtCbt9jgk+tdWxLMGlF876YNDMdDAWF7xqUlyFeS5Pvkg1lWXT+oAupQn2F6GjS9UECZ8V1dm17Jne0zrj7LsxCHgQM0/YRYe4nDWBZZRuuwBiK33pmbqCVWrUreo3whR3sx1tUJz6Y3pIFgfEmamBtrzEUAvYTE+/0wlgSrZG5cqS/DssmirUUBgUQ0e/fkSJgRBOEZkIFA5eyvo3+Lj2wZjzsb9/M9Tij6g/qmz2ULU8W5yS16B38eUgScQXZM+WKgl2Zab06Y3eejQoKtpQSNspC2gJ4rbO1oWR518qxx9LXSh1OMDBAOJat3SOP2sLhM3wijWxqorojkSSdRwYbT9eoCDjVSsZFxTapyntPO2xqJ7U0iLFOMpdmdf1mSLxOhD4ouyurgznZOlmnLGFhJCicp1CeDtfh+zzDX8Z8Lk9YO5Tody59OW+9PkcJFzRoYtRplyr439MJ+UgMzEo8ciRdyR0tGvi5ZXDIn7CG2uEoGotwRpcdPw8LKAKecM4WuZFqRh9B3AN4y8hF4nkMlnRtoszvUbuHbiE3gML0pKx0axD8VaSyBnnHCFdqjBBwOkivWopWqfErRGSsLs6ErMg/X9uYCsPUm/8b08kb/SCSnAW5APw1sSUA9WoNb8OenTs9vqZjn0hNGRawEQJ68S+bUpB6eLqV4WWv5Xg=
