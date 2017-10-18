@@ -1,13 +1,19 @@
 <?php
-class Tests_WP_MadeIT_Security extends WP_UnitTestCase {
-    public function setUp() {
+
+class Tests_WP_MadeIT_Security extends WP_UnitTestCase
+{
+    public function setUp()
+    {
         parent::setUp();
     }
-    public function tearDown() {
+
+    public function tearDown()
+    {
         parent::tearDown();
     }
-    
-    public function test_constants() {
+
+    public function test_constants()
+    {
         // Plugin Folder URL
         $path = str_replace('tests/', '', plugin_dir_url( __FILE__ ));
         $this->assertSame(MADEIT_SECURITY_URL, $path );
