@@ -35,15 +35,15 @@ class WP_MadeIT_Security_SystemInfo
     public function getHomeUrl()
     {
         if (is_multisite()) {
-            return network_site_url();
+            return $this->fixSchema(network_site_url());
         }
 
-        return home_url('/');
+        return $this->fixSchema(home_url('/'));
     }
 
     public function getAdminUrl()
     {
-        return get_admin_url();
+        return $this->fixSchema(get_admin_url());
     }
 
     public function getUserCount()
@@ -164,5 +164,26 @@ class WP_MadeIT_Security_SystemInfo
     public function totalDiskSpace()
     {
         return disk_total_space(ABSPATH);
+    }
+    
+    private function fixSchema($url) {
+        $siteUrl = get_option('siteurl');
+        if(strpos($siteUrl, "https://")) {
+            $schema = "https://";
+        }
+        else {
+            $schema = "http://";
+        }
+        
+        if(strpos($url, "https://")) {
+            $url = str_replace("https://", $schema, $url);
+        }
+        else if(strpos($url, "http://")) {
+            $url = str_replace("http://", $schema, $url);
+        }
+        else {
+            $url = $schema . $url;
+        }
+        return $url;
     }
 }
