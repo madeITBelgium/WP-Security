@@ -13,44 +13,46 @@ $admin_url = 'https://www.madeit.be/wp-admin';
 $path = '/home/madeit/web/madeit.be/public_html';
 $zip_backup = '';
 
-function getPHPVersion() {
+function getPHPVersion()
+{
     return phpversion();
 }
 
-function getMySQLVersion() {
+function getMySQLVersion()
+{
     return mysql_get_server_info();
 }
 
-function installWordPress() {
-    file_put_contents("wordpress.zip", file_get_contents("https://wordpress.org/wordpress-" . $wp_version . ".zip"));
-    
+function installWordPress()
+{
+    file_put_contents('wordpress.zip', file_get_contents('https://wordpress.org/wordpress-'.$wp_version.'.zip'));
+
     $zip = new ZipArchive();
-    $x = $zip->open("wordpress.zip");
-    if($x === true) {
-        $zip->extractTo(".");
+    $x = $zip->open('wordpress.zip');
+    if ($x === true) {
+        $zip->extractTo('.');
         $zip->close();
-        
-        $directory = __DIR__ . "/wordpress";
+
+        $directory = __DIR__.'/wordpress';
         $dir = dir($directory);
 
         while (false !== ($file = $dir->read())) {
             if ($file != '.' and $file != '..') {
-                rename($directory . "/" . $file, __DIR__."/". $file);
+                rename($directory.'/'.$file, __DIR__.'/'.$file);
             }
         }
-         
-        unlink("wordpress.zip");
-        
+
+        unlink('wordpress.zip');
+
         echo json_encode(['success' => true]);
         exit;
-    }
-    else {
+    } else {
         echo json_encode(['success' => false]);
         exit;
     }
 }
 
-if(isset($_GET['action']) && $_GET['action'] == "INSTALL_WP") {
+if (isset($_GET['action']) && $_GET['action'] == 'INSTALL_WP') {
     installWordPress();
 }
 ?>
