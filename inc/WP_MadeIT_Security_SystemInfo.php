@@ -165,25 +165,24 @@ class WP_MadeIT_Security_SystemInfo
     {
         return disk_total_space(ABSPATH);
     }
-    
-    private function fixSchema($url) {
+
+    private function fixSchema($url)
+    {
         $siteUrl = get_option('siteurl');
-        if(strpos($siteUrl, "https://")) {
-            $schema = "https://";
+        if (strpos($siteUrl, 'https://')) {
+            $schema = 'https://';
+        } else {
+            $schema = 'http://';
         }
-        else {
-            $schema = "http://";
+
+        if (strpos($url, 'https://')) {
+            $url = str_replace('https://', $schema, $url);
+        } elseif (strpos($url, 'http://')) {
+            $url = str_replace('http://', $schema, $url);
+        } else {
+            $url = $schema.$url;
         }
-        
-        if(strpos($url, "https://")) {
-            $url = str_replace("https://", $schema, $url);
-        }
-        else if(strpos($url, "http://")) {
-            $url = str_replace("http://", $schema, $url);
-        }
-        else {
-            $url = $schema . $url;
-        }
+
         return $url;
     }
 }
