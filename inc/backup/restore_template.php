@@ -30,7 +30,7 @@ function installWordPress() {
         $zip->extractTo(".");
         $zip->close();
         
-        $directory = __DIR__"/wordpress";
+        $directory = __DIR__ . "/wordpress";
         $dir = dir($directory);
 
         while (false !== ($file = $dir->read())) {
