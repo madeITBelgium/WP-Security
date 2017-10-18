@@ -16,10 +16,10 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
     {
         // Plugin Folder URL
         $path = str_replace('tests/', '', plugin_dir_url( __FILE__ ));
-        $this->assertSame(MADEIT_SECURITY_URL, $path );
+        $this->assertSame(MADEIT_SECURITY_URL, $path);
         // Plugin Folder Path
         $path = str_replace('tests/', '', plugin_dir_path( __FILE__ ));
-        $this->assertSame(MADEIT_SECURITY_DIR, $path);
+        $this->assertSame(MADEIT_SECURITY_DIR, substr($path, 0, -1));
     }
     
     public function test_includes() {
@@ -46,12 +46,12 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/WP_MadeIT_Security_Update.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/SequenceMatcher.php');
-        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Render/Abstract.php');
-        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Render/Html/Array.php');
-        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Render/Html/Inline.php');
-        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Render/Html/SideBySide.php');
-        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Render/Text/Context.php');
-        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Render/Text/Unified.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Abstract.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Html/Array.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Html/Inline.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Html/SideBySide.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Text/Context.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Text/Unified.php');
         /** Check Assets Exist */
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/assets/icon-128x128.png');
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/assets/icon-16x16.png');
