@@ -61,8 +61,8 @@ if (defined('DOING_CRON')) {
     require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Admin.php';
     $wp_madeit_security_admin = new WP_MadeIT_Security_Admin($wp_madeit_security_settings, $wp_madeit_security_db);
     $wp_madeit_security_admin->addHooks();
-
-    require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
-    $wp_madeit_security_plugin = new WP_MadeIT_Security_Update($wp_madeit_security_settings, $wp_madeit_security_db);
-    $wp_madeit_security_plugin->addHooks();
 }
+
+require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
+$wp_madeit_security_plugin = new WP_MadeIT_Security_Update($wp_madeit_security_settings, $wp_madeit_security_db);
+$wp_madeit_security_plugin->addHooks();

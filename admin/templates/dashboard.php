@@ -159,6 +159,7 @@ if (!defined('ABSPATH')) {
                                             </div>
                                         </div>
                                     </div>
+                                    <span class="backup-step pull-right"></span>
                                     <a href="#" class="card-link do-backup"><?php echo esc_html(__('Do backup', 'wp-security-by-made-it')); ?></a> <a href="#" class="card-link stop-backup"><?php echo esc_html(__('Stop backup', 'wp-security-by-made-it')); ?></a>
                                 <?php
     } else {
@@ -423,6 +424,32 @@ if (!defined('ABSPATH')) {
             };
             
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
+                if(response.result.step >= 0) {
+                    $('.backup-step').html('<?php echo __('Starting backup', 'wp-security-by-made-it'); ?>');
+                }
+                if(response.result.step >= 1) {
+                    $('.backup-step').html(('<?php echo __('Backing up files. %s / %d', 'wp-security-by-made-it'); ?>').replace('%s', response.result.files).replace('%d', response.result.total_files));
+                }
+                if(response.result.step >= 2) {
+                    $('.backup-step').html('<?php echo __('Backking up database', 'wp-security-by-made-it'); ?>');
+                }
+                if(response.result.step >= 3) {
+                    $('.backup-step').html('<?php echo __('Creating zip file', 'wp-security-by-made-it'); ?>');
+                }
+                if(response.result.step >= 4) {
+                    $('.backup-step').html('<?php echo __('Upload to Made I.T.', 'wp-security-by-made-it'); ?>');
+                }
+                if(response.result.step >= 5) {
+                    $('.backup-step').html('<?php echo __('Upload to FTP server', 'wp-security-by-made-it'); ?>');
+                }
+                if(response.result.step >= 6) {
+                    $('.backup-step').html('<?php echo __('Upload to S3', 'wp-security-by-made-it'); ?>');
+                }
+                if(response.result.step >= 7) {
+                    $('.backup-step').html('<?php echo __('Complete backup', 'wp-security-by-made-it'); ?>');
+                }
+                
+                
                 if(response.completed == true) {
                     clearInterval(backupInterval);
                     $('.do-backup').show();
