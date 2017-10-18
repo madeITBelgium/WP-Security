@@ -52,6 +52,7 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Html/SideBySide.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Text/Context.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/inc/compare/Diff/Renderer/Text/Unified.php');
+        
         /** Check Assets Exist */
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/assets/icon-128x128.png');
         $this->assertFileExists(MADEIT_SECURITY_DIR . '/assets/icon-16x16.png');
