@@ -203,7 +203,7 @@ class WP_MadeIT_Security_Backup
         elseif($backupResult['step'] == 4) { //Upload zip to Made I.T.
             $zipPath = $this->backups_dir_location().'/'.$this->getZipName();
             if ($this->defaultSettings['maintenance']['backup']) {
-                $uploaded = $this->uploadBackupToMadeIT($this->getZipName(), $this->backups_dir_location(), 'FULL');
+                //$uploaded = $this->uploadBackupToMadeIT($this->getZipName(), $this->backups_dir_location(), 'FULL');
             }
             
             $backupResult['last_con_time'] = time();

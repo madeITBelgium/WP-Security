@@ -58,7 +58,6 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 = 1.3 =
 * Improve scanning on less performant servers
 * Made I.T. Maintenance - Disk and memory usage.
-* TODO: Backup
 
 = 1.2.2 = 
 * Fix apache version search
