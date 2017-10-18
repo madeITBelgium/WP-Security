@@ -8,7 +8,7 @@ class WP_MadeIT_Security_Backup_Files
     {
         $this->db = $db;
     }
-    
+
     public function doBackupFromDB($zipFile, $inlcudeTypes = ['uploads', 'plugins', 'themes'], $excludeDirs = null)
     {
         $files = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_filelist WHERE need_backup = 1 AND in_backup = 0 LIMIT 500');
@@ -19,7 +19,7 @@ class WP_MadeIT_Security_Backup_Files
                 if ($zip->open($zipFile, ZipArchive::CREATE)) {
                     $backedupFiles = [];
                     $i = 0;
-                    
+
                     $backupResult = get_site_transient('madeit_security_backup');
                     $filesCount = $backupResult['files'];
                     $size = $backupResult['file_size'];
@@ -32,14 +32,13 @@ class WP_MadeIT_Security_Backup_Files
                             $filesCount++;
                             $filename = str_replace(WP_CONTENT_DIR, '', $fullPath);
                             $zip->addFile($fullPath, $filename);
-                        }
-                        else {
+                        } else {
                             $filesCount++;
                         }
                         if ($i % 50 == 0) {
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set in_backup = 1 WHERE filename_md5 IN ('".implode("', '", $backedupFiles)."')");
                             $backedupFiles = [];
-                            
+
                             $backupResult = get_site_transient('madeit_security_backup');
                             $backupResult['last_con_time'] = time();
                             $backupResult['files'] = $filesCount;
