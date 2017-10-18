@@ -28,7 +28,7 @@ if (!defined('MADEIT_SECURITY_FRONT')) {
     define('MADEIT_SECURITY_FRONT', MADEIT_SECURITY_DIR.'/front'); // Admin Dir
 }
 if (!defined('MADEIT_SECURITY_API')) {
-    define('MADEIT_SECURITY_API', false); // Admin Dir
+    define('MADEIT_SECURITY_API', false); // Is API active
 }
 
 function wp_security_by_madeit_load_plugin_textdomain()
