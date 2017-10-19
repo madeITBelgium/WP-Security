@@ -3,16 +3,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-18 19:45+0000\n"
+"POT-Creation-Date: 2017-10-19 20:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco - https://localise.biz/"
 
 #: inc/WP_MadeIT_Security_Backup.php:385
 #, php-format
@@ -68,45 +68,49 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:305
+#: admin/WP_MadeIT_Security_Admin.php:47 admin/WP_MadeIT_Security_Admin.php:47
+msgid "Server info"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:320
 #, php-format
 msgid "Local file %s doesn't exist on your WordPress installation."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:395
+#: admin/WP_MadeIT_Security_Admin.php:410
 msgid "less than 1 second"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:398
+#: admin/WP_MadeIT_Security_Admin.php:413
 msgid "year"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:399
+#: admin/WP_MadeIT_Security_Admin.php:414
 msgid "month"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:400
+#: admin/WP_MadeIT_Security_Admin.php:415
 msgid "day"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:401
+#: admin/WP_MadeIT_Security_Admin.php:416
 msgid "hour"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:402
+#: admin/WP_MadeIT_Security_Admin.php:417
 msgid "minute"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:403
+#: admin/WP_MadeIT_Security_Admin.php:418
 msgid "second"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:470
+#: admin/WP_MadeIT_Security_Admin.php:485
 #, php-format
 msgid "Last result %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:477
+#: admin/WP_MadeIT_Security_Admin.php:492
 #: admin/templates/list-not-exist-files.php:103
 #: admin/templates/list-not-exist-files.php:122
 #: admin/templates/list-changed-files.php:103
@@ -119,12 +123,12 @@ msgstr ""
 msgid "Last scan %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:513
+#: admin/WP_MadeIT_Security_Admin.php:528
 #, php-format
 msgid "Last change %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:519
+#: admin/WP_MadeIT_Security_Admin.php:534
 #, php-format
 msgid "Last backup %s ago."
 msgstr ""
@@ -318,6 +322,74 @@ msgstr ""
 #: admin/templates/compare_files.php:22
 #, php-format
 msgid "Compare file %s of %s"
+msgstr ""
+
+#: admin/templates/system_info.php:18 admin/templates/system_info.php:27
+msgid "Server information"
+msgstr ""
+
+#: admin/templates/system_info.php:33
+msgid "PHP Version"
+msgstr ""
+
+#: admin/templates/system_info.php:37
+msgid "MySQL Version"
+msgstr ""
+
+#: admin/templates/system_info.php:41
+msgid "WP Version"
+msgstr ""
+
+#: admin/templates/system_info.php:45
+msgid "Apache Version"
+msgstr ""
+
+#: admin/templates/system_info.php:49
+msgid "URL"
+msgstr ""
+
+#: admin/templates/system_info.php:53
+msgid "Admin URL"
+msgstr ""
+
+#: admin/templates/system_info.php:57
+msgid "Users"
+msgstr ""
+
+#: admin/templates/system_info.php:61
+msgid "Sites"
+msgstr ""
+
+#: admin/templates/system_info.php:65
+msgid "Path"
+msgstr ""
+
+#: admin/templates/system_info.php:69
+msgid "OS name"
+msgstr ""
+
+#: admin/templates/system_info.php:73
+msgid "OS Vesion"
+msgstr ""
+
+#: admin/templates/system_info.php:77
+msgid "Memory Limit"
+msgstr ""
+
+#: admin/templates/system_info.php:81
+msgid "Free disk space"
+msgstr ""
+
+#: admin/templates/system_info.php:85
+msgid "Used disk space"
+msgstr ""
+
+#: admin/templates/system_info.php:89
+msgid "Total disk space"
+msgstr ""
+
+#: admin/templates/system_info.php:105
+msgid "PHP Info"
 msgstr ""
 
 #: admin/templates/scan.php:18

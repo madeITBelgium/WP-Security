@@ -1,0 +1,233 @@
+.madeit-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+.madeit-table th,
+.madeit-table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #e9ecef;
+}
+
+.madeit-table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.madeit-table tbody + tbody {
+  border-top: 2px solid #e9ecef;
+}
+
+.madeit-table .madeit-table {
+  background-color: #fff;
+}
+
+.madeit-table-sm th,
+.madeit-table-sm td {
+  padding: 0.3rem;
+}
+
+.madeit-table-bordered {
+  border: 1px solid #e9ecef;
+}
+
+.madeit-table-bordered th,
+.madeit-table-bordered td {
+  border: 1px solid #e9ecef;
+}
+
+.madeit-table-bordered thead th,
+.madeit-table-bordered thead td {
+  border-bottom-width: 2px;
+}
+
+.madeit-table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.madeit-table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.madeit-table-primary,
+.madeit-table-primary > th,
+.madeit-table-primary > td {
+  background-color: #b8daff;
+}
+
+.madeit-table-hover .madeit-table-primary:hover {
+  background-color: #9fcdff;
+}
+
+.madeit-table-hover .madeit-table-primary:hover > td,
+.madeit-table-hover .madeit-table-primary:hover > th {
+  background-color: #9fcdff;
+}
+
+.madeit-table-secondary,
+.madeit-table-secondary > th,
+.madeit-table-secondary > td {
+  background-color: #dddfe2;
+}
+
+.madeit-table-hover .madeit-table-secondary:hover {
+  background-color: #cfd2d6;
+}
+
+.madeit-table-hover .madeit-table-secondary:hover > td,
+.madeit-table-hover .madeit-table-secondary:hover > th {
+  background-color: #cfd2d6;
+}
+
+.madeit-table-success,
+.madeit-table-success > th,
+.madeit-table-success > td {
+  background-color: #c3e6cb;
+}
+
+.madeit-table-hover .madeit-table-success:hover {
+  background-color: #b1dfbb;
+}
+
+.madeit-table-hover .madeit-table-success:hover > td,
+.madeit-table-hover .madeit-table-success:hover > th {
+  background-color: #b1dfbb;
+}
+
+.madeit-table-info,
+.madeit-table-info > th,
+.madeit-table-info > td {
+  background-color: #bee5eb;
+}
+
+.madeit-table-hover .madeit-table-info:hover {
+  background-color: #abdde5;
+}
+
+.madeit-table-hover .madeit-table-info:hover > td,
+.madeit-table-hover .madeit-table-info:hover > th {
+  background-color: #abdde5;
+}
+
+.madeit-table-warning,
+.madeit-table-warning > th,
+.madeit-table-warning > td {
+  background-color: #ffeeba;
+}
+
+.madeit-table-hover .madeit-table-warning:hover {
+  background-color: #ffe8a1;
+}
+
+.madeit-table-hover .madeit-table-warning:hover > td,
+.madeit-table-hover .madeit-table-warning:hover > th {
+  background-color: #ffe8a1;
+}
+
+.madeit-table-danger,
+.madeit-table-danger > th,
+.madeit-table-danger > td {
+  background-color: #f5c6cb;
+}
+
+.madeit-table-hover .madeit-table-danger:hover {
+  background-color: #f1b0b7;
+}
+
+.madeit-table-hover .madeit-table-danger:hover > td,
+.madeit-table-hover .madeit-table-danger:hover > th {
+  background-color: #f1b0b7;
+}
+
+.madeit-table-light,
+.madeit-table-light > th,
+.madeit-table-light > td {
+  background-color: #fdfdfe;
+}
+
+.madeit-table-hover .madeit-table-light:hover {
+  background-color: #ececf6;
+}
+
+.madeit-table-hover .madeit-table-light:hover > td,
+.madeit-table-hover .madeit-table-light:hover > th {
+  background-color: #ececf6;
+}
+
+.madeit-table-dark,
+.madeit-table-dark > th,
+.madeit-table-dark > td {
+  background-color: #c6c8ca;
+}
+
+.madeit-table-hover .madeit-table-dark:hover {
+  background-color: #b9bbbe;
+}
+
+.madeit-table-hover .madeit-table-dark:hover > td,
+.madeit-table-hover .madeit-table-dark:hover > th {
+  background-color: #b9bbbe;
+}
+
+.madeit-table-active,
+.madeit-table-active > th,
+.madeit-table-active > td {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.madeit-table-hover .madeit-table-active:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.madeit-table-hover .madeit-table-active:hover > td,
+.madeit-table-hover .madeit-table-active:hover > th {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.madeit-thead-inverse th {
+  color: #fff;
+  background-color: #212529;
+}
+
+.madeit-thead-default th {
+  color: #495057;
+  background-color: #e9ecef;
+}
+
+.madeit-table-inverse {
+  color: #fff;
+  background-color: #212529;
+}
+
+.madeit-table-inverse th,
+.madeit-table-inverse td,
+.madeit-table-inverse thead th {
+  border-color: #32383e;
+}
+
+.madeit-table-inverse.madeit-table-bordered {
+  border: 0;
+}
+
+.madeit-table-inverse.madeit-table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.madeit-table-inverse.madeit-table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.075);
+}
+
+@media (max-width: 991px) {
+  .madeit-table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+  .madeit-table-responsive.madeit-table-bordered {
+    border: 0;
+  }
+}

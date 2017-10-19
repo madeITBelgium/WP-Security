@@ -66,7 +66,7 @@ class WP_MadeIT_Security_SystemInfo
         return ABSPATH;
     }
 
-    public function getSystemInfo()
+    public function getSystemInfo($humanReadable = false)
     {
         global $wp_local_package;
         // include an unmodified $wp_version
@@ -103,8 +103,8 @@ class WP_MadeIT_Security_SystemInfo
             'os_name'          => isset($osInfo['name']) ? $osInfo['name'] : null,
             'os_version'       => isset($osInfo['version_id']) ? $osInfo['version_id'] : null,
             'memory_limit'     => $this->getMemoryLimit(),
-            'free_disk_space'  => $this->freeDiskSpace(),
-            'total_disk_space' => $this->totalDiskSpace(),
+            'free_disk_space'  => $humanReadable ? $this->bytesToHuman($this->freeDiskSpace()) : $this->freeDiskSpace(),
+            'total_disk_space' => $humanReadable ? $this->bytesToHuman($this->totalDiskSpace()) : $this->totalDiskSpace(),
         ];
 
         return $systeminfo;
@@ -194,5 +194,16 @@ class WP_MadeIT_Security_SystemInfo
         }
 
         return $url;
+    }
+    
+    public function bytesToHuman($bytes)
+    {
+        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+
+        for ($i = 0; $bytes > 1024; $i++) {
+            $bytes /= 1024;
+        }
+
+        return round($bytes, 2) . ' ' . $units[$i];
     }
 }

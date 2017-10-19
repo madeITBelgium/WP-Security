@@ -43,6 +43,11 @@ class WP_MadeIT_Security_Admin
         add_submenu_page('madeit_security', __('Security Dashboard', 'wp-security-by-made-it'), __('Dashboard', 'wp-security-by-made-it'), 'manage_options', 'madeit_security', [$this, 'show_dashboard']);
         add_submenu_page('madeit_security', __('Security Scan', 'wp-security-by-made-it'), __('Scan', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_scan', [$this, 'show_scan']);
         add_submenu_page('madeit_security', __('Security Settings', 'wp-security-by-made-it'), __('Settings', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_settings', [$this, 'settings']);
+        
+        add_submenu_page(null, __('Server info', 'wp-security-by-made-it'), __('Server info', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_systeminfo', [$this, 'show_server_info']);
+    
+        //Add server info page
+        //add_action(get_plugin_page_hookname('madeit_security', 'madeit_security_systeminfo'), array($this, 'show_server_info'));
     }
 
     public function initStyle()
@@ -56,6 +61,8 @@ class WP_MadeIT_Security_Admin
         wp_enqueue_style('madeit-grid');
         wp_register_style('madeit-card', MADEIT_SECURITY_URL.'/admin/css/card.css', [], null);
         wp_enqueue_style('madeit-card');
+        wp_register_style('madeit-table', MADEIT_SECURITY_URL.'/admin/css/table.css', [], null);
+        wp_enqueue_style('madeit-table');
 
         wp_register_style('font-awesome', MADEIT_SECURITY_URL.'/admin/css/font-awesome.min.css', [], null);
         wp_enqueue_style('font-awesome');
@@ -214,6 +221,14 @@ class WP_MadeIT_Security_Admin
         include_once MADEIT_SECURITY_ADMIN.'/templates/dashboard.php';
     }
 
+    public function show_server_info() {
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
+        
+        $systeminfo = new WP_MadeIT_Security_SystemInfo();
+
+        include_once MADEIT_SECURITY_ADMIN.'/templates/system_info.php';
+    }
+    
     public function show_scan()
     {
         if (isset($_GET['changes'])) {

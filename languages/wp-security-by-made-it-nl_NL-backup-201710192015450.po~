@@ -490,7 +490,7 @@ msgstr "Thema's"
 #: admin/templates/scan.php:66 admin/templates/scan.php:144
 #: admin/templates/dashboard.php:110 admin/templates/dashboard.php:241
 msgid "Do scan now"
-msgstr "Do scan nu"
+msgstr "Doe scan nu"
 
 #: admin/templates/scan.php:73 admin/templates/scan.php:324
 #: admin/templates/dashboard.php:117
