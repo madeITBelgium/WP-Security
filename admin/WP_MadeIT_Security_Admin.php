@@ -43,9 +43,9 @@ class WP_MadeIT_Security_Admin
         add_submenu_page('madeit_security', __('Security Dashboard', 'wp-security-by-made-it'), __('Dashboard', 'wp-security-by-made-it'), 'manage_options', 'madeit_security', [$this, 'show_dashboard']);
         add_submenu_page('madeit_security', __('Security Scan', 'wp-security-by-made-it'), __('Scan', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_scan', [$this, 'show_scan']);
         add_submenu_page('madeit_security', __('Security Settings', 'wp-security-by-made-it'), __('Settings', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_settings', [$this, 'settings']);
-        
+
         add_submenu_page(null, __('Server info', 'wp-security-by-made-it'), __('Server info', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_systeminfo', [$this, 'show_server_info']);
-    
+
         //Add server info page
         //add_action(get_plugin_page_hookname('madeit_security', 'madeit_security_systeminfo'), array($this, 'show_server_info'));
     }
@@ -221,14 +221,15 @@ class WP_MadeIT_Security_Admin
         include_once MADEIT_SECURITY_ADMIN.'/templates/dashboard.php';
     }
 
-    public function show_server_info() {
+    public function show_server_info()
+    {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
-        
+
         $systeminfo = new WP_MadeIT_Security_SystemInfo();
 
         include_once MADEIT_SECURITY_ADMIN.'/templates/system_info.php';
     }
-    
+
     public function show_scan()
     {
         if (isset($_GET['changes'])) {
