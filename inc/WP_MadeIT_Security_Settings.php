@@ -143,7 +143,6 @@ class WP_MadeIT_Security_Settings
 
         curl_close($ch);
         $result = json_decode($server_output, true);
-        print_r($result);
 
         return isset($result['key']) ? $result['key'] : '';
     }
