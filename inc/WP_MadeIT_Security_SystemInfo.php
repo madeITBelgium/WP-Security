@@ -158,20 +158,18 @@ class WP_MadeIT_Security_SystemInfo
 
     public function freeDiskSpace()
     {
-        if(function_exists('disk_free_space')) {
+        if (function_exists('disk_free_space')) {
             return disk_free_space(ABSPATH);
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
     public function totalDiskSpace()
     {
-        if(function_exists('disk_total_space')) {
+        if (function_exists('disk_total_space')) {
             return disk_total_space(ABSPATH);
-        }
-        else {
+        } else {
             return 0;
         }
     }
@@ -195,7 +193,7 @@ class WP_MadeIT_Security_SystemInfo
 
         return $url;
     }
-    
+
     public function bytesToHuman($bytes)
     {
         $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
@@ -204,6 +202,6 @@ class WP_MadeIT_Security_SystemInfo
             $bytes /= 1024;
         }
 
-        return round($bytes, 2) . ' ' . $units[$i];
+        return round($bytes, 2).' '.$units[$i];
     }
 }
