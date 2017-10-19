@@ -59,4 +59,9 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/assets/icon-256x256.png');
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/assets/icon-64x64.png');
     }
+    
+    public function test_dashboard() {
+        wp_set_current_user(1);
+        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security'));
+    }
 }
