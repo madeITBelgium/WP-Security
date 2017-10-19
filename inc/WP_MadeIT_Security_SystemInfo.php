@@ -158,26 +158,36 @@ class WP_MadeIT_Security_SystemInfo
 
     public function freeDiskSpace()
     {
-        return disk_free_space(ABSPATH);
+        if(function_exists('disk_free_space')) {
+            return disk_free_space(ABSPATH);
+        }
+        else {
+            return 0;
+        }
     }
 
     public function totalDiskSpace()
     {
-        return disk_total_space(ABSPATH);
+        if(function_exists('disk_total_space')) {
+            return disk_total_space(ABSPATH);
+        }
+        else {
+            return 0;
+        }
     }
 
     private function fixSchema($url)
     {
         $siteUrl = get_option('siteurl');
-        if (strpos($siteUrl, 'https://')) {
+        if (strpos($siteUrl, 'https://') !== false) {
             $schema = 'https://';
         } else {
             $schema = 'http://';
         }
 
-        if (strpos($url, 'https://')) {
+        if (strpos($url, 'https://') !== false) {
             $url = str_replace('https://', $schema, $url);
-        } elseif (strpos($url, 'http://')) {
+        } elseif (strpos($url, 'http://') !== false) {
             $url = str_replace('http://', $schema, $url);
         } else {
             $url = $schema.$url;
