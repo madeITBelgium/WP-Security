@@ -108,15 +108,15 @@ if (!defined('ABSPATH')) {
                             <div class="madeit-row">
                                 <?php
                                 ob_start();
-                                phpinfo(INFO_ALL); 
+                                phpinfo(INFO_ALL);
                                 $out = ob_get_clean();
-                                $out = str_replace('class="center"','style="width: 100%"', $out);
-                                $out = str_replace('width="600"','width="900"', $out);
-                                $out = str_replace('<table>','<table class="madeit-table">', $out);
-                                $out = preg_replace( '%^.*<body>(.*)</body>.*$%ms','$1', $out);
+                                $out = str_replace('class="center"', 'style="width: 100%"', $out);
+                                $out = str_replace('width="600"', 'width="900"', $out);
+                                $out = str_replace('<table>', '<table class="madeit-table">', $out);
+                                $out = preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $out);
                                 $out = preg_replace('/<a [^>]+>/', '', $out);
                                 $out = preg_replace('/<\/a>/', '', $out);
-                                $out = preg_replace('/<title>[^<]*<\/title>/','', $out);
+                                $out = preg_replace('/<title>[^<]*<\/title>/', '', $out);
                                 echo $out;
                                 ?>
                             </div>
