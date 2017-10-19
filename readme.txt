@@ -79,3 +79,6 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 * Check core, plugins and themes against repository for changes.
 * Notify updates to Made I.T.
 * Do daily backup
+
+== Development ==
+[![Coverage Status](https://coveralls.io/repos/github/madeITBelgium/WP-Security/badge.svg?branch=master)](https://coveralls.io/github/madeITBelgium/WP-Security?branch=master)
