@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-31 14:35+0000\n"
+"POT-Creation-Date: 2017-10-31 20:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "The file %s is changed"
 msgstr ""
 
-#: inc/WP_MadeIT_Security_Backup.php:385
+#: inc/WP_MadeIT_Security_Backup.php:388
 #, php-format
 msgid ""
 "The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should "
@@ -34,7 +34,7 @@ msgid ""
 "hosting company for more help)"
 msgstr ""
 
-#: inc/WP_MadeIT_Security_Backup.php:388
+#: inc/WP_MadeIT_Security_Backup.php:391
 #, php-format
 msgid ""
 "The amount of time allowed for WordPress plugins to run is very low (%s "
@@ -43,7 +43,7 @@ msgid ""
 "max_execution_time PHP setting; the recommended value is %s seconds or more)"
 msgstr ""
 
-#: inc/WP_MadeIT_Security_Backup.php:404
+#: inc/WP_MadeIT_Security_Backup.php:407
 #, php-format
 msgid "Your free space in your hosting account is very low - only %s Mb remain"
 msgstr ""
@@ -84,63 +84,83 @@ msgstr ""
 msgid "Server info"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:318
+#: admin/WP_MadeIT_Security_Admin.php:97
+msgid "Backup files value is incorrect"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:108
+msgid "The provided API Key is invalid."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:125
+msgid "Cannot connect to the FTP server."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:129
+msgid "FTP credentials are wrong."
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:154
+msgid "Cannot connect to S3 bucket"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:321
 #, php-format
 msgid "Local file %s doesn't exist on your WordPress installation."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:408
+#: admin/WP_MadeIT_Security_Admin.php:411
 msgid "less than 1 second"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:425
+#: admin/WP_MadeIT_Security_Admin.php:428
 #, php-format
 msgid "%s year"
 msgid_plural "%s years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:428
+#: admin/WP_MadeIT_Security_Admin.php:431
 #, php-format
 msgid "%s month"
 msgid_plural "%s months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:431
+#: admin/WP_MadeIT_Security_Admin.php:434
 #, php-format
 msgid "%s day"
 msgid_plural "%s days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:434
+#: admin/WP_MadeIT_Security_Admin.php:437
 #, php-format
 msgid "%s hour"
 msgid_plural "%s hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:437
+#: admin/WP_MadeIT_Security_Admin.php:440
 #, php-format
 msgid "%s minute"
 msgid_plural "%s minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:440
+#: admin/WP_MadeIT_Security_Admin.php:443
 #, php-format
 msgid "%s second"
 msgid_plural "%s seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:501
+#: admin/WP_MadeIT_Security_Admin.php:505
 #, php-format
 msgid "Last result %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:508
+#: admin/WP_MadeIT_Security_Admin.php:512
 #: admin/templates/list-not-exist-files.php:103
 #: admin/templates/list-not-exist-files.php:122
 #: admin/templates/list-changed-files.php:103
@@ -153,12 +173,12 @@ msgstr ""
 msgid "Last scan %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:544
+#: admin/WP_MadeIT_Security_Admin.php:548
 #, php-format
 msgid "Last change %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:550
+#: admin/WP_MadeIT_Security_Admin.php:554
 #, php-format
 msgid "Last backup %s ago."
 msgstr ""
@@ -191,7 +211,7 @@ msgstr ""
 msgid "Back-up settings"
 msgstr ""
 
-#: admin/templates/settings.php:49 admin/templates/settings.php:228
+#: admin/templates/settings.php:49 admin/templates/settings.php:246
 msgid "Maintenance"
 msgstr ""
 
@@ -226,7 +246,7 @@ msgstr ""
 msgid "Scan updates"
 msgstr ""
 
-#: admin/templates/settings.php:117 admin/templates/settings.php:260
+#: admin/templates/settings.php:117 admin/templates/settings.php:278
 msgid "API Integration"
 msgstr ""
 
@@ -241,72 +261,86 @@ msgid ""
 msgstr ""
 
 #: admin/templates/settings.php:137
-msgid "Send the backup to your FTP server."
+msgid "Backup settings"
 msgstr ""
 
 #: admin/templates/settings.php:142
-msgid "Enable FTP Backup"
+msgid "Files to backup at once"
 msgstr ""
 
-#: admin/templates/settings.php:152
-msgid "FTP server"
+#: admin/templates/settings.php:147
+msgid ""
+"You can increase or decrease this value. The higher number, the faster the "
+"backup is completed. High number of files need more server resources."
+msgstr ""
+
+#: admin/templates/settings.php:155
+msgid "Send the backup to your FTP server."
 msgstr ""
 
 #: admin/templates/settings.php:160
+msgid "Enable FTP Backup"
+msgstr ""
+
+#: admin/templates/settings.php:170
+msgid "FTP server"
+msgstr ""
+
+#: admin/templates/settings.php:178
 msgid "FTP username"
 msgstr ""
 
-#: admin/templates/settings.php:168
+#: admin/templates/settings.php:186
 msgid "FTP password"
 msgstr ""
 
-#: admin/templates/settings.php:176
+#: admin/templates/settings.php:194
 msgid "FTP destination directory"
 msgstr ""
 
-#: admin/templates/settings.php:186
+#: admin/templates/settings.php:204
 msgid "Send the backup to your S3 bucket."
 msgstr ""
 
-#: admin/templates/settings.php:191
+#: admin/templates/settings.php:209
 msgid "Enable S3 Backup"
 msgstr ""
 
-#: admin/templates/settings.php:201
+#: admin/templates/settings.php:219
 msgid "Access key"
 msgstr ""
 
-#: admin/templates/settings.php:209
+#: admin/templates/settings.php:227
 msgid "Secret key"
 msgstr ""
 
-#: admin/templates/settings.php:217
+#: admin/templates/settings.php:235
 msgid "Bucket"
 msgstr ""
 
-#: admin/templates/settings.php:230
+#: admin/templates/settings.php:248
 msgid "Prevent your website from hacking"
 msgstr ""
 
-#: admin/templates/settings.php:232
+#: admin/templates/settings.php:250
 msgid ""
 " Prevent your website from hacking. Made I.T. can take care of your "
 "WordPress website to take the control of the updates and optimizations."
 msgstr ""
 
-#: admin/templates/settings.php:238
+#: admin/templates/settings.php:256
 msgid "Let Made I.T. Take over the maintenance"
 msgstr ""
 
-#: admin/templates/settings.php:248
+#: admin/templates/settings.php:266
 msgid "Backup your website"
 msgstr ""
 
-#: admin/templates/settings.php:265
+#: admin/templates/settings.php:283
 msgid "Made I.T. WordPress Maintenance API Key"
 msgstr ""
 
-#: admin/templates/settings.php:281
+#: admin/templates/settings.php:299
 msgid "Save"
 msgstr ""
 

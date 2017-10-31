@@ -93,7 +93,9 @@ class WP_MadeIT_Security_Admin
             // This nonce is not valid.
             wp_die('Security check');
         } else {
-            //$this->settings->checkTextbox('madeit_security_api_key');
+            if(!is_numeric(sanitize_text_field($_POST['madeit_security_backup_files']))) {
+                return __('Backup files value is incorrect', 'wp-security-by-made-it');
+            }
 
             //Check API Key
             $newKey = sanitize_text_field($_POST['madeit_security_maintenance_api_key']);
@@ -103,7 +105,7 @@ class WP_MadeIT_Security_Admin
                 update_option('madeit_security_maintenance_enable', false);
                 $this->defaultSettings = $this->settings->loadDefaultSettings();
 
-                return 'The provided API Key is invalid.';
+                return __('The provided API Key is invalid.', 'wp-security-by-made-it');
             } elseif (isset($checkApiKey['success']) && $checkApiKey['success']) {
                 update_option('madeit_security_maintenance_api_key', $newKey);
                 update_option('madeit_security_api_key', $newKey);
@@ -120,11 +122,11 @@ class WP_MadeIT_Security_Admin
 
                 $conn_id = ftp_connect($ftp_server);
                 if ($conn_id === false) {
-                    return 'Cannot connect to the FTP server.';
+                    return __('Cannot connect to the FTP server.', 'wp-security-by-made-it');
                 }
                 $login_result = ftp_login($conn_id, $ftp_username, $ftp_password);
                 if ($login_result === false) {
-                    return 'FTP credentials are wrong.';
+                    return __('FTP credentials are wrong.', 'wp-security-by-made-it');
                 }
                 $ftp = true;
             }
@@ -149,7 +151,7 @@ class WP_MadeIT_Security_Admin
                     return $e->getMessage();
                 }
                 if ($error) {
-                    return 'Cannot connect to S3 bucket';
+                    return __('Cannot connect to S3 bucket', 'wp-security-by-made-it');
                 }
 
                 //check if S3 is available
@@ -157,6 +159,7 @@ class WP_MadeIT_Security_Admin
             }
 
             //Backup settings
+            $this->settings->checkTextbox('madeit_security_backup_files');
             update_option('madeit_security_backup_ftp_enable', $ftp);
             $this->settings->checkTextbox('madeit_security_backup_ftp_username');
             $this->settings->checkTextbox('madeit_security_backup_ftp_password');

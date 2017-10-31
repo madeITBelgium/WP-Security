@@ -37,7 +37,7 @@ class WP_MadeIT_Security_Settings
                 'backup' => get_option('madeit_security_maintenance_backup', false),
             ],
             'backup' => [
-                'files' => get_option('madeit_security_backup_files', 750),
+                'files' => get_option('madeit_security_backup_files', 500),
                 'ftp'   => [
                     'enabled'         => get_option('madeit_security_backup_ftp_enable', false),
                     'server'          => get_option('madeit_security_backup_ftp_server', ''),
@@ -117,7 +117,7 @@ class WP_MadeIT_Security_Settings
             update_option('madeit_security_backup_s3_bucket_name', '');
         }
         if (get_option('madeit_security_backup_files', null) === null) {
-            update_option('madeit_security_backup_files', 750);
+            update_option('madeit_security_backup_files', 500);
         }
     }
 
@@ -163,6 +163,15 @@ class WP_MadeIT_Security_Settings
     public function checkTextbox($key)
     {
         if (isset($_POST[$key])) {
+            update_option($key, sanitize_text_field($_POST[$key]));
+        } else {
+            update_option($key, '');
+        }
+    }
+
+    public function checkNumeric($key)
+    {
+        if (isset($_POST[$key]) && is_numeric(sanitize_text_field($_POST[$key]))) {
             update_option($key, sanitize_text_field($_POST[$key]));
         } else {
             update_option($key, '');

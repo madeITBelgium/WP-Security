@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Security by Made I.T.\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-31 14:35+0000\n"
-"PO-Revision-Date: 2017-10-31 14:42+0000\n"
+"POT-Creation-Date: 2017-10-31 20:02+0000\n"
+"PO-Revision-Date: 2017-10-31 20:14+0000\n"
 "Last-Translator: Tjebbe Lievens <tjebbe.lievens@tpweb.org>\n"
 "Language-Team: Dutch (Belgium)\n"
 "Language: nl-BE\n"
@@ -12,6 +12,43 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
+
+#: admin/WP_MadeIT_Security_Admin.php:97
+msgid "Backup files value is incorrect"
+msgstr "Waarde van Aantal bestanden in backup is foutief"
+
+#: admin/WP_MadeIT_Security_Admin.php:108
+msgid "The provided API Key is invalid."
+msgstr "De opgegeven API key is foutief."
+
+#: admin/WP_MadeIT_Security_Admin.php:125
+msgid "Cannot connect to the FTP server."
+msgstr "Kan niet verbinden met de FTP server."
+
+#: admin/WP_MadeIT_Security_Admin.php:129
+msgid "FTP credentials are wrong."
+msgstr "FTP login gegevens zijn foutief."
+
+#: admin/WP_MadeIT_Security_Admin.php:154
+msgid "Cannot connect to S3 bucket"
+msgstr "Kan niet verbinden met de S3 opslag."
+
+#: admin/templates/settings.php:137
+msgid "Backup settings"
+msgstr "Backup instellingen"
+
+#: admin/templates/settings.php:142
+msgid "Files to backup at once"
+msgstr "Aantal bestanden backupen in één request"
+
+#: admin/templates/settings.php:147
+msgid ""
+"You can increase or decrease this value. The higher number, the faster the "
+"backup is completed. High number of files need more server resources."
+msgstr ""
+"Je kan deze waarde verhogen of verlagen. Hoe hoger de waarde, hoe sneller "
+"een backup voltooid is. Maar hoe hoger de waarde hoe meer server resources "
+"er nodig zijn."
 
 #: inc/WP_MadeIT_Security_Plugin_Scan.php:55
 #: inc/WP_MadeIT_Security_Plugin_Scan.php:55
@@ -25,11 +62,7 @@ msgstr "Het bestand %s is verwijderd"
 msgid "The file %s is changed"
 msgstr "Het bestand %s is veranderd"
 
-#: admin/templates/system_info.php:113
-msgid "Schedule"
-msgstr "Plannen"
-
-#: inc/WP_MadeIT_Security_Backup.php:385
+#: inc/WP_MadeIT_Security_Backup.php:388
 #, php-format
 msgid ""
 "The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should "
@@ -40,7 +73,7 @@ msgstr ""
 "Mb) - u moet dit verhogen om storingen te voorkomen door onvoldoende "
 "geheugen (raadpleeg uw webhostingbedrijf voor meer hulp)"
 
-#: inc/WP_MadeIT_Security_Backup.php:388
+#: inc/WP_MadeIT_Security_Backup.php:391
 #, php-format
 msgid ""
 "The amount of time allowed for WordPress plugins to run is very low (%s "
@@ -54,7 +87,7 @@ msgstr ""
 "het is de max_execution_time PHP instelling; aanbevolen waarde is %s "
 "seconden of meer)"
 
-#: inc/WP_MadeIT_Security_Backup.php:404
+#: inc/WP_MadeIT_Security_Backup.php:407
 #, php-format
 msgid "Your free space in your hosting account is very low - only %s Mb remain"
 msgstr ""
@@ -97,64 +130,64 @@ msgstr "Instellingen"
 msgid "Server info"
 msgstr "Server info"
 
-#: admin/WP_MadeIT_Security_Admin.php:318
+#: admin/WP_MadeIT_Security_Admin.php:321
 #, php-format
 msgid "Local file %s doesn't exist on your WordPress installation."
 msgstr ""
 "Het lokale bestand %s kan niet worden gevonden in je WordPress installatie."
 
-#: admin/WP_MadeIT_Security_Admin.php:408
+#: admin/WP_MadeIT_Security_Admin.php:411
 msgid "less than 1 second"
 msgstr "Minder dan 1 seconde"
 
-#: admin/WP_MadeIT_Security_Admin.php:425
+#: admin/WP_MadeIT_Security_Admin.php:428
 #, php-format
 msgid "%s year"
 msgid_plural "%s years"
 msgstr[0] "%s jaar"
 msgstr[1] "%s jaren"
 
-#: admin/WP_MadeIT_Security_Admin.php:428
+#: admin/WP_MadeIT_Security_Admin.php:431
 #, php-format
 msgid "%s month"
 msgid_plural "%s months"
 msgstr[0] "%s maand"
 msgstr[1] "%s maanden"
 
-#: admin/WP_MadeIT_Security_Admin.php:431
+#: admin/WP_MadeIT_Security_Admin.php:434
 #, php-format
 msgid "%s day"
 msgid_plural "%s days"
 msgstr[0] "%s dag"
 msgstr[1] "%s dagen"
 
-#: admin/WP_MadeIT_Security_Admin.php:434
+#: admin/WP_MadeIT_Security_Admin.php:437
 #, php-format
 msgid "%s hour"
 msgid_plural "%s hours"
 msgstr[0] "%s uur"
-msgstr[1] "% uren"
+msgstr[1] "%s uren"
 
-#: admin/WP_MadeIT_Security_Admin.php:437
+#: admin/WP_MadeIT_Security_Admin.php:440
 #, php-format
 msgid "%s minute"
 msgid_plural "%s minutes"
 msgstr[0] "%s minuut"
 msgstr[1] "%s minuten"
 
-#: admin/WP_MadeIT_Security_Admin.php:440
+#: admin/WP_MadeIT_Security_Admin.php:443
 #, php-format
 msgid "%s second"
 msgid_plural "%s seconds"
 msgstr[0] "%s seconde"
 msgstr[1] "%s seconden"
 
-#: admin/WP_MadeIT_Security_Admin.php:501
+#: admin/WP_MadeIT_Security_Admin.php:505
 #, php-format
 msgid "Last result %s ago."
 msgstr "Laatste resultaat %s geleden"
 
-#: admin/WP_MadeIT_Security_Admin.php:508
+#: admin/WP_MadeIT_Security_Admin.php:512
 #: admin/templates/list-not-exist-files.php:103
 #: admin/templates/list-not-exist-files.php:122
 #: admin/templates/list-changed-files.php:103
@@ -167,12 +200,12 @@ msgstr "Laatste resultaat %s geleden"
 msgid "Last scan %s ago."
 msgstr "Laatste scan is %s geleden."
 
-#: admin/WP_MadeIT_Security_Admin.php:544
+#: admin/WP_MadeIT_Security_Admin.php:548
 #, php-format
 msgid "Last change %s ago."
 msgstr "Laatste verandering %s geleden."
 
-#: admin/WP_MadeIT_Security_Admin.php:550
+#: admin/WP_MadeIT_Security_Admin.php:554
 #, php-format
 msgid "Last backup %s ago."
 msgstr "Laatste backup is %s geleden uitgevoerd."
@@ -205,7 +238,7 @@ msgstr "Algemene instellingen"
 msgid "Back-up settings"
 msgstr "Backup instellingen"
 
-#: admin/templates/settings.php:49 admin/templates/settings.php:228
+#: admin/templates/settings.php:49 admin/templates/settings.php:246
 msgid "Maintenance"
 msgstr "Onderhoud"
 
@@ -241,7 +274,7 @@ msgstr "Updates"
 msgid "Scan updates"
 msgstr "Scan updates"
 
-#: admin/templates/settings.php:117 admin/templates/settings.php:260
+#: admin/templates/settings.php:117 admin/templates/settings.php:278
 msgid "API Integration"
 msgstr "API integratie"
 
@@ -258,55 +291,55 @@ msgstr ""
 "communiceren met onze servers. Zo kunnen we je steeds de laaste scan lijsten,"
 " virus/mallware databases, enz. bezorgen."
 
-#: admin/templates/settings.php:137
+#: admin/templates/settings.php:155
 msgid "Send the backup to your FTP server."
 msgstr "Verstuur de backup naar je FTP server."
 
-#: admin/templates/settings.php:142
+#: admin/templates/settings.php:160
 msgid "Enable FTP Backup"
 msgstr "Schakel FTP backups in"
 
-#: admin/templates/settings.php:152
+#: admin/templates/settings.php:170
 msgid "FTP server"
 msgstr "FTP server"
 
-#: admin/templates/settings.php:160
+#: admin/templates/settings.php:178
 msgid "FTP username"
 msgstr "FTP gebruikersnaam"
 
-#: admin/templates/settings.php:168
+#: admin/templates/settings.php:186
 msgid "FTP password"
 msgstr "FTP wachtwoord"
 
-#: admin/templates/settings.php:176
+#: admin/templates/settings.php:194
 msgid "FTP destination directory"
 msgstr "FTP bestemmings locatie"
 
-#: admin/templates/settings.php:186
+#: admin/templates/settings.php:204
 msgid "Send the backup to your S3 bucket."
 msgstr "Verstuur de backup naar je Amazon S3 bucket."
 
-#: admin/templates/settings.php:191
+#: admin/templates/settings.php:209
 msgid "Enable S3 Backup"
 msgstr "Schakel S3 backups in"
 
-#: admin/templates/settings.php:201
+#: admin/templates/settings.php:219
 msgid "Access key"
 msgstr "Access Key"
 
-#: admin/templates/settings.php:209
+#: admin/templates/settings.php:227
 msgid "Secret key"
 msgstr "Secret Key"
 
-#: admin/templates/settings.php:217
+#: admin/templates/settings.php:235
 msgid "Bucket"
 msgstr "Bucket"
 
-#: admin/templates/settings.php:230
+#: admin/templates/settings.php:248
 msgid "Prevent your website from hacking"
 msgstr "Voorkom je website van hacking"
 
-#: admin/templates/settings.php:232
+#: admin/templates/settings.php:250
 msgid ""
 " Prevent your website from hacking. Made I.T. can take care of your "
 "WordPress website to take the control of the updates and optimizations."
@@ -314,19 +347,19 @@ msgstr ""
 "Voorkom je website van hacking. Made I.T. kan het beheer van je WordPress "
 "website overnemen. We zorgen voor alle updates en optimalisaties."
 
-#: admin/templates/settings.php:238
+#: admin/templates/settings.php:256
 msgid "Let Made I.T. Take over the maintenance"
 msgstr "Laat Made I.T. het onderhoud overnemen"
 
-#: admin/templates/settings.php:248
+#: admin/templates/settings.php:266
 msgid "Backup your website"
 msgstr "Backup je website naar Made I.T."
 
-#: admin/templates/settings.php:265
+#: admin/templates/settings.php:283
 msgid "Made I.T. WordPress Maintenance API Key"
 msgstr "Made I.T. WordPress Onderhoud API Key"
 
-#: admin/templates/settings.php:281
+#: admin/templates/settings.php:299
 msgid "Save"
 msgstr "Opslaan"
 
@@ -445,6 +478,10 @@ msgstr "Cronjobs"
 #: admin/templates/system_info.php:112
 msgid "Job"
 msgstr "Taak"
+
+#: admin/templates/system_info.php:113
+msgid "Schedule"
+msgstr "Plannen"
 
 #: admin/templates/system_info.php:114
 msgid "Next run (Server time)"

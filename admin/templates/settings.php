@@ -134,6 +134,24 @@ if (!defined('ABSPATH')) {
                         </div>
                         <div class="madeit-tab-panel" id="backup-settings">
                             <section class="section">
+                                <h3><?php echo esc_html(__('Backup settings', 'wp-security-by-made-it')); ?></h3>
+                                <table class="form-table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Files to backup at once', 'wp-security-by-made-it')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="text" name="madeit_security_backup_files" class="large-text code" size="70" value="<?php echo $this->defaultSettings['backup']['files']; ?>" />
+                                                <p>
+                                                    <?php echo esc_html(__('You can increase or decrease this value. The higher number, the faster the backup is completed. High number of files need more server resources.', 'wp-security-by-made-it')); ?>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                            <section class="section">
                                 <h3><?php echo esc_html(__('Send the backup to your FTP server.', 'wp-security-by-made-it')); ?></h3>
                                 <table class="form-table">
                                     <tbody>
