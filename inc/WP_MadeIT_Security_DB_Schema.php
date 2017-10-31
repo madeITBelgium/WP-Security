@@ -45,9 +45,9 @@ class WP_MadeIT_Security_DB_Schema
             'issue_ignored' => 'int UNSIGNED NULL',
             'issue_readed'  => 'int UNSIGNED NULL',
             'issue_remind'  => 'int UNSIGNED NULL',
-	        'shortMsg'      => 'varchar(255) NULL',
-	        'longMsg'       => 'text NULL',
-	        'data'          => 'text NULL',
+            'shortMsg'      => 'varchar(255) NULL',
+            'longMsg'       => 'text NULL',
+            'data'          => 'text NULL',
         ],
     ];
 
