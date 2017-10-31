@@ -48,14 +48,14 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => time().'_'.sanitize_title(home_url('/')).'_'.rand(),
+                'backup_action' => str_replace("http", "", str_replace("https", "", sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
                 'total_files'   => 0,
                 'files'         => 0,
                 'file_size'     => 0,
             ];
         }
 
-        if (isset($backupResult['done']) && $backupResult['done'] == false && $backupResult['time'] <= time() - 60 * 30) {
+        if (isset($backupResult['done']) && $backupResult['stop'] == false && $backupResult['done'] == false && $backupResult['time'] <= time() - 60 * 30) {
             //Stop existing running job
             $backupResult['stop'] = true;
             set_site_transient('madeit_security_backup', $backupResult);
@@ -74,7 +74,7 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => time().'_'.sanitize_title(home_url('/')).'_'.rand(),
+                'backup_action' => str_replace("http", "", str_replace("https", "", sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
                 'total_files'   => 0,
                 'files'         => 0,
                 'file_size'     => 0,
@@ -145,8 +145,11 @@ class WP_MadeIT_Security_Backup
             }
         } elseif ($backupResult['step'] == 1) { //Backup files
             if ($backupResult['total_files'] > $backupResult['files']) {
-                $this->backupFiles();
-
+                $donefiles = $this->backupFiles();
+                if($donefiles > 0) {
+                    exit;
+                }
+                
                 //Backup files done
                 $backupResult['result_file'] = $this->backups_dir_location().'/'.$this->getZipContentName();
                 $backupResult['last_con_time'] = time();
@@ -266,12 +269,12 @@ class WP_MadeIT_Security_Backup
     private function backupFiles()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup_Files.php';
-        $backupFiles = new WP_MadeIT_Security_Backup_Files($this->db);
+        $backupFiles = new WP_MadeIT_Security_Backup_Files($this->settings, $this->db);
 
         $zipPath = $this->backups_dir_location();
         $zipPath .= '/'.$this->getZipContentName();
 
-        $backupFiles->doBackupFromDB($zipPath);
+        return $backupFiles->doBackupFromDB($zipPath);
     }
 
     private function backupDatabase()
@@ -534,10 +537,10 @@ class WP_MadeIT_Security_Backup
 
         if (strlen($ftp_username) > 0 && strlen($ftp_password) > 0 && strlen($ftp_server) > 0) {
             $remote_file = $fileName;
-            $file = $directory.'/'.$remote_file;
+            $file = untrailingslashit($directory).'/'.$remote_file;
 
             if (!empty($destinationDir)) {
-                $remote_file = $destinationDir.'/'.$remote_file;
+                $remote_file = untrailingslashit($destinationDir).'/'.$remote_file;
             }
 
             $conn_id = ftp_connect($ftp_server);

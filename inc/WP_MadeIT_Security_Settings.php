@@ -37,6 +37,7 @@ class WP_MadeIT_Security_Settings
                 'backup' => get_option('madeit_security_maintenance_backup', false),
             ],
             'backup' => [
+                'files' => get_option('madeit_security_backup_files', 750),
                 'ftp' => [
                     'enabled'         => get_option('madeit_security_backup_ftp_enable', false),
                     'server'          => get_option('madeit_security_backup_ftp_server', ''),
@@ -114,6 +115,9 @@ class WP_MadeIT_Security_Settings
         }
         if (get_option('madeit_security_backup_s3_bucket_name', null) === null) {
             update_option('madeit_security_backup_s3_bucket_name', '');
+        }
+        if (get_option('madeit_security_backup_files', null) === null) {
+            update_option('madeit_security_backup_files', 750);
         }
     }
 

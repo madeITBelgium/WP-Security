@@ -3,15 +3,20 @@
 class WP_MadeIT_Security_Backup_Files
 {
     private $db;
+    private $settings;
+    private $defaultSettings = [];
 
-    public function __construct($db)
+    public function __construct($settings, $db)
     {
+        $this->settings = $settings;
+        $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
     }
 
     public function doBackupFromDB($zipFile, $inlcudeTypes = ['uploads', 'plugins', 'themes'], $excludeDirs = null)
     {
-        $files = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_filelist WHERE need_backup = 1 AND in_backup = 0 LIMIT 500');
+        $fileToBackup = $this->defaultSettings['backup']['files'];
+        $files = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_filelist WHERE need_backup = 1 AND in_backup = 0 LIMIT %d', $fileToBackup);
         if (count($files) > 0) {
             if (extension_loaded('zip')) {
                 // Initialize archive object
@@ -19,6 +24,7 @@ class WP_MadeIT_Security_Backup_Files
                 if ($zip->open($zipFile, ZipArchive::CREATE)) {
                     $backedupFiles = [];
                     $i = 0;
+                    $filesDoneNow = 0;
 
                     $backupResult = get_site_transient('madeit_security_backup');
                     $filesCount = $backupResult['files'];
@@ -32,6 +38,7 @@ class WP_MadeIT_Security_Backup_Files
                             $filesCount++;
                             $filename = str_replace(WP_CONTENT_DIR, '', $fullPath);
                             $zip->addFile($fullPath, $filename);
+                            $filesDoneNow++;
                         } else {
                             $filesCount++;
                         }
@@ -64,9 +71,10 @@ class WP_MadeIT_Security_Backup_Files
                     $backupResult['total_files'] = $totalFiles;
                     set_site_transient('madeit_security_backup', $backupResult);
                     wp_schedule_single_event(time(), 'madeit_security_backup_run');
-                    exit;
+                    return $filesDoneNow;
                 }
             }
         }
+        return 0;
     }
 }
