@@ -48,7 +48,7 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => str_replace("http", "", str_replace("https", "", sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
+                'backup_action' => str_replace('http', '', str_replace('https', '', sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
                 'total_files'   => 0,
                 'files'         => 0,
                 'file_size'     => 0,
@@ -74,7 +74,7 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => str_replace("http", "", str_replace("https", "", sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
+                'backup_action' => str_replace('http', '', str_replace('https', '', sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
                 'total_files'   => 0,
                 'files'         => 0,
                 'file_size'     => 0,
@@ -146,10 +146,10 @@ class WP_MadeIT_Security_Backup
         } elseif ($backupResult['step'] == 1) { //Backup files
             if ($backupResult['total_files'] > $backupResult['files']) {
                 $donefiles = $this->backupFiles();
-                if($donefiles > 0) {
+                if ($donefiles > 0) {
                     exit;
                 }
-                
+
                 //Backup files done
                 $backupResult['result_file'] = $this->backups_dir_location().'/'.$this->getZipContentName();
                 $backupResult['last_con_time'] = time();
