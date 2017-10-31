@@ -38,7 +38,7 @@ class WP_MadeIT_Security_Settings
             ],
             'backup' => [
                 'files' => get_option('madeit_security_backup_files', 750),
-                'ftp' => [
+                'ftp'   => [
                     'enabled'         => get_option('madeit_security_backup_ftp_enable', false),
                     'server'          => get_option('madeit_security_backup_ftp_server', ''),
                     'username'        => get_option('madeit_security_backup_ftp_username', ''),

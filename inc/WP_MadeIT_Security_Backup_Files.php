@@ -71,10 +71,12 @@ class WP_MadeIT_Security_Backup_Files
                     $backupResult['total_files'] = $totalFiles;
                     set_site_transient('madeit_security_backup', $backupResult);
                     wp_schedule_single_event(time(), 'madeit_security_backup_run');
+
                     return $filesDoneNow;
                 }
             }
         }
+
         return 0;
     }
 }
