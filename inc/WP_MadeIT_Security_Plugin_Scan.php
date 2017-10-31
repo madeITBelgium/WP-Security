@@ -19,6 +19,8 @@ class WP_MadeIT_Security_Plugin_Scan
     //Return array with files and there hash
     public function scanChanges($fast = false, $fileCount = 1000)
     {
+        $result = get_site_transient('madeit_security_scan');
+        $initialRun = $result['init_run'];
         $fileData = [];
         $deletedFiles = [];
         $checkedFileList = [];
@@ -48,9 +50,16 @@ class WP_MadeIT_Security_Plugin_Scan
 
             if ($file['file_deleted'] == null) {
                 $fileData[$fileName] = $file['new_md5'];
+                if(!$initialRun) {
+                    //Delete file in issue
+                    $this->db->queryWrite('INSERT INTO '.$this->db->prefix()."madeit_sec_issues (filename_md5, filename, old_md5, new_md5, type, serverity, issue_created, shortMsg, longMsg, data) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)", $file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 2, 3, time(), sprintf(__('The file %s is deleted', 'wp-security-by-made-it'), $file['filename']), sprintf(__('The file %s is deleted', 'wp-security-by-made-it'), $file['filename']), json_encode([]));
+                }
             } else {
-                error_log(print_r($file, true));
                 $deletedFiles[$fileName] = $file['new_md5'];
+                if(!$initialRun && $file['new_md5'] != $file['old_md5']) {
+                    //Delete file in issue
+                    $this->db->queryWrite('INSERT INTO '.$this->db->prefix()."madeit_sec_issues (filename_md5, filename, old_md5, new_md5, type, serverity, issue_created, shortMsg, longMsg, data) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)", $file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 1, 3, time(), sprintf(__('The file %s is changed', 'wp-security-by-made-it'), $file['filename']), sprintf(__('The file %s is changed', 'wp-security-by-made-it'), $file['filename']), json_encode([]));
+                }
             }
 
             if (!$fast && false) {
@@ -167,6 +176,8 @@ class WP_MadeIT_Security_Plugin_Scan
                     if (isset($checkedFileList[$file])) {
                         if ($result == 'File not equal') {
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File not equal to repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
+                        
+                            //$this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_issues type = %s, serverity = %s, shortMsg = %s, longMsg = %s, data = %s) WHERE filename_md5 = %s ORDER BY id DESC LIMIT 1", 3, 4, sprintf(__('The file %s is deleted', 'wp-security-by-made-it'), $file), sprintf(__('The file %s is changed compared to the repo version', 'wp-security-by-made-it'), $file), json_encode([]), $checkedFileList[$file]);
                         } elseif ($result == 'File not exist') {
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File not exist in repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
                         }

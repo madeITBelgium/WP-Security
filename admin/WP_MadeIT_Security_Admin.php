@@ -45,9 +45,6 @@ class WP_MadeIT_Security_Admin
         add_submenu_page('madeit_security', __('Security Settings', 'wp-security-by-made-it'), __('Settings', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_settings', [$this, 'settings']);
 
         add_submenu_page(null, __('Server info', 'wp-security-by-made-it'), __('Server info', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_systeminfo', [$this, 'show_server_info']);
-
-        //Add server info page
-        //add_action(get_plugin_page_hookname('madeit_security', 'madeit_security_systeminfo'), array($this, 'show_server_info'));
     }
 
     public function initStyle()
@@ -351,7 +348,7 @@ class WP_MadeIT_Security_Admin
                         $fileReplacedSuccesfull = $file;
                     }
                 } else {
-                    if (true) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
+                    if (false) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
                         $remoteUrl = 'https://madeit.be/wordpress-onderhoud/api/1.0/wp/plugin/'.$plugin.'/getFile?version='.$version.'&file='.$fileName;
                     } else {
                         $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$fileName.'?format=txt';
@@ -411,20 +408,38 @@ class WP_MadeIT_Security_Admin
             return __('less than 1 second', 'wp-security-by-made-it');
         }
 
-        $a = [12 * 30 * 24 * 60 * 60 => __('year', 'wp-security-by-made-it'),
-                   30 * 24 * 60 * 60 => __('month', 'wp-security-by-made-it'),
-                   24 * 60 * 60      => __('day', 'wp-security-by-made-it'),
-                   60 * 60           => __('hour', 'wp-security-by-made-it'),
-                   60                => __('minute', 'wp-security-by-made-it'),
-                   1                 => __('second', 'wp-security-by-made-it'),
+        $a = [12 * 30 * 24 * 60 * 60 => 'year',
+                   30 * 24 * 60 * 60 => 'month',
+                   24 * 60 * 60      => 'day',
+                   60 * 60           => 'hour',
+                   60                => 'minute',
+                   1                 => 'second',
         ];
 
         foreach ($a as $secs => $str) {
             $d = $etime / $secs;
             if ($d >= 1) {
                 $r = round($d);
-
-                return $r.' '.$str.($r > 1 ? 's' : '');
+                
+                if($str == "year") {
+                    return sprintf(_n('%s year', '%s years', $r, 'wp-security-by-made-it'), $r);
+                }
+                if($str == "month") {
+                    return sprintf(_n('%s month', '%s months', $r, 'wp-security-by-made-it'), $r);
+                }
+                if($str == "day") {
+                    return sprintf(_n('%s day', '%s days', $r, 'wp-security-by-made-it'), $r);
+                }
+                if($str == "hour") {
+                    return sprintf(_n('%s hour', '%s hours', $r, 'wp-security-by-made-it'), $r);
+                }
+                if($str == "minute") {
+                    return sprintf(_n('%s minute', '%s minutes', $r, 'wp-security-by-made-it'), $r);
+                }
+                if($str == "second") {
+                    return sprintf(_n('%s second', '%s seconds', $r, 'wp-security-by-made-it'), $r);
+                }
+                return $r;
             }
         }
     }

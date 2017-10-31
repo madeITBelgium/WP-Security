@@ -32,6 +32,23 @@ class WP_MadeIT_Security_DB_Schema
             'theme_file'   => 'tinyint UNSIGNED NOT NULL default 0',
             'content_file' => 'tinyint UNSIGNED NOT NULL default 0',
         ],
+        'madeit_sec_issues' => [ //Columns
+            'id'            => 'int UNSIGNED NOT NULL auto_increment PRIMARY KEY',
+            'filename_md5'  => 'varchar(64) NULL',
+            'filename'      => 'varchar(1000) NULL',
+            'old_md5'       => 'varchar(64) NULL',
+            'new_md5'       => 'varchar(64) NULL',
+            'type'          => 'int UNSIGNED NOT NULL default 0', //1 = File change, 2 = File deleted, 3 = File added
+            'severity'      => 'tinyint UNSIGNED NOT NULL default 0', //1 = trivial, 2 => minor 3 => major, 4 => critical, 5 => blocked
+            'issue_created' => 'int UNSIGNED NULL',
+            'issue_fixed'   => 'int UNSIGNED NULL',
+            'issue_ignored' => 'int UNSIGNED NULL',
+            'issue_readed'  => 'int UNSIGNED NULL',
+            'issue_remind'  => 'int UNSIGNED NULL',
+	        'shortMsg'      => 'varchar(255) NULL',
+	        'longMsg'       => 'text NULL',
+	        'data'          => 'text NULL',
+        ],
     ];
 
     public function __construct($db)

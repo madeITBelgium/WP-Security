@@ -5,6 +5,7 @@ class WP_MadeIT_Security_LoadFiles
     private $defaultSettings = [];
     private $settings;
     private $db;
+    private $initRun = true;
 
     public function __construct($settings, $db)
     {
@@ -25,7 +26,7 @@ class WP_MadeIT_Security_LoadFiles
         $result['stop'] = true;
         set_site_transient('madeit_security_scan', $result);
 
-        $message = 'Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
+        $message = date('Y-m-d H:i:s') . ' Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
         file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', $message.PHP_EOL, FILE_APPEND);
         //header( "Location: {$config["error_page"]}" );
         exit();
@@ -74,17 +75,23 @@ class WP_MadeIT_Security_LoadFiles
             set_site_transient('madeit_security_scan', $result);
         }
 
-        if ($result['done'] == false && $result['start_time'] <= time() - 60 * 30) {
+        if ($result['stop'] == false && $result['done'] == false && $result['start_time'] >= time() - 60 * 30) {
             //Stop existing running job
             $result['stop'] = true;
             set_site_transient('madeit_security_scan', $result);
         } else {
+            $initRun = true;
+            $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_filelist');
+            if ($count != null && $count['aantal'] > 0) {
+                $initRun = false;   
+            }
             $result = [];
             $result['start_time'] = time();
             $result['step'] = 0;
             $result['done'] = false;
             $result['stop'] = false;
             $result['result'] = $emptyResult;
+            $result['init_run'] = $initRun;
             set_site_transient('madeit_security_scan', $result);
 
             //Clear error log
@@ -124,6 +131,8 @@ class WP_MadeIT_Security_LoadFiles
         $scanForBackup = false;
 
         $result = get_site_transient('madeit_security_scan');
+        $this->initRun = $result['init_run'];
+            
 
         if ($result['done'] == false && $result['stop'] == false) {
             if ($result['stop'] == true) {
@@ -138,7 +147,7 @@ class WP_MadeIT_Security_LoadFiles
                 //Update db md5 codes
                 $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET old_md5 = new_md5 WHERE old_md5 <> new_md5');
                 $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_loaded = null');
-                $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_checked = null, reason = null WHERE is_safe = 0 OR `reason` IS NOT NULL');
+                $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_checked = null, `reason` = null WHERE is_safe = 0 OR `reason` IS NOT NULL');
 
                 $result['step'] = 1;
                 $result['last_com_time'] = time();
@@ -451,18 +460,27 @@ class WP_MadeIT_Security_LoadFiles
 
     private function fileLoadDirectory($directory, $type, $pluginTheme = null)
     {
+        $directory = untrailingslashit($directory);
         if (!is_dir($directory)) {
             return false;
         }
+        
+        $pluginDir = untrailingslashit(WP_PLUGIN_DIR);
+        $themeDir = untrailingslashit(WP_CONTENT_DIR).'/themes';
 
         $dir = dir($directory);
 
         while (false !== ($file = $dir->read())) {
             if ($file != '.' and $file != '..') {
-                if (is_dir($directory.'/'.$file)) {
-                    $this->fileLoadDirectory($directory.'/'.$file, $type);
-                } else {
-                    $this->updateFileToDB($directory.'/'.$file, md5_file($directory.'/'.$file), $type, $pluginTheme);
+                if($type == "WP_CONTENT" && ($directory.'/'.$file == $pluginDir || $directory.'/'.$file == $themeDir) ) {
+                    continue;
+                }
+                else {
+                    if (is_dir($directory.'/'.$file)) {
+                        $this->fileLoadDirectory($directory.'/'.$file, $type, $pluginTheme);
+                    } else {
+                        $this->updateFileToDB($directory.'/'.$file, md5_file($directory.'/'.$file), $type, $pluginTheme);
+                    }
                 }
             }
         }
@@ -592,9 +610,9 @@ class WP_MadeIT_Security_LoadFiles
         $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_filelist '.
                               '(filename_md5, filename, old_md5, new_md5, file_created, file_checked, file_loaded, exist_in_orig, changed, is_safe, need_backup, in_backup, has_url, safe_url, `ignore`, core_file, plugin_file, theme_file, content_file, plugin_theme) VALUES ('.
                               "'%s', '%s', '%s', '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s".
-                              ") ON DUPLICATE KEY UPDATE new_md5 = '%s', has_url = %s, safe_url = %s, file_deleted = null, file_loaded = %s",
+                              ") ON DUPLICATE KEY UPDATE new_md5 = '%s', has_url = %s, safe_url = %s, file_deleted = null, file_loaded = %s, plugin_theme = %s",
                               md5($fullPath), $fullPath, $fileHash, $fileHash, time(), null, time(), 0, 0, 1, $need_backup, 0, $hasUrl, $safeUrl, $ignore, $coreFile, $pluginFile, $themeFile, $contentFile, $pluginTheme,
-                             $fileHash, $hasUrl, $safeUrl, time()
+                             $fileHash, $hasUrl, $safeUrl, time(), $pluginTheme
                              );
     }
 

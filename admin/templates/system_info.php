@@ -102,6 +102,64 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
+                            <?php echo esc_html(__('Cron jobs', 'wp-security-by-made-it')); ?>
+                        </h4>
+                        <div class="card-text">
+                            <div class="madeit-row">
+                                <table class="madeit-table">
+                                    <thead>
+                                        <tr>
+                                            <th><?php echo __('Job', 'wp-security-by-made-it'); ?></th>
+                                            <th><?php echo __('Schedule', 'wp-security-by-made-it'); ?></th>
+                                            <th><?php echo __('Next run (Server time)', 'wp-security-by-made-it'); ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach(_get_cron_array() as $time => $crons) {
+                                            foreach($crons as $cron => $settings) {
+                                                $schedule = "";
+                                                foreach($settings as $setting) {
+                                                    $schedule = $setting['schedule'];
+                                                }
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo esc_html($cron); ?></td>
+                                                    <td><?php echo esc_html($schedule); ?></td>
+                                                    <td><?php echo date('Y-m-d H:i:s', $time); ?></td>
+                                                </tr>
+                                            <?php }
+                                        } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="madeit-row" style="margin-top: 20px;">
+            <div class="madeit-col">
+                <div class="madeit-card">
+                    <div class="madeit-card-body">
+                        <h4 class="madeit-card-title">
+                            <?php echo esc_html(__('View htaccess', 'wp-security-by-made-it')); ?>
+                        </h4>
+                        <div class="card-text">
+                            <div class="madeit-row">
+                                <textarea style="width: 100%" rows="20"><?php echo file_get_contents($systeminfo->getSystemInfo()['path'] . '/.htaccess'); ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="madeit-row" style="margin-top: 20px;">
+            <div class="madeit-col">
+                <div class="madeit-card">
+                    <div class="madeit-card-body">
+                        <h4 class="madeit-card-title">
                             <?php echo esc_html(__('PHP Info', 'wp-security-by-made-it')); ?>
                         </h4>
                         <div class="card-text">

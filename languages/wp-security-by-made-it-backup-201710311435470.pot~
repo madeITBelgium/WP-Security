@@ -3,16 +3,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-18 19:45+0000\n"
+"POT-Creation-Date: 2017-10-20 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco - https://localise.biz/"
 
 #: inc/WP_MadeIT_Security_Backup.php:385
 #, php-format
@@ -68,45 +68,67 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:305
+#: admin/WP_MadeIT_Security_Admin.php:47 admin/WP_MadeIT_Security_Admin.php:47
+msgid "Server info"
+msgstr ""
+
+#: admin/WP_MadeIT_Security_Admin.php:318
 #, php-format
 msgid "Local file %s doesn't exist on your WordPress installation."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:395
+#: admin/WP_MadeIT_Security_Admin.php:408
 msgid "less than 1 second"
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:398
-msgid "year"
-msgstr ""
+#: admin/WP_MadeIT_Security_Admin.php:425
+#, php-format
+msgid "%s year"
+msgid_plural "%s years"
+msgstr[0] ""
+msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:399
-msgid "month"
-msgstr ""
+#: admin/WP_MadeIT_Security_Admin.php:428
+#, php-format
+msgid "%s month"
+msgid_plural "%s months"
+msgstr[0] ""
+msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:400
-msgid "day"
-msgstr ""
+#: admin/WP_MadeIT_Security_Admin.php:431
+#, php-format
+msgid "%s day"
+msgid_plural "%s days"
+msgstr[0] ""
+msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:401
-msgid "hour"
-msgstr ""
+#: admin/WP_MadeIT_Security_Admin.php:434
+#, php-format
+msgid "%s hour"
+msgid_plural "%s hours"
+msgstr[0] ""
+msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:402
-msgid "minute"
-msgstr ""
+#: admin/WP_MadeIT_Security_Admin.php:437
+#, php-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] ""
+msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:403
-msgid "second"
-msgstr ""
+#: admin/WP_MadeIT_Security_Admin.php:440
+#, php-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] ""
+msgstr[1] ""
 
-#: admin/WP_MadeIT_Security_Admin.php:470
+#: admin/WP_MadeIT_Security_Admin.php:501
 #, php-format
 msgid "Last result %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:477
+#: admin/WP_MadeIT_Security_Admin.php:508
 #: admin/templates/list-not-exist-files.php:103
 #: admin/templates/list-not-exist-files.php:122
 #: admin/templates/list-changed-files.php:103
@@ -114,17 +136,17 @@ msgstr ""
 #: admin/templates/compare_files.php:81 admin/templates/compare_files.php:100
 #: admin/templates/scan.php:97 admin/templates/scan.php:177
 #: admin/templates/scan.php:459 admin/templates/dashboard.php:194
-#: admin/templates/dashboard.php:381
+#: admin/templates/dashboard.php:401
 #, php-format
 msgid "Last scan %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:513
+#: admin/WP_MadeIT_Security_Admin.php:544
 #, php-format
 msgid "Last change %s ago."
 msgstr ""
 
-#: admin/WP_MadeIT_Security_Admin.php:519
+#: admin/WP_MadeIT_Security_Admin.php:550
 #, php-format
 msgid "Last backup %s ago."
 msgstr ""
@@ -170,17 +192,17 @@ msgid "Do fast scan"
 msgstr ""
 
 #: admin/templates/settings.php:68 admin/templates/scan.php:411
-#: admin/templates/dashboard.php:333
+#: admin/templates/dashboard.php:353
 msgid "Scan core files"
 msgstr ""
 
 #: admin/templates/settings.php:78 admin/templates/scan.php:418
-#: admin/templates/dashboard.php:340
+#: admin/templates/dashboard.php:360
 msgid "Scan theme files"
 msgstr ""
 
 #: admin/templates/settings.php:88 admin/templates/scan.php:414
-#: admin/templates/dashboard.php:336
+#: admin/templates/dashboard.php:356
 msgid "Scan plugin files"
 msgstr ""
 
@@ -320,6 +342,94 @@ msgstr ""
 msgid "Compare file %s of %s"
 msgstr ""
 
+#: admin/templates/system_info.php:18 admin/templates/system_info.php:27
+msgid "Server information"
+msgstr ""
+
+#: admin/templates/system_info.php:33
+msgid "PHP Version"
+msgstr ""
+
+#: admin/templates/system_info.php:37
+msgid "MySQL Version"
+msgstr ""
+
+#: admin/templates/system_info.php:41
+msgid "WP Version"
+msgstr ""
+
+#: admin/templates/system_info.php:45
+msgid "Apache Version"
+msgstr ""
+
+#: admin/templates/system_info.php:49
+msgid "URL"
+msgstr ""
+
+#: admin/templates/system_info.php:53
+msgid "Admin URL"
+msgstr ""
+
+#: admin/templates/system_info.php:57
+msgid "Users"
+msgstr ""
+
+#: admin/templates/system_info.php:61
+msgid "Sites"
+msgstr ""
+
+#: admin/templates/system_info.php:65
+msgid "Path"
+msgstr ""
+
+#: admin/templates/system_info.php:69
+msgid "OS name"
+msgstr ""
+
+#: admin/templates/system_info.php:73
+msgid "OS Vesion"
+msgstr ""
+
+#: admin/templates/system_info.php:77
+msgid "Memory Limit"
+msgstr ""
+
+#: admin/templates/system_info.php:81
+msgid "Free disk space"
+msgstr ""
+
+#: admin/templates/system_info.php:85
+msgid "Used disk space"
+msgstr ""
+
+#: admin/templates/system_info.php:89
+msgid "Total disk space"
+msgstr ""
+
+#: admin/templates/system_info.php:105
+msgid "Cron jobs"
+msgstr ""
+
+#: admin/templates/system_info.php:112
+msgid "Job"
+msgstr ""
+
+#: admin/templates/system_info.php:113
+msgid "Schedule"
+msgstr ""
+
+#: admin/templates/system_info.php:114
+msgid "Next run (Server time)"
+msgstr ""
+
+#: admin/templates/system_info.php:146
+msgid "View htaccess"
+msgstr ""
+
+#: admin/templates/system_info.php:163
+msgid "PHP Info"
+msgstr ""
+
 #: admin/templates/scan.php:18
 msgid "Security Scan results"
 msgstr ""
@@ -345,13 +455,13 @@ msgstr ""
 #: admin/templates/dashboard.php:93 admin/templates/dashboard.php:101
 #: admin/templates/dashboard.php:145 admin/templates/dashboard.php:156
 #: admin/templates/dashboard.php:208 admin/templates/dashboard.php:220
-#: admin/templates/dashboard.php:232 admin/templates/dashboard.php:294
-#: admin/templates/dashboard.php:295 admin/templates/dashboard.php:296
-#: admin/templates/dashboard.php:361 admin/templates/dashboard.php:362
-#: admin/templates/dashboard.php:363 admin/templates/dashboard.php:416
-#: admin/templates/dashboard.php:417 admin/templates/dashboard.php:466
-#: admin/templates/dashboard.php:469 admin/templates/dashboard.php:493
-#: admin/templates/dashboard.php:496
+#: admin/templates/dashboard.php:232 admin/templates/dashboard.php:314
+#: admin/templates/dashboard.php:315 admin/templates/dashboard.php:316
+#: admin/templates/dashboard.php:381 admin/templates/dashboard.php:382
+#: admin/templates/dashboard.php:383 admin/templates/dashboard.php:436
+#: admin/templates/dashboard.php:437 admin/templates/dashboard.php:486
+#: admin/templates/dashboard.php:489 admin/templates/dashboard.php:513
+#: admin/templates/dashboard.php:516
 msgid "N/A"
 msgstr ""
 
@@ -431,27 +541,27 @@ msgstr ""
 msgid "%s files on your system that not exist in the original version."
 msgstr ""
 
-#: admin/templates/scan.php:396 admin/templates/dashboard.php:318
+#: admin/templates/scan.php:396 admin/templates/dashboard.php:338
 msgid "Starting scan"
 msgstr ""
 
-#: admin/templates/scan.php:399 admin/templates/dashboard.php:321
+#: admin/templates/scan.php:399 admin/templates/dashboard.php:341
 msgid "Loading core files"
 msgstr ""
 
-#: admin/templates/scan.php:402 admin/templates/dashboard.php:324
+#: admin/templates/scan.php:402 admin/templates/dashboard.php:344
 msgid "Loading plugin files"
 msgstr ""
 
-#: admin/templates/scan.php:405 admin/templates/dashboard.php:327
+#: admin/templates/scan.php:405 admin/templates/dashboard.php:347
 msgid "Loading theme files"
 msgstr ""
 
-#: admin/templates/scan.php:408 admin/templates/dashboard.php:330
+#: admin/templates/scan.php:408 admin/templates/dashboard.php:350
 msgid "Prepare to start scan"
 msgstr ""
 
-#: admin/templates/scan.php:422 admin/templates/dashboard.php:344
+#: admin/templates/scan.php:422 admin/templates/dashboard.php:364
 msgid "Complete scan"
 msgstr ""
 
@@ -515,40 +625,48 @@ msgstr ""
 msgid "Automatic backup disabled."
 msgstr ""
 
-#: admin/templates/dashboard.php:428
+#: admin/templates/dashboard.php:265
+msgid "Links"
+msgstr ""
+
+#: admin/templates/dashboard.php:270
+msgid "System info"
+msgstr ""
+
+#: admin/templates/dashboard.php:448
 msgid "Starting backup"
 msgstr ""
 
-#: admin/templates/dashboard.php:431
+#: admin/templates/dashboard.php:451
 #, php-format
 msgid "Backing up files. %s / %d"
 msgstr ""
 
-#: admin/templates/dashboard.php:434
+#: admin/templates/dashboard.php:454
 msgid "Backking up database"
 msgstr ""
 
-#: admin/templates/dashboard.php:437
+#: admin/templates/dashboard.php:457
 msgid "Creating zip file"
 msgstr ""
 
-#: admin/templates/dashboard.php:440
+#: admin/templates/dashboard.php:460
 msgid "Upload to Made I.T."
 msgstr ""
 
-#: admin/templates/dashboard.php:443
+#: admin/templates/dashboard.php:463
 msgid "Upload to FTP server"
 msgstr ""
 
-#: admin/templates/dashboard.php:446
+#: admin/templates/dashboard.php:466
 msgid "Upload to S3"
 msgstr ""
 
-#: admin/templates/dashboard.php:449
+#: admin/templates/dashboard.php:469
 msgid "Complete backup"
 msgstr ""
 
-#: admin/templates/dashboard.php:465 admin/templates/dashboard.php:492
+#: admin/templates/dashboard.php:485 admin/templates/dashboard.php:512
 msgid "Download"
 msgstr ""
 

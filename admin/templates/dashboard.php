@@ -256,6 +256,26 @@ if (!defined('ABSPATH')) {
                     </div>
                 </div>
                 <!-- END UPDATE SCAN -->
+                <!-- UPDATE SCAN -->
+                <div class="madeit-row" style="margin-top: 20px;">
+                    <div class="madeit-col">
+                        <div class="madeit-card">
+                            <div class="madeit-card-body">
+                                <h4 class="madeit-card-title">
+                                    <?php echo esc_html(__('Links', 'wp-security-by-made-it')); ?>
+                                </h4>
+                                <div class="card-text">
+                                    <div class="madeit-row">
+                                        <div class="madeit-col">
+                                            <a href="?page=madeit_security_systeminfo"><?php echo esc_html(__('System info', 'wp-security-by-made-it')); ?></a><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END UPDATE SCAN -->
             </div>
         </div>
     </div>

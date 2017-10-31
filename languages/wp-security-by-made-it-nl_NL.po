@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Security by Made I.T.\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-19 20:14+0000\n"
-"PO-Revision-Date: 2017-10-19 20:15+0000\n"
+"POT-Creation-Date: 2017-10-31 14:36+0000\n"
+"PO-Revision-Date: 2017-10-31 14:37+0000\n"
 "Last-Translator: Tjebbe Lievens <tjebbe.lievens@tpweb.org>\n"
 "Language-Team: Dutch\n"
 "Language: nl-NL\n"
@@ -13,77 +13,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: admin/WP_MadeIT_Security_Admin.php:47 admin/WP_MadeIT_Security_Admin.php:47
-msgid "Server info"
-msgstr "Server info"
+#: inc/WP_MadeIT_Security_Plugin_Scan.php:55
+#: inc/WP_MadeIT_Security_Plugin_Scan.php:55
+#, php-format
+msgid "The file %s is deleted"
+msgstr "Het bestand %s is verwijderd"
 
-#: admin/templates/system_info.php:18 admin/templates/system_info.php:27
-msgid "Server information"
-msgstr "Server informatie"
+#: inc/WP_MadeIT_Security_Plugin_Scan.php:61
+#: inc/WP_MadeIT_Security_Plugin_Scan.php:61
+#, php-format
+msgid "The file %s is changed"
+msgstr "Het bestand %s is veranderd"
 
-#: admin/templates/system_info.php:33
-msgid "PHP Version"
-msgstr "PHP Versie"
-
-#: admin/templates/system_info.php:37
-msgid "MySQL Version"
-msgstr "MySQL Versie"
-
-#: admin/templates/system_info.php:41
-msgid "WP Version"
-msgstr "WP Versie"
-
-#: admin/templates/system_info.php:45
-msgid "Apache Version"
-msgstr "Apache Versie"
-
-#: admin/templates/system_info.php:49
-msgid "URL"
-msgstr "URL"
-
-#: admin/templates/system_info.php:53
-msgid "Admin URL"
-msgstr "Admin URL"
-
-#: admin/templates/system_info.php:57
-msgid "Users"
-msgstr "Gebruikers"
-
-#: admin/templates/system_info.php:61
-msgid "Sites"
-msgstr "Websites"
-
-#: admin/templates/system_info.php:65
-msgid "Path"
-msgstr "Path"
-
-#: admin/templates/system_info.php:69
-msgid "OS name"
-msgstr "OS"
-
-#: admin/templates/system_info.php:73
-msgid "OS Vesion"
-msgstr "OS Versie"
-
-#: admin/templates/system_info.php:77
-msgid "Memory Limit"
-msgstr "Memory limiet"
-
-#: admin/templates/system_info.php:81
-msgid "Free disk space"
-msgstr "Vrije schijfruimte"
-
-#: admin/templates/system_info.php:85
-msgid "Used disk space"
-msgstr "Gebruikte schijfruimte"
-
-#: admin/templates/system_info.php:89
-msgid "Total disk space"
-msgstr "Totale schijfruimte"
-
-#: admin/templates/system_info.php:105
-msgid "PHP Info"
-msgstr "PHP info"
+#: admin/templates/system_info.php:113
+msgid "Schedule"
+msgstr "Plannen"
 
 #: inc/WP_MadeIT_Security_Backup.php:385
 #, php-format
@@ -149,46 +93,68 @@ msgstr "Beveiligings instellingen"
 msgid "Settings"
 msgstr "Instellingen"
 
-#: admin/WP_MadeIT_Security_Admin.php:320
+#: admin/WP_MadeIT_Security_Admin.php:47 admin/WP_MadeIT_Security_Admin.php:47
+msgid "Server info"
+msgstr "Server info"
+
+#: admin/WP_MadeIT_Security_Admin.php:318
 #, php-format
 msgid "Local file %s doesn't exist on your WordPress installation."
 msgstr ""
 "Het lokale bestand %s kan niet worden gevonden in je WordPress installatie."
 
-#: admin/WP_MadeIT_Security_Admin.php:410
+#: admin/WP_MadeIT_Security_Admin.php:408
 msgid "less than 1 second"
 msgstr "Minder dan 1 seconde"
 
-#: admin/WP_MadeIT_Security_Admin.php:413
-msgid "year"
-msgstr "jaar"
+#: admin/WP_MadeIT_Security_Admin.php:425
+#, php-format
+msgid "%s year"
+msgid_plural "%s years"
+msgstr[0] "%s jaar"
+msgstr[1] "%s jaren"
 
-#: admin/WP_MadeIT_Security_Admin.php:414
-msgid "month"
-msgstr "maand"
+#: admin/WP_MadeIT_Security_Admin.php:428
+#, php-format
+msgid "%s month"
+msgid_plural "%s months"
+msgstr[0] "%s maand"
+msgstr[1] "%s maanden"
 
-#: admin/WP_MadeIT_Security_Admin.php:415
-msgid "day"
-msgstr "dag"
+#: admin/WP_MadeIT_Security_Admin.php:431
+#, php-format
+msgid "%s day"
+msgid_plural "%s days"
+msgstr[0] "%s dag"
+msgstr[1] "%s dagen"
 
-#: admin/WP_MadeIT_Security_Admin.php:416
-msgid "hour"
-msgstr "uur"
+#: admin/WP_MadeIT_Security_Admin.php:434
+#, php-format
+msgid "%s hour"
+msgid_plural "%s hours"
+msgstr[0] "%s uur"
+msgstr[1] "% uren"
 
-#: admin/WP_MadeIT_Security_Admin.php:417
-msgid "minute"
-msgstr "minuut"
+#: admin/WP_MadeIT_Security_Admin.php:437
+#, php-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] "%s minuut"
+msgstr[1] "%s minuten"
 
-#: admin/WP_MadeIT_Security_Admin.php:418
-msgid "second"
-msgstr "seconde"
+#: admin/WP_MadeIT_Security_Admin.php:440
+#, php-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] "%s seconde"
+msgstr[1] "%s seconden"
 
-#: admin/WP_MadeIT_Security_Admin.php:485
+#: admin/WP_MadeIT_Security_Admin.php:501
 #, php-format
 msgid "Last result %s ago."
 msgstr "Laatste resultaat %s geleden"
 
-#: admin/WP_MadeIT_Security_Admin.php:492
+#: admin/WP_MadeIT_Security_Admin.php:508
 #: admin/templates/list-not-exist-files.php:103
 #: admin/templates/list-not-exist-files.php:122
 #: admin/templates/list-changed-files.php:103
@@ -196,17 +162,17 @@ msgstr "Laatste resultaat %s geleden"
 #: admin/templates/compare_files.php:81 admin/templates/compare_files.php:100
 #: admin/templates/scan.php:97 admin/templates/scan.php:177
 #: admin/templates/scan.php:459 admin/templates/dashboard.php:194
-#: admin/templates/dashboard.php:381
+#: admin/templates/dashboard.php:401
 #, php-format
 msgid "Last scan %s ago."
 msgstr "Laatste scan is %s geleden."
 
-#: admin/WP_MadeIT_Security_Admin.php:528
+#: admin/WP_MadeIT_Security_Admin.php:544
 #, php-format
 msgid "Last change %s ago."
 msgstr "Laatste verandering %s geleden."
 
-#: admin/WP_MadeIT_Security_Admin.php:534
+#: admin/WP_MadeIT_Security_Admin.php:550
 #, php-format
 msgid "Last backup %s ago."
 msgstr "Laatste backup is %s geleden uitgevoerd."
@@ -253,17 +219,17 @@ msgid "Do fast scan"
 msgstr "Doe enkel snelle scans"
 
 #: admin/templates/settings.php:68 admin/templates/scan.php:411
-#: admin/templates/dashboard.php:333
+#: admin/templates/dashboard.php:353
 msgid "Scan core files"
 msgstr "Scan core bestanden"
 
 #: admin/templates/settings.php:78 admin/templates/scan.php:418
-#: admin/templates/dashboard.php:340
+#: admin/templates/dashboard.php:360
 msgid "Scan theme files"
 msgstr "Scan thema bestanden"
 
 #: admin/templates/settings.php:88 admin/templates/scan.php:414
-#: admin/templates/dashboard.php:336
+#: admin/templates/dashboard.php:356
 msgid "Scan plugin files"
 msgstr "Scan plugin bestanden"
 
@@ -408,6 +374,90 @@ msgstr "Vergelijk het bestand <a href=\"%s\">%s</a> met de originele versie."
 msgid "Compare file %s of %s"
 msgstr "Vergelijk %s met %s"
 
+#: admin/templates/system_info.php:18 admin/templates/system_info.php:27
+msgid "Server information"
+msgstr "Server informatie"
+
+#: admin/templates/system_info.php:33
+msgid "PHP Version"
+msgstr "PHP Versie"
+
+#: admin/templates/system_info.php:37
+msgid "MySQL Version"
+msgstr "MySQL Versie"
+
+#: admin/templates/system_info.php:41
+msgid "WP Version"
+msgstr "WP Versie"
+
+#: admin/templates/system_info.php:45
+msgid "Apache Version"
+msgstr "Apache Versie"
+
+#: admin/templates/system_info.php:49
+msgid "URL"
+msgstr "URL"
+
+#: admin/templates/system_info.php:53
+msgid "Admin URL"
+msgstr "Admin URL"
+
+#: admin/templates/system_info.php:57
+msgid "Users"
+msgstr "Gebruikers"
+
+#: admin/templates/system_info.php:61
+msgid "Sites"
+msgstr "Websites"
+
+#: admin/templates/system_info.php:65
+msgid "Path"
+msgstr "Path"
+
+#: admin/templates/system_info.php:69
+msgid "OS name"
+msgstr "OS"
+
+#: admin/templates/system_info.php:73
+msgid "OS Vesion"
+msgstr "OS Versie"
+
+#: admin/templates/system_info.php:77
+msgid "Memory Limit"
+msgstr "Memory limiet"
+
+#: admin/templates/system_info.php:81
+msgid "Free disk space"
+msgstr "Vrije schijfruimte"
+
+#: admin/templates/system_info.php:85
+msgid "Used disk space"
+msgstr "Gebruikte schijfruimte"
+
+#: admin/templates/system_info.php:89
+msgid "Total disk space"
+msgstr "Totale schijfruimte"
+
+#: admin/templates/system_info.php:105
+msgid "Cron jobs"
+msgstr "Cronjobs"
+
+#: admin/templates/system_info.php:112
+msgid "Job"
+msgstr "Taak"
+
+#: admin/templates/system_info.php:114
+msgid "Next run (Server time)"
+msgstr "Volgende uitvoering (Server tijd)"
+
+#: admin/templates/system_info.php:146
+msgid "View htaccess"
+msgstr "Bekijk .htaccess bestand"
+
+#: admin/templates/system_info.php:163
+msgid "PHP Info"
+msgstr "PHP info"
+
 #: admin/templates/scan.php:18
 msgid "Security Scan results"
 msgstr "Beveiligings scan resultaat"
@@ -433,13 +483,13 @@ msgstr "Geen recente data gevonden."
 #: admin/templates/dashboard.php:93 admin/templates/dashboard.php:101
 #: admin/templates/dashboard.php:145 admin/templates/dashboard.php:156
 #: admin/templates/dashboard.php:208 admin/templates/dashboard.php:220
-#: admin/templates/dashboard.php:232 admin/templates/dashboard.php:294
-#: admin/templates/dashboard.php:295 admin/templates/dashboard.php:296
-#: admin/templates/dashboard.php:361 admin/templates/dashboard.php:362
-#: admin/templates/dashboard.php:363 admin/templates/dashboard.php:416
-#: admin/templates/dashboard.php:417 admin/templates/dashboard.php:466
-#: admin/templates/dashboard.php:469 admin/templates/dashboard.php:493
-#: admin/templates/dashboard.php:496
+#: admin/templates/dashboard.php:232 admin/templates/dashboard.php:314
+#: admin/templates/dashboard.php:315 admin/templates/dashboard.php:316
+#: admin/templates/dashboard.php:381 admin/templates/dashboard.php:382
+#: admin/templates/dashboard.php:383 admin/templates/dashboard.php:436
+#: admin/templates/dashboard.php:437 admin/templates/dashboard.php:486
+#: admin/templates/dashboard.php:489 admin/templates/dashboard.php:513
+#: admin/templates/dashboard.php:516
 msgid "N/A"
 msgstr "N.V.T."
 
@@ -529,27 +579,27 @@ msgstr ""
 "Er zijn %s bestanden gevonden op je systeem die niet bestaan in de originele "
 "versie."
 
-#: admin/templates/scan.php:396 admin/templates/dashboard.php:318
+#: admin/templates/scan.php:396 admin/templates/dashboard.php:338
 msgid "Starting scan"
 msgstr "Scan starten"
 
-#: admin/templates/scan.php:399 admin/templates/dashboard.php:321
+#: admin/templates/scan.php:399 admin/templates/dashboard.php:341
 msgid "Loading core files"
 msgstr "WP Core bestanden inladen"
 
-#: admin/templates/scan.php:402 admin/templates/dashboard.php:324
+#: admin/templates/scan.php:402 admin/templates/dashboard.php:344
 msgid "Loading plugin files"
 msgstr "Plugin bestanden inladen"
 
-#: admin/templates/scan.php:405 admin/templates/dashboard.php:327
+#: admin/templates/scan.php:405 admin/templates/dashboard.php:347
 msgid "Loading theme files"
 msgstr "Thema bestanden inladen"
 
-#: admin/templates/scan.php:408 admin/templates/dashboard.php:330
+#: admin/templates/scan.php:408 admin/templates/dashboard.php:350
 msgid "Prepare to start scan"
 msgstr "Scan voorbereiden"
 
-#: admin/templates/scan.php:422 admin/templates/dashboard.php:344
+#: admin/templates/scan.php:422 admin/templates/dashboard.php:364
 msgid "Complete scan"
 msgstr "Scan voltooid"
 
@@ -613,40 +663,48 @@ msgstr "Stop backup"
 msgid "Automatic backup disabled."
 msgstr "Automatische backups is uitgeschakeld."
 
-#: admin/templates/dashboard.php:428
+#: admin/templates/dashboard.php:265
+msgid "Links"
+msgstr "Links"
+
+#: admin/templates/dashboard.php:270
+msgid "System info"
+msgstr "Systeem informatie"
+
+#: admin/templates/dashboard.php:448
 msgid "Starting backup"
 msgstr "Backup starten"
 
-#: admin/templates/dashboard.php:431
+#: admin/templates/dashboard.php:451
 #, php-format
 msgid "Backing up files. %s / %d"
 msgstr "Bestanden back-uppen (%s/%d)"
 
-#: admin/templates/dashboard.php:434
+#: admin/templates/dashboard.php:454
 msgid "Backking up database"
 msgstr "Database backup"
 
-#: admin/templates/dashboard.php:437
+#: admin/templates/dashboard.php:457
 msgid "Creating zip file"
 msgstr "Zip bestand aanmaken"
 
-#: admin/templates/dashboard.php:440
+#: admin/templates/dashboard.php:460
 msgid "Upload to Made I.T."
 msgstr "Uploaden naar Made I.T. server"
 
-#: admin/templates/dashboard.php:443
+#: admin/templates/dashboard.php:463
 msgid "Upload to FTP server"
 msgstr "Uploaden naar FTP server"
 
-#: admin/templates/dashboard.php:446
+#: admin/templates/dashboard.php:466
 msgid "Upload to S3"
 msgstr "Uploaden naar S3 bucket"
 
-#: admin/templates/dashboard.php:449
+#: admin/templates/dashboard.php:469
 msgid "Complete backup"
 msgstr "Backup beëindigen"
 
-#: admin/templates/dashboard.php:465 admin/templates/dashboard.php:492
+#: admin/templates/dashboard.php:485 admin/templates/dashboard.php:512
 msgid "Download"
 msgstr "Download"
 
