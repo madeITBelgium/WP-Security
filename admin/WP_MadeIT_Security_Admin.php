@@ -93,7 +93,7 @@ class WP_MadeIT_Security_Admin
             // This nonce is not valid.
             wp_die('Security check');
         } else {
-            if(!is_numeric(sanitize_text_field($_POST['madeit_security_backup_files']))) {
+            if (!is_numeric(sanitize_text_field($_POST['madeit_security_backup_files']))) {
                 return __('Backup files value is incorrect', 'wp-security-by-made-it');
             }
 
