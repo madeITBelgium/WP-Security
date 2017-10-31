@@ -36,7 +36,7 @@ class WP_MadeIT_Security_Backup_Files
                             $backedupFiles[] = $file['filename_md5'];
                             $size += filesize($fullPath);
                             $filesCount++;
-                            $filename = str_replace(WP_CONTENT_DIR, '', $fullPath);
+                            $filename = str_replace(trailingslashit(WP_CONTENT_DIR), '', $fullPath);
                             $zip->addFile($fullPath, $filename);
                             $filesDoneNow++;
                         } else {
