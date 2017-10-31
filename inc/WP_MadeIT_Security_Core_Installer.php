@@ -69,7 +69,7 @@ class WP_MadeIT_Security_Core_Installer extends Core_Upgrader
             return new WP_Error('copy_failed_for_update_core_file', __('The update cannot be installed because we will be unable to copy some files. This is usually due to inconsistent file permissions.'), 'wp-admin/includes/update-core.php');
         }
         $wp_filesystem->chmod($wp_dir.'wp-admin/includes/update-core.php', FS_CHMOD_FILE);
-         require_once(ABSPATH.'wp-admin/includes/update-core.php');
+        require_once ABSPATH.'wp-admin/includes/update-core.php';
         if (!function_exists('update_core')) {
             WP_Upgrader::release_lock('core_updater');
 

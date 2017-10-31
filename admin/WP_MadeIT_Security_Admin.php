@@ -420,25 +420,26 @@ class WP_MadeIT_Security_Admin
             $d = $etime / $secs;
             if ($d >= 1) {
                 $r = round($d);
-                
-                if($str == "year") {
+
+                if ($str == 'year') {
                     return sprintf(_n('%s year', '%s years', $r, 'wp-security-by-made-it'), $r);
                 }
-                if($str == "month") {
+                if ($str == 'month') {
                     return sprintf(_n('%s month', '%s months', $r, 'wp-security-by-made-it'), $r);
                 }
-                if($str == "day") {
+                if ($str == 'day') {
                     return sprintf(_n('%s day', '%s days', $r, 'wp-security-by-made-it'), $r);
                 }
-                if($str == "hour") {
+                if ($str == 'hour') {
                     return sprintf(_n('%s hour', '%s hours', $r, 'wp-security-by-made-it'), $r);
                 }
-                if($str == "minute") {
+                if ($str == 'minute') {
                     return sprintf(_n('%s minute', '%s minutes', $r, 'wp-security-by-made-it'), $r);
                 }
-                if($str == "second") {
+                if ($str == 'second') {
                     return sprintf(_n('%s second', '%s seconds', $r, 'wp-security-by-made-it'), $r);
                 }
+
                 return $r;
             }
         }

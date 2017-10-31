@@ -26,7 +26,7 @@ class WP_MadeIT_Security_LoadFiles
         $result['stop'] = true;
         set_site_transient('madeit_security_scan', $result);
 
-        $message = date('Y-m-d H:i:s') . ' Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
+        $message = date('Y-m-d H:i:s').' Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
         file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', $message.PHP_EOL, FILE_APPEND);
         //header( "Location: {$config["error_page"]}" );
         exit();
@@ -83,7 +83,7 @@ class WP_MadeIT_Security_LoadFiles
             $initRun = true;
             $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_filelist');
             if ($count != null && $count['aantal'] > 0) {
-                $initRun = false;   
+                $initRun = false;
             }
             $result = [];
             $result['start_time'] = time();
@@ -132,7 +132,6 @@ class WP_MadeIT_Security_LoadFiles
 
         $result = get_site_transient('madeit_security_scan');
         $this->initRun = $result['init_run'];
-            
 
         if ($result['done'] == false && $result['stop'] == false) {
             if ($result['stop'] == true) {
@@ -464,7 +463,7 @@ class WP_MadeIT_Security_LoadFiles
         if (!is_dir($directory)) {
             return false;
         }
-        
+
         $pluginDir = untrailingslashit(WP_PLUGIN_DIR);
         $themeDir = untrailingslashit(WP_CONTENT_DIR).'/themes';
 
@@ -472,10 +471,9 @@ class WP_MadeIT_Security_LoadFiles
 
         while (false !== ($file = $dir->read())) {
             if ($file != '.' and $file != '..') {
-                if($type == "WP_CONTENT" && ($directory.'/'.$file == $pluginDir || $directory.'/'.$file == $themeDir) ) {
+                if ($type == 'WP_CONTENT' && ($directory.'/'.$file == $pluginDir || $directory.'/'.$file == $themeDir)) {
                     continue;
-                }
-                else {
+                } else {
                     if (is_dir($directory.'/'.$file)) {
                         $this->fileLoadDirectory($directory.'/'.$file, $type, $pluginTheme);
                     } else {
