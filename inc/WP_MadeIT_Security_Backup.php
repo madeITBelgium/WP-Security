@@ -199,7 +199,7 @@ class WP_MadeIT_Security_Backup
         } elseif ($backupResult['step'] == 4) { //Upload zip to Made I.T.
             $zipPath = $this->backups_dir_location().'/'.$this->getZipName();
             if ($this->defaultSettings['maintenance']['backup']) {
-                //$uploaded = $this->uploadBackupToMadeIT($this->getZipName(), $this->backups_dir_location(), 'FULL');
+                $uploaded = $this->uploadBackupToMadeIT($this->getZipName(), $this->backups_dir_location(), 'FULL');
             }
 
             $backupResult['last_con_time'] = time();
@@ -496,12 +496,14 @@ class WP_MadeIT_Security_Backup
 
     private function uploadBackupToMadeIT($fileName, $directory, $type)
     {
+        $fileName = untrailingslashit($this->backups_dir_location()) . '/' . $fileName;
+        
         $key = $this->defaultSettings['maintenance']['key'];
         $keepFileOnline = false;
         if (strlen($key) > 0) {
             $post = [];
             if (filesize($fileName) > 50 * 1024 * 1024) {
-                $post = ['download' => str_replace(ABSPATH, home_url('/'), $zipPath), 'type' => $type];
+                $post = ['download' => str_replace(ABSPATH, home_url('/'), $fileName), 'type' => $type];
                 $keepFileOnline = true;
             } else {
                 if (function_exists('curl_file_create')) { // php 5.5+
@@ -511,6 +513,7 @@ class WP_MadeIT_Security_Backup
                 }
                 $post = ['backup' => $cFile, 'type' => $type];
             }
+            error_log(print_r($post,true));
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/upload-backup/'.$key);
             curl_setopt($ch, CURLOPT_POST, 1);
@@ -533,33 +536,33 @@ class WP_MadeIT_Security_Backup
         $ftp_username = $this->defaultSettings['backup']['ftp']['username'];
         $ftp_password = $this->defaultSettings['backup']['ftp']['password'];
         $ftp_server = $this->defaultSettings['backup']['ftp']['server'];
-        $destinationDir = $this->defaultSettings['backup']['ftp']['destination_dir'];
+        $destination = untrailingslashit($this->defaultSettings['backup']['ftp']['destination_dir']);
 
         if (strlen($ftp_username) > 0 && strlen($ftp_password) > 0 && strlen($ftp_server) > 0) {
-            $remote_file = $fileName;
-            $file = untrailingslashit($directory).'/'.$remote_file;
+            $localFile = untrailingslashit($directory).'/'.$fileName;
 
-            if (!empty($destinationDir)) {
-                $remote_file = untrailingslashit($destinationDir).'/'.$remote_file;
+            $conn_id = @ftp_connect($ftp_server);
+            if ($conn_id !== false) {
+                $login_result = @ftp_login($conn_id, $ftp_username, $ftp_password);
+                if ($login_result !== false) {
+                    
+                    if (!empty($destination)) {
+                        if (@ftp_nlist($conn_id, $destination) === false) {
+                            if (@ftp_mkdir($conn_id, $dir) === false) {
+                                $result = false;
+                            }
+                        }
+
+                        $destination = trailingslashit($destination);
+                    }
+                    
+                    if (@ftp_put($conn_id, $destination . $fileName, $localFile, FTP_ASCII)) {
+                        $result = true;
+                    }
+                }
+                ftp_close($conn_id);
             }
-
-            $conn_id = ftp_connect($ftp_server);
-            $login_result = ftp_login($conn_id, $ftp_username, $ftp_password);
-
-            if (!empty($destinationDir) && !@ftp_chdir($conn_id, $destinationDir)) {
-                ftp_mkdir($conn_id, $destinationDir);
-            }
-
-            if (ftp_put($conn_id, $remote_file, $file, FTP_ASCII)) {
-                //Upload success delete file
-                $result = true;
-            } else {
-                //Upload failed
-                $result = false;
-            }
-            ftp_close($conn_id);
         }
-
         return $result;
     }
 
