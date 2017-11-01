@@ -128,25 +128,26 @@ class WP_MadeIT_Security_Admin
                 if ($login_result === false) {
                     return __('FTP credentials are wrong.', 'wp-security-by-made-it');
                 }
-                
+
                 if (!empty($destination)) {
                     if (@ftp_nlist($conn_id, $destination) === false) {
                         if (@ftp_mkdir($conn_id, $dir) === false) {
                             return __('Cannot create destination directory on FTP server.', 'wp-security-by-made-it');
                         }
                     }
-                    
+
                     $destination = trailingslashit($destination);
                 }
-                
-                file_put_contents(WP_CONTENT_DIR . '/file.txt', 'test');
-                if (@ftp_put($conn_id, $destination . 'file.txt', WP_CONTENT_DIR . '/file.txt', FTP_ASCII)) {
-                    unlink(WP_CONTENT_DIR . '/file.txt');
-                    if(! @ftp_delete ($conn_id, $destination . 'file.txt')) {
+
+                file_put_contents(WP_CONTENT_DIR.'/file.txt', 'test');
+                if (@ftp_put($conn_id, $destination.'file.txt', WP_CONTENT_DIR.'/file.txt', FTP_ASCII)) {
+                    unlink(WP_CONTENT_DIR.'/file.txt');
+                    if (!@ftp_delete($conn_id, $destination.'file.txt')) {
                         return __('Cannot delete temp file in destination directory on FTP server.', 'wp-security-by-made-it');
                     }
                 } else {
-                    unlink(WP_CONTENT_DIR . '/file.txt');
+                    unlink(WP_CONTENT_DIR.'/file.txt');
+
                     return __('Cannot create file in destination directory on FTP server.', 'wp-security-by-made-it');
                 }
                 $ftp = true;

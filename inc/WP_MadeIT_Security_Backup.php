@@ -496,8 +496,8 @@ class WP_MadeIT_Security_Backup
 
     private function uploadBackupToMadeIT($fileName, $directory, $type)
     {
-        $fileName = untrailingslashit($this->backups_dir_location()) . '/' . $fileName;
-        
+        $fileName = untrailingslashit($this->backups_dir_location()).'/'.$fileName;
+
         $key = $this->defaultSettings['maintenance']['key'];
         $keepFileOnline = false;
         if (strlen($key) > 0) {
@@ -513,7 +513,7 @@ class WP_MadeIT_Security_Backup
                 }
                 $post = ['backup' => $cFile, 'type' => $type];
             }
-            error_log(print_r($post,true));
+            error_log(print_r($post, true));
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/upload-backup/'.$key);
             curl_setopt($ch, CURLOPT_POST, 1);
@@ -545,7 +545,6 @@ class WP_MadeIT_Security_Backup
             if ($conn_id !== false) {
                 $login_result = @ftp_login($conn_id, $ftp_username, $ftp_password);
                 if ($login_result !== false) {
-                    
                     if (!empty($destination)) {
                         if (@ftp_nlist($conn_id, $destination) === false) {
                             if (@ftp_mkdir($conn_id, $dir) === false) {
@@ -555,14 +554,15 @@ class WP_MadeIT_Security_Backup
 
                         $destination = trailingslashit($destination);
                     }
-                    
-                    if (@ftp_put($conn_id, $destination . $fileName, $localFile, FTP_ASCII)) {
+
+                    if (@ftp_put($conn_id, $destination.$fileName, $localFile, FTP_ASCII)) {
                         $result = true;
                     }
                 }
                 ftp_close($conn_id);
             }
         }
+
         return $result;
     }
 
