@@ -2,6 +2,7 @@
 
 class WP_MadeIT_Security_LoadFiles
 {
+    private $timeLimit = 900;
     private $defaultSettings = [];
     private $settings;
     private $db;
@@ -120,6 +121,7 @@ class WP_MadeIT_Security_LoadFiles
 
     public function loadfiles()
     {
+        ini_set('max_execution_time', $this->timeLimit);
         //Fetch all errors
         register_shutdown_function('WP_MadeIT_Security_LoadFiles::check_for_fatal');
         set_error_handler('WP_MadeIT_Security_LoadFiles::log_error', E_ALL);
