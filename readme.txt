@@ -3,7 +3,7 @@ Contributors: madeit
 Donate link: http://www.madeit.be/donate/
 Tags: security, maintenance, secure, security plugin, wordpress security, maintenance plugin
 Requires at least: 4.0
-Tested up to: 4.8.2
+Tested up to: 4.8.3
 Requires PHP: 5.6
 Stable tag: 1.3.2
 License: GNU GPL v3.0
