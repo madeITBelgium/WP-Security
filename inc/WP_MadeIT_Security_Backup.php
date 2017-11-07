@@ -507,9 +507,9 @@ class WP_MadeIT_Security_Backup
                 $keepFileOnline = true;
             } else {
                 if (function_exists('curl_file_create')) { // php 5.5+
-                    $cFile = curl_file_create($directory.'/'.$fileName);
+                    $cFile = curl_file_create($fileName);
                 } else {
-                    $cFile = '@'.realpath($directory.'/'.$fileName);
+                    $cFile = '@'.realpath($fileName);
                 }
                 $post = ['backup' => $cFile, 'type' => $type];
             }
