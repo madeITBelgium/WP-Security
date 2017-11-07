@@ -153,7 +153,7 @@ class Diff_SequenceMatcher
         $length = count($this->b);
         $this->b2j = [];
         $popularDict = [];
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < $length; $i++) {
             $char = $this->b[$i];
             if (isset($this->b2j[$char])) {
                 if ($length >= 200 && count($this->b2j[$char]) * 100 > $length) {
@@ -233,7 +233,7 @@ class Diff_SequenceMatcher
         $bestSize = 0;
         $j2Len = [];
         $nothing = [];
-        for ($i = $alo; $i < $ahi; ++$i) {
+        for ($i = $alo; $i < $ahi; $i++) {
             $newJ2Len = [];
             $jDict = $this->arrayGetDefault($this->b2j, $a[$i], $nothing);
             foreach ($jDict as $jKey => $j) {
@@ -254,23 +254,23 @@ class Diff_SequenceMatcher
         }
         while ($bestI > $alo && $bestJ > $blo && !$this->isBJunk($b[$bestJ - 1]) &&
             !$this->linesAreDifferent($bestI - 1, $bestJ - 1)) {
-            --$bestI;
-            --$bestJ;
-            ++$bestSize;
+            $bestI--;
+            $bestJ--;
+            $bestSize++;
         }
         while ($bestI + $bestSize < $ahi && ($bestJ + $bestSize) < $bhi &&
             !$this->isBJunk($b[$bestJ + $bestSize]) && !$this->linesAreDifferent($bestI + $bestSize, $bestJ + $bestSize)) {
-            ++$bestSize;
+            $bestSize++;
         }
         while ($bestI > $alo && $bestJ > $blo && $this->isBJunk($b[$bestJ - 1]) &&
             !$this->isLineDifferent($bestI - 1, $bestJ - 1)) {
-            --$bestI;
-            --$bestJ;
-            ++$bestSize;
+            $bestI--;
+            $bestJ--;
+            $bestSize++;
         }
         while ($bestI + $bestSize < $ahi && $bestJ + $bestSize < $bhi &&
             $this->isBJunk($b[$bestJ + $bestSize]) && !$this->linesAreDifferent($bestI + $bestSize, $bestJ + $bestSize)) {
-            ++$bestSize;
+            $bestSize++;
         }
 
         return [
@@ -590,7 +590,7 @@ class Diff_SequenceMatcher
         if ($this->fullBCount === null) {
             $this->fullBCount = [];
             $bLength = count($b);
-            for ($i = 0; $i < $bLength; ++$i) {
+            for ($i = 0; $i < $bLength; $i++) {
                 $char = $this->b[$i];
                 $this->fullBCount[$char] = $this->arrayGetDefault($this->fullBCount, $char, 0) + 1;
             }
@@ -598,7 +598,7 @@ class Diff_SequenceMatcher
         $avail = [];
         $matches = 0;
         $aLength = count($this->a);
-        for ($i = 0; $i < $aLength; ++$i) {
+        for ($i = 0; $i < $aLength; $i++) {
             $char = $this->a[$i];
             if (isset($avail[$char])) {
                 $numb = $avail[$char];
@@ -607,7 +607,7 @@ class Diff_SequenceMatcher
             }
             $avail[$char] = $numb - 1;
             if ($numb > 0) {
-                ++$matches;
+                $matches++;
             }
         }
         $this->calculateRatio($matches, count($this->a) + count($this->b));
@@ -676,7 +676,7 @@ class Diff_SequenceMatcher
     private function tupleSort($a, $b)
     {
         $max = max(count($a), count($b));
-        for ($i = 0; $i < $max; ++$i) {
+        for ($i = 0; $i < $max; $i++) {
             if ($a[$i] < $b[$i]) {
                 return -1;
             } elseif ($a[$i] > $b[$i]) {
