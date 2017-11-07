@@ -73,7 +73,7 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
             foreach ($group as $code) {
                 list($tag, $i1, $i2, $j1, $j2) = $code;
                 if ($tag == 'replace' && $i2 - $i1 == $j2 - $j1) {
-                    for ($i = 0; $i < ($i2 - $i1); ++$i) {
+                    for ($i = 0; $i < ($i2 - $i1); $i++) {
                         $fromLine = $a[$i1 + $i];
                         $toLine = $b[$j1 + $i];
                         list($start, $end) = $this->getChangeExtent($fromLine, $toLine);
@@ -144,12 +144,12 @@ class Diff_Renderer_Html_Array extends Diff_Renderer_Abstract
         $start = 0;
         $limit = min(strlen($fromLine), strlen($toLine));
         while ($start < $limit && $fromLine[$start] == $toLine[$start]) {
-            ++$start;
+            $start++;
         }
         $end = -1;
         $limit = $limit - $start;
         while (-$end <= $limit && substr($fromLine, $end, 1) == substr($toLine, $end, 1)) {
-            --$end;
+            $end--;
         }
 
         return [
