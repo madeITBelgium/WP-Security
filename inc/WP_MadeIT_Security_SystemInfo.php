@@ -117,7 +117,7 @@ class WP_MadeIT_Security_SystemInfo
         }
 
         //Check Ubuntu
-        $os = shell_exec('cat /etc/os-release');
+        $os = shell_exec('cat /etc/os-release 2>/dev/null)');
         $listIds = preg_match_all('/.*=/', $os, $matchListIds);
         $listIds = $matchListIds[0];
 
@@ -137,7 +137,7 @@ class WP_MadeIT_Security_SystemInfo
             return $serverInfo;
         }
 
-        $rhelOs = shell_exec("cut -f 1 -d ' ' /etc/redhat-release");
+        $rhelOs = shell_exec("cut -f 1 -d ' ' /etc/redhat-release 2>/dev/null)");
         if (!empty($rhelOs)) {
             return [
                 'name'       => trim($rhelOs),
