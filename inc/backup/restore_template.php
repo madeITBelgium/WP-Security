@@ -120,6 +120,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'INSTALL_WP') {
             <div class="row">
                 <div class="col">
                     <h2 class="h4">Install WordPress</h2>
+                    <form action="" id="">
+                        <div class="form-group">
+                            <label for="database">Database name:</label>
+                            <input type="text" name="database" value="">
+                        </div>
+                    </form>
                     <a href="#" class="next-step btn btn-success pull-right" data-step="3">Next step</a>
                 </div>
             </div>

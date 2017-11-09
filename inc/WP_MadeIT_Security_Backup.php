@@ -81,9 +81,6 @@ class WP_MadeIT_Security_Backup
             ];
             set_site_transient('madeit_security_backup', $backupResult);
 
-            //Clear error log
-            file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', '');
-
             //start job
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
         }
