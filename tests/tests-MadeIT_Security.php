@@ -63,24 +63,32 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
     public function test_dashboard()
     {
         wp_set_current_user(1);
-        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security'));
+        $this->go_to('/wp-admin/admin.php?page=madeit_security');
     }
 
     public function test_scan()
     {
         wp_set_current_user(1);
-        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security_scan'));
+        $this->go_to('/wp-admin/admin.php?page=madeit_security_scan');
     }
 
     public function test_settings()
     {
         wp_set_current_user(1);
-        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security_settings'));
+        $this->go_to('/wp-admin/admin.php?page=madeit_security_settings');
     }
 
     public function test_systeminfo()
     {
         wp_set_current_user(1);
-        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security_systeminfo'));
+        $this->go_to('/wp-admin/admin.php?page=madeit_security_systeminfo');
+    }
+    
+    public function test_actions()
+    {
+        $actions = ['wp_ajax_madeit_security_start_scan',  'wp_ajax_madeit_security_stop_scan', 'wp_ajax_madeit_security_update_scan', 'wp_ajax_madeit_security_backup', 'wp_ajax_madeit_security_backup_check', 'wp_ajax_madeit_security_backup_stop', 'wp_ajax_madeit_security_check_scan', 'wp_ajax_madeit_security_do_update'];
+        foreach($actions as $action) {
+            $this->assertTrue(has_action($action));
+        }
     }
 }
