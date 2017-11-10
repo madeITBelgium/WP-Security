@@ -242,14 +242,14 @@ if (!defined('ABSPATH')) {
                                     <a href="#" class="card-link do-update-scan"><?php echo esc_html(__('Do scan now', 'wp-security-by-made-it')); ?></a>
                                     <?php
                                     $updates = 0;
-                                    $updates += isset($updateScanData['core']) && is_numeric($updateScanData['core']) ? $updateScanData['core'] : 0;
-                                    $updates += isset($updateScanData['plugin']) && is_numeric($updateScanData['plugin']) ? $updateScanData['plugin'] : 0;
-                                    $updates += isset($updateScanData['theme']) && is_numeric($updateScanData['theme']) ? $updateScanData['theme'] : 0;
-                                    if($updates > 0) {
-                                        ?>
+        $updates += isset($updateScanData['core']) && is_numeric($updateScanData['core']) ? $updateScanData['core'] : 0;
+        $updates += isset($updateScanData['plugin']) && is_numeric($updateScanData['plugin']) ? $updateScanData['plugin'] : 0;
+        $updates += isset($updateScanData['theme']) && is_numeric($updateScanData['theme']) ? $updateScanData['theme'] : 0;
+        if ($updates > 0) {
+            ?>
                                          / <a href="#" class="card-link do-update-all"><?php echo esc_html(__('Update all', 'wp-security-by-made-it')); ?></a>
                                         <?php
-                                    }
+        }
     } else {
         ?>
                                     <div class="card-text">
