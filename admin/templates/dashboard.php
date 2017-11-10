@@ -196,6 +196,7 @@ if (!defined('ABSPATH')) {
         echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it'));
     } ?>
                                 </h6>
+                                <h6 class="madeit-card-subtitle" id="update-scan-error" style="display:none;"></h6>
                                 <?php if ($this->defaultSettings['scan']['update'] || $this->defaultSettings['maintenance']['enable']) {
         ?>
                                     <div class="card-text">
@@ -239,7 +240,16 @@ if (!defined('ABSPATH')) {
                                         </div>
                                     </div>
                                     <a href="#" class="card-link do-update-scan"><?php echo esc_html(__('Do scan now', 'wp-security-by-made-it')); ?></a>
-                                <?php
+                                    <?php
+                                    $updates = 0;
+                                    $updates += isset($updateScanData['core']) && is_numeric($updateScanData['core']) ? $updateScanData['core'] : 0;
+                                    $updates += isset($updateScanData['plugin']) && is_numeric($updateScanData['plugin']) ? $updateScanData['plugin'] : 0;
+                                    $updates += isset($updateScanData['theme']) && is_numeric($updateScanData['theme']) ? $updateScanData['theme'] : 0;
+                                    if($updates > 0) {
+                                        ?>
+                                         / <a href="#" class="card-link do-update-all"><?php echo esc_html(__('Update all', 'wp-security-by-made-it')); ?></a>
+                                        <?php
+                                    }
     } else {
         ?>
                                     <div class="card-text">
@@ -519,5 +529,42 @@ if (!defined('ABSPATH')) {
             }, 'json');
         }
         checkBackup();
+        
+        
+        
+        $('.do-update-all').click(function(e) {
+            e.preventDefault();
+            $(this).attr('disabled', 'disabled');
+            $('.do-update-scan').attr('disabled', 'disabled');
+            $('#update-scan-error').hide();
+            $('#update-scan-core-status').html('<i class="fa fa-spinner fa-pulse"></i>');
+            $('#update-scan-plugins-status').html('<i class="fa fa-spinner fa-pulse"></i>');
+            $('#update-scan-themes-status').html('<i class="fa fa-spinner fa-pulse"></i>');
+            var data = {
+                'action': 'madeit_security_do_update',
+            };
+            // We can also pass the url value separately from ajaxurl for front end AJAX implementations
+            jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
+                //$('.do-update-all').removeAttr('disabled');
+                $('.do-update-scan').removeAttr('disabled');
+                if(response.success) {
+                    $('#update-scan-time-ago').html('<?php printf(__('Last scan %s ago.', 'wp-security-by-made-it'), '1s'); ?>');
+                    $('#update-scan-core-status').html(response.scan.core);
+                    $('#update-scan-plugins-status').html(response.scan.plugin);
+                    $('#update-scan-themes-status').html(response.scan.theme);
+                }
+                else {
+                    //error loggin
+                    $('#update-scan-error').show();
+                    $('#update-scan-error').html('');
+                    $.each(response.errored_plugins, function(plugin, error) {
+                        $('#update-scan-error').append(plugin + ': ' + error + '<br>');
+                        $('#update-scan-core-status').html(response.scan.core);
+                        $('#update-scan-plugins-status').html(response.scan.plugin);
+                        $('#update-scan-themes-status').html(response.scan.theme);
+                    });
+                }
+            }, 'json');
+        });
     });
 </script>

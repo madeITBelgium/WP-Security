@@ -612,6 +612,48 @@ class WP_MadeIT_Security_Admin
         wp_die();
     }
 
+    public function doUpdate()
+    {
+        //Update plugins
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin_Installer.php';
+        $cPlugin = new WP_MadeIT_Security_Plugin();
+        $cPluginInstaller = new WP_MadeIT_Security_Plugin_Installer();
+        
+        $plugins = $cPlugin->getPlugins();
+        $pluginsUpdated = [];
+        $pluginErrors = [];
+        ob_start();
+        foreach($plugins as $plugin => $values) {
+            if($values['repository'] == "WORDPRESS.ORG" && version_compare($values['version'], $values['latest_version'], '<')) {
+                //update plugin
+                $downloadUrl = $values['download_url'];
+                $result = $cPluginInstaller->upgradeWithPackage($plugin, $downloadUrl);
+                if($result === true) {
+                    $pluginsUpdated[] = $values['name'];
+                }
+                else {
+                    $pluginErrors[$values['name']] = $result;
+                }
+            }
+        }
+        $out = ob_get_clean();
+        
+        //Update themes
+    
+        //update core
+        
+        do_action('madeit_security_check_plugin_updates');
+        
+        echo json_encode([
+            'success' => count($pluginErrors) == 0, 
+            'updated_plugins' => $pluginsUpdated, 
+            'errored_plugins' => $pluginErrors,
+            'scan' => get_site_transient('madeit_security_update_scan'),
+        ]);
+        wp_die();
+    }
+
     public function checkBackup()
     {
         $result = get_site_transient('madeit_security_backup');
@@ -658,5 +700,6 @@ class WP_MadeIT_Security_Admin
         add_action('wp_ajax_madeit_security_backup_check', [$this, 'checkBackup']);
         add_action('wp_ajax_madeit_security_backup_stop', [$this, 'stopBackup']);
         add_action('wp_ajax_madeit_security_check_scan', [$this, 'checkFileScan']);
+        add_action('wp_ajax_madeit_security_do_update', [$this, 'doUpdate']);
     }
 }

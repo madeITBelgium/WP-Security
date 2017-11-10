@@ -1,4 +1,5 @@
 <?php
+include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
 
 class WP_MadeIT_Security_Plugin_Installer extends Plugin_Upgrader
 {
@@ -17,7 +18,7 @@ class WP_MadeIT_Security_Plugin_Installer extends Plugin_Upgrader
      *
      * @return bool|WP_Error True if the upgrade was successful, false or a WP_Error object otherwise.
      */
-    public function upgradeWithPackage($plugin, $package, $args = [])
+    public function upgradeWithPackage($plugin, $package = null, $args = [])
     {
         $defaults = [
             'clear_update_cache' => true,
@@ -27,7 +28,10 @@ class WP_MadeIT_Security_Plugin_Installer extends Plugin_Upgrader
         $this->upgrade_strings();
 
         // Get the URL to the zip file
-        $r = $current->response[$plugin];
+        if($package == null) {
+            $current = get_site_transient('update_plugins');
+            $package = $current->response[$plugin];
+        }
         add_filter('upgrader_pre_install', [$this, 'deactivate_plugin_before_upgrade'], 10, 2);
         add_filter('upgrader_clear_destination', [$this, 'delete_old_plugin'], 10, 4);
         //'source_selection' => array($this, 'source_selection'), //there's a trac ticket to move up the directory for zip's which are made a bit differently, useful for non-.org plugins.
