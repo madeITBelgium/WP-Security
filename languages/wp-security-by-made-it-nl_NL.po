@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WP Security by Made I.T.\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-31 20:15+0000\n"
-"PO-Revision-Date: 2017-10-31 20:16+0000\n"
+"POT-Creation-Date: 2017-11-10 13:00+0000\n"
+"PO-Revision-Date: 2017-11-10 13:05+0000\n"
 "Last-Translator: Tjebbe Lievens <tjebbe.lievens@tpweb.org>\n"
 "Language-Team: Dutch\n"
 "Language: nl-NL\n"
@@ -13,42 +13,93 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: admin/WP_MadeIT_Security_Admin.php:97
-msgid "Backup files value is incorrect"
-msgstr "Waarde van Aantal bestanden in backup is foutief"
+#: admin/WP_MadeIT_Security_Admin.php:135
+msgid "Cannot create destination directory on FTP server."
+msgstr "Kan de destinatie folder niet aanmaken op de FTP server."
 
-#: admin/WP_MadeIT_Security_Admin.php:108
-msgid "The provided API Key is invalid."
-msgstr "De opgegeven API key is foutief."
-
-#: admin/WP_MadeIT_Security_Admin.php:125
-msgid "Cannot connect to the FTP server."
-msgstr "Kan niet verbinden met de FTP server."
-
-#: admin/WP_MadeIT_Security_Admin.php:129
-msgid "FTP credentials are wrong."
-msgstr "FTP login gegevens zijn foutief."
-
-#: admin/WP_MadeIT_Security_Admin.php:154
-msgid "Cannot connect to S3 bucket"
-msgstr "Kan niet verbinden met de S3 opslag."
-
-#: admin/templates/settings.php:137
-msgid "Backup settings"
-msgstr "Backup instellingen"
-
-#: admin/templates/settings.php:142
-msgid "Files to backup at once"
-msgstr "Aantal bestanden backupen in één request"
-
-#: admin/templates/settings.php:147
-msgid ""
-"You can increase or decrease this value. The higher number, the faster the "
-"backup is completed. High number of files need more server resources."
+#: admin/WP_MadeIT_Security_Admin.php:146
+msgid "Cannot delete temp file in destination directory on FTP server."
 msgstr ""
-"Je kan deze waarde verhogen of verlagen. Hoe hoger de waarde, hoe sneller "
-"een backup voltooid is. Maar hoe hoger de waarde hoe meer server resources "
-"er nodig zijn."
+"Kan het tijdelijk bestand in de destinatie folder niet verwijderen op de FTP "
+"server."
+
+#: admin/WP_MadeIT_Security_Admin.php:151
+msgid "Cannot create file in destination directory on FTP server."
+msgstr "Kan de destinatie folder niet aanmaken op de FTP server."
+
+#: admin/WP_MadeIT_Security_Admin.php:264
+msgid "# files"
+msgstr "# bestanden"
+
+#: admin/WP_MadeIT_Security_Admin.php:271
+msgid "# loaded files"
+msgstr "# Geladen bestanden"
+
+#: admin/WP_MadeIT_Security_Admin.php:278
+msgid "# checked files"
+msgstr "# Gecontroleerde bestanden"
+
+#: admin/WP_MadeIT_Security_Admin.php:285
+msgid "# changed files"
+msgstr "# Veranderde bestanden"
+
+#: admin/WP_MadeIT_Security_Admin.php:292
+msgid "# files to backup"
+msgstr "# Bestanden om te backuppen"
+
+#: admin/WP_MadeIT_Security_Admin.php:299
+msgid "# files in last backup"
+msgstr "# Bestanden in laatste backup"
+
+#: admin/templates/notexisting_files.php:22
+#, php-format
+msgid "File %s of %s"
+msgstr "Bestand %s van %s"
+
+#: admin/templates/list-not-exist-files.php:29
+#, php-format
+msgid "The file %s is deleted from the server."
+msgstr "Het bestand %s is verwijderd van de server."
+
+#: admin/templates/system_info.php:93
+msgid "Server date time"
+msgstr "Server datum/tijd"
+
+#: admin/templates/system_info.php:113
+msgid "(Cron system is not in sync)"
+msgstr "(Cron systeem is niet in sync)"
+
+#: admin/templates/system_info.php:157
+msgid "File status"
+msgstr "Bestand status"
+
+#: admin/templates/system_info.php:164
+msgid "Status"
+msgstr "Status"
+
+#: admin/templates/system_info.php:165
+msgid "Core files"
+msgstr "Core bestanden"
+
+#: admin/templates/system_info.php:166
+msgid "Plugin files"
+msgstr "Plugin bestanden"
+
+#: admin/templates/system_info.php:167
+msgid "Theme files"
+msgstr "Thema bestanden"
+
+#: admin/templates/system_info.php:168
+msgid "Other files"
+msgstr "Andere bestanden"
+
+#: admin/templates/system_info.php:212
+msgid "View error.log"
+msgstr "Bekijk error.log"
+
+#: admin/templates/dashboard.php:250
+msgid "Update all"
+msgstr "Update alles"
 
 #: inc/WP_MadeIT_Security_Plugin_Scan.php:55
 #: inc/WP_MadeIT_Security_Plugin_Scan.php:55
@@ -62,7 +113,7 @@ msgstr "Het bestand %s is verwijderd"
 msgid "The file %s is changed"
 msgstr "Het bestand %s is veranderd"
 
-#: inc/WP_MadeIT_Security_Backup.php:388
+#: inc/WP_MadeIT_Security_Backup.php:385
 #, php-format
 msgid ""
 "The amount of memory (RAM) allowed for PHP is very low (%s Mb) - you should "
@@ -73,7 +124,7 @@ msgstr ""
 "Mb) - u moet dit verhogen om storingen te voorkomen door onvoldoende "
 "geheugen (raadpleeg uw webhostingbedrijf voor meer hulp)"
 
-#: inc/WP_MadeIT_Security_Backup.php:391
+#: inc/WP_MadeIT_Security_Backup.php:388
 #, php-format
 msgid ""
 "The amount of time allowed for WordPress plugins to run is very low (%s "
@@ -87,7 +138,7 @@ msgstr ""
 "het is de max_execution_time PHP instelling; aanbevolen waarde is %s "
 "seconden of meer)"
 
-#: inc/WP_MadeIT_Security_Backup.php:407
+#: inc/WP_MadeIT_Security_Backup.php:404
 #, php-format
 msgid "Your free space in your hosting account is very low - only %s Mb remain"
 msgstr ""
@@ -130,82 +181,102 @@ msgstr "Instellingen"
 msgid "Server info"
 msgstr "Server info"
 
-#: admin/WP_MadeIT_Security_Admin.php:321
+#: admin/WP_MadeIT_Security_Admin.php:97
+msgid "Backup files value is incorrect"
+msgstr "Waarde van Aantal bestanden in backup is foutief"
+
+#: admin/WP_MadeIT_Security_Admin.php:108
+msgid "The provided API Key is invalid."
+msgstr "De opgegeven API key is foutief."
+
+#: admin/WP_MadeIT_Security_Admin.php:125
+msgid "Cannot connect to the FTP server."
+msgstr "Kan niet verbinden met de FTP server."
+
+#: admin/WP_MadeIT_Security_Admin.php:129
+msgid "FTP credentials are wrong."
+msgstr "FTP login gegevens zijn foutief."
+
+#: admin/WP_MadeIT_Security_Admin.php:176
+msgid "Cannot connect to S3 bucket"
+msgstr "Kan niet verbinden met de S3 opslag."
+
+#: admin/WP_MadeIT_Security_Admin.php:397
+#: admin/WP_MadeIT_Security_Admin.php:492
 #, php-format
 msgid "Local file %s doesn't exist on your WordPress installation."
 msgstr ""
 "Het lokale bestand %s kan niet worden gevonden in je WordPress installatie."
 
-#: admin/WP_MadeIT_Security_Admin.php:411
+#: admin/WP_MadeIT_Security_Admin.php:557
 msgid "less than 1 second"
 msgstr "Minder dan 1 seconde"
 
-#: admin/WP_MadeIT_Security_Admin.php:428
+#: admin/WP_MadeIT_Security_Admin.php:574
 #, php-format
 msgid "%s year"
 msgid_plural "%s years"
 msgstr[0] "%s jaar"
 msgstr[1] "%s jaren"
 
-#: admin/WP_MadeIT_Security_Admin.php:431
+#: admin/WP_MadeIT_Security_Admin.php:577
 #, php-format
 msgid "%s month"
 msgid_plural "%s months"
 msgstr[0] "%s maand"
 msgstr[1] "%s maanden"
 
-#: admin/WP_MadeIT_Security_Admin.php:434
+#: admin/WP_MadeIT_Security_Admin.php:580
 #, php-format
 msgid "%s day"
 msgid_plural "%s days"
 msgstr[0] "%s dag"
 msgstr[1] "%s dagen"
 
-#: admin/WP_MadeIT_Security_Admin.php:437
+#: admin/WP_MadeIT_Security_Admin.php:583
 #, php-format
 msgid "%s hour"
 msgid_plural "%s hours"
 msgstr[0] "%s uur"
 msgstr[1] "%s uren"
 
-#: admin/WP_MadeIT_Security_Admin.php:440
+#: admin/WP_MadeIT_Security_Admin.php:586
 #, php-format
 msgid "%s minute"
 msgid_plural "%s minutes"
 msgstr[0] "%s minuut"
 msgstr[1] "%s minuten"
 
-#: admin/WP_MadeIT_Security_Admin.php:443
+#: admin/WP_MadeIT_Security_Admin.php:589
 #, php-format
 msgid "%s second"
 msgid_plural "%s seconds"
 msgstr[0] "%s seconde"
 msgstr[1] "%s seconden"
 
-#: admin/WP_MadeIT_Security_Admin.php:505
+#: admin/WP_MadeIT_Security_Admin.php:656
 #, php-format
 msgid "Last result %s ago."
 msgstr "Laatste resultaat %s geleden"
 
-#: admin/WP_MadeIT_Security_Admin.php:512
+#: admin/WP_MadeIT_Security_Admin.php:663
 #: admin/templates/list-not-exist-files.php:103
 #: admin/templates/list-not-exist-files.php:122
 #: admin/templates/list-changed-files.php:103
-#: admin/templates/list-changed-files.php:122
-#: admin/templates/compare_files.php:81 admin/templates/compare_files.php:100
-#: admin/templates/scan.php:97 admin/templates/scan.php:177
-#: admin/templates/scan.php:459 admin/templates/dashboard.php:194
-#: admin/templates/dashboard.php:401
+#: admin/templates/list-changed-files.php:122 admin/templates/scan.php:97
+#: admin/templates/scan.php:177 admin/templates/scan.php:459
+#: admin/templates/dashboard.php:194 admin/templates/dashboard.php:411
+#: admin/templates/dashboard.php:551
 #, php-format
 msgid "Last scan %s ago."
 msgstr "Laatste scan is %s geleden."
 
-#: admin/WP_MadeIT_Security_Admin.php:548
+#: admin/WP_MadeIT_Security_Admin.php:741
 #, php-format
 msgid "Last change %s ago."
 msgstr "Laatste verandering %s geleden."
 
-#: admin/WP_MadeIT_Security_Admin.php:554
+#: admin/WP_MadeIT_Security_Admin.php:747
 #, php-format
 msgid "Last backup %s ago."
 msgstr "Laatste backup is %s geleden uitgevoerd."
@@ -252,17 +323,17 @@ msgid "Do fast scan"
 msgstr "Doe enkel snelle scans"
 
 #: admin/templates/settings.php:68 admin/templates/scan.php:411
-#: admin/templates/dashboard.php:353
+#: admin/templates/dashboard.php:363
 msgid "Scan core files"
 msgstr "Scan core bestanden"
 
 #: admin/templates/settings.php:78 admin/templates/scan.php:418
-#: admin/templates/dashboard.php:360
+#: admin/templates/dashboard.php:370
 msgid "Scan theme files"
 msgstr "Scan thema bestanden"
 
 #: admin/templates/settings.php:88 admin/templates/scan.php:414
-#: admin/templates/dashboard.php:356
+#: admin/templates/dashboard.php:366
 msgid "Scan plugin files"
 msgstr "Scan plugin bestanden"
 
@@ -290,6 +361,23 @@ msgstr ""
 "Deze API key is automatisch aangemaakt. De API key is nodig om te "
 "communiceren met onze servers. Zo kunnen we je steeds de laaste scan lijsten,"
 " virus/mallware databases, enz. bezorgen."
+
+#: admin/templates/settings.php:137
+msgid "Backup settings"
+msgstr "Backup instellingen"
+
+#: admin/templates/settings.php:142
+msgid "Files to backup at once"
+msgstr "Aantal bestanden backupen in één request"
+
+#: admin/templates/settings.php:147
+msgid ""
+"You can increase or decrease this value. The higher number, the faster the "
+"backup is completed. High number of files need more server resources."
+msgstr ""
+"Je kan deze waarde verhogen of verlagen. Hoe hoger de waarde, hoe sneller "
+"een backup voltooid is. Maar hoe hoger de waarde hoe meer server resources "
+"er nodig zijn."
 
 #: admin/templates/settings.php:155
 msgid "Send the backup to your FTP server."
@@ -367,12 +455,6 @@ msgstr "Opslaan"
 msgid "Not existing files"
 msgstr "Niet gevonden bestanden."
 
-#: admin/templates/list-not-exist-files.php:29
-#: admin/templates/list-changed-files.php:29
-#, php-format
-msgid "The file %s is replaced with the original version."
-msgstr "Het bestand %s is vervangen met de originele versie."
-
 #: admin/templates/list-not-exist-files.php:41
 #, php-format
 msgid "Files of %s that not exist"
@@ -381,7 +463,7 @@ msgstr "Bestanden van %s die niet bestaan."
 #: admin/templates/list-not-exist-files.php:52
 #, php-format
 msgid "The file <a href=\"%s\">%s</a> do not exist in the original version."
-msgstr "Het bestand <a href=\"%s\">%s</a> is verschillend van het originele."
+msgstr "Het bestand <a href=\"%s\">%s</a> bestaat niet in de originele versie."
 
 #: admin/templates/list-not-exist-files.php:71
 #: admin/templates/list-changed-files.php:71
@@ -391,6 +473,11 @@ msgstr "Geen aangepaste bestanden gevonden."
 #: admin/templates/list-changed-files.php:18
 msgid "Changed files"
 msgstr "Aangepaste bestanden"
+
+#: admin/templates/list-changed-files.php:29
+#, php-format
+msgid "The file %s is replaced with the original version."
+msgstr "Het bestand %s is vervangen met de originele versie."
 
 #: admin/templates/list-changed-files.php:41
 #, php-format
@@ -471,27 +558,27 @@ msgstr "Gebruikte schijfruimte"
 msgid "Total disk space"
 msgstr "Totale schijfruimte"
 
-#: admin/templates/system_info.php:105
+#: admin/templates/system_info.php:109
 msgid "Cron jobs"
 msgstr "Cronjobs"
 
-#: admin/templates/system_info.php:112
+#: admin/templates/system_info.php:123
 msgid "Job"
 msgstr "Taak"
 
-#: admin/templates/system_info.php:113
+#: admin/templates/system_info.php:124
 msgid "Schedule"
 msgstr "Plannen"
 
-#: admin/templates/system_info.php:114
+#: admin/templates/system_info.php:125
 msgid "Next run (Server time)"
 msgstr "Volgende uitvoering (Server tijd)"
 
-#: admin/templates/system_info.php:146
+#: admin/templates/system_info.php:195
 msgid "View htaccess"
 msgstr "Bekijk .htaccess bestand"
 
-#: admin/templates/system_info.php:163
+#: admin/templates/system_info.php:229
 msgid "PHP Info"
 msgstr "PHP info"
 
@@ -519,37 +606,37 @@ msgstr "Geen recente data gevonden."
 #: admin/templates/scan.php:441 admin/templates/dashboard.php:85
 #: admin/templates/dashboard.php:93 admin/templates/dashboard.php:101
 #: admin/templates/dashboard.php:145 admin/templates/dashboard.php:156
-#: admin/templates/dashboard.php:208 admin/templates/dashboard.php:220
-#: admin/templates/dashboard.php:232 admin/templates/dashboard.php:314
-#: admin/templates/dashboard.php:315 admin/templates/dashboard.php:316
-#: admin/templates/dashboard.php:381 admin/templates/dashboard.php:382
-#: admin/templates/dashboard.php:383 admin/templates/dashboard.php:436
-#: admin/templates/dashboard.php:437 admin/templates/dashboard.php:486
-#: admin/templates/dashboard.php:489 admin/templates/dashboard.php:513
-#: admin/templates/dashboard.php:516
+#: admin/templates/dashboard.php:209 admin/templates/dashboard.php:221
+#: admin/templates/dashboard.php:233 admin/templates/dashboard.php:324
+#: admin/templates/dashboard.php:325 admin/templates/dashboard.php:326
+#: admin/templates/dashboard.php:391 admin/templates/dashboard.php:392
+#: admin/templates/dashboard.php:393 admin/templates/dashboard.php:446
+#: admin/templates/dashboard.php:447 admin/templates/dashboard.php:496
+#: admin/templates/dashboard.php:499 admin/templates/dashboard.php:523
+#: admin/templates/dashboard.php:526
 msgid "N/A"
 msgstr "N.V.T."
 
 #: admin/templates/scan.php:44 admin/templates/scan.php:115
 #: admin/templates/scan.php:207 admin/templates/dashboard.php:88
-#: admin/templates/dashboard.php:212
+#: admin/templates/dashboard.php:213
 msgid "WordPress Core"
 msgstr "WordPress Core"
 
 #: admin/templates/scan.php:52 admin/templates/scan.php:127
 #: admin/templates/scan.php:236 admin/templates/dashboard.php:96
-#: admin/templates/dashboard.php:224
+#: admin/templates/dashboard.php:225
 msgid "Plugins"
 msgstr "Plugins"
 
 #: admin/templates/scan.php:60 admin/templates/scan.php:139
 #: admin/templates/scan.php:288 admin/templates/dashboard.php:104
-#: admin/templates/dashboard.php:236
+#: admin/templates/dashboard.php:237
 msgid "Themes"
 msgstr "Thema's"
 
 #: admin/templates/scan.php:66 admin/templates/scan.php:144
-#: admin/templates/dashboard.php:110 admin/templates/dashboard.php:241
+#: admin/templates/dashboard.php:110 admin/templates/dashboard.php:242
 msgid "Do scan now"
 msgstr "Doe scan nu"
 
@@ -566,7 +653,7 @@ msgstr "Het scannen van veranderingen is niet ingeschakeld."
 msgid "Update summary"
 msgstr "Update samenvatting"
 
-#: admin/templates/scan.php:151 admin/templates/dashboard.php:248
+#: admin/templates/scan.php:151 admin/templates/dashboard.php:258
 msgid "Scanning plugin updates disabled."
 msgstr "Scannen van plugin updates is uitgeschakeld."
 
@@ -616,27 +703,27 @@ msgstr ""
 "Er zijn %s bestanden gevonden op je systeem die niet bestaan in de originele "
 "versie."
 
-#: admin/templates/scan.php:396 admin/templates/dashboard.php:338
+#: admin/templates/scan.php:396 admin/templates/dashboard.php:348
 msgid "Starting scan"
 msgstr "Scan starten"
 
-#: admin/templates/scan.php:399 admin/templates/dashboard.php:341
+#: admin/templates/scan.php:399 admin/templates/dashboard.php:351
 msgid "Loading core files"
 msgstr "WP Core bestanden inladen"
 
-#: admin/templates/scan.php:402 admin/templates/dashboard.php:344
+#: admin/templates/scan.php:402 admin/templates/dashboard.php:354
 msgid "Loading plugin files"
 msgstr "Plugin bestanden inladen"
 
-#: admin/templates/scan.php:405 admin/templates/dashboard.php:347
+#: admin/templates/scan.php:405 admin/templates/dashboard.php:357
 msgid "Loading theme files"
 msgstr "Thema bestanden inladen"
 
-#: admin/templates/scan.php:408 admin/templates/dashboard.php:350
+#: admin/templates/scan.php:408 admin/templates/dashboard.php:360
 msgid "Prepare to start scan"
 msgstr "Scan voorbereiden"
 
-#: admin/templates/scan.php:422 admin/templates/dashboard.php:364
+#: admin/templates/scan.php:422 admin/templates/dashboard.php:374
 msgid "Complete scan"
 msgstr "Scan voltooid"
 
@@ -700,48 +787,48 @@ msgstr "Stop backup"
 msgid "Automatic backup disabled."
 msgstr "Automatische backups is uitgeschakeld."
 
-#: admin/templates/dashboard.php:265
+#: admin/templates/dashboard.php:275
 msgid "Links"
 msgstr "Links"
 
-#: admin/templates/dashboard.php:270
+#: admin/templates/dashboard.php:280
 msgid "System info"
 msgstr "Systeem informatie"
 
-#: admin/templates/dashboard.php:448
+#: admin/templates/dashboard.php:458
 msgid "Starting backup"
 msgstr "Backup starten"
 
-#: admin/templates/dashboard.php:451
+#: admin/templates/dashboard.php:461
 #, php-format
 msgid "Backing up files. %s / %d"
 msgstr "Bestanden back-uppen (%s/%d)"
 
-#: admin/templates/dashboard.php:454
+#: admin/templates/dashboard.php:464
 msgid "Backking up database"
 msgstr "Database backup"
 
-#: admin/templates/dashboard.php:457
+#: admin/templates/dashboard.php:467
 msgid "Creating zip file"
 msgstr "Zip bestand aanmaken"
 
-#: admin/templates/dashboard.php:460
+#: admin/templates/dashboard.php:470
 msgid "Upload to Made I.T."
 msgstr "Uploaden naar Made I.T. server"
 
-#: admin/templates/dashboard.php:463
+#: admin/templates/dashboard.php:473
 msgid "Upload to FTP server"
 msgstr "Uploaden naar FTP server"
 
-#: admin/templates/dashboard.php:466
+#: admin/templates/dashboard.php:476
 msgid "Upload to S3"
 msgstr "Uploaden naar S3 bucket"
 
-#: admin/templates/dashboard.php:469
+#: admin/templates/dashboard.php:479
 msgid "Complete backup"
 msgstr "Backup beëindigen"
 
-#: admin/templates/dashboard.php:485 admin/templates/dashboard.php:512
+#: admin/templates/dashboard.php:495 admin/templates/dashboard.php:522
 msgid "Download"
 msgstr "Download"
 
