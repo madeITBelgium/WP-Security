@@ -252,57 +252,57 @@ class WP_MadeIT_Security_Admin
         $cronjobs = _get_cron_array();
         $cronJobsInSync = true;
         $fileStats = [];
-        
+
         //check if cron system is in sync
         foreach ($cronjobs as $time => $crons) {
-            if($time < time()) {
+            if ($time < time()) {
                 $cronJobsInSync = false;
             }
         }
-        
+
         //fetch file stats
         $fileStats[__('# files', 'wp-security-by-made-it')] = [
-            'core' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE core_file = 1')['aantal'],
-            'theme' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE theme_file = 1')['aantal'],
+            'core'   => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE core_file = 1')['aantal'],
+            'theme'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE theme_file = 1')['aantal'],
             'plugin' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1')['aantal'],
-            'other' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
+            'other'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
         ];
-        
+
         $fileStats[__('# loaded files', 'wp-security-by-made-it')] = [
-            'core' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND core_file = 1')['aantal'],
-            'theme' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND theme_file = 1')['aantal'],
+            'core'   => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND core_file = 1')['aantal'],
+            'theme'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND theme_file = 1')['aantal'],
             'plugin' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND plugin_file = 1')['aantal'],
-            'other' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
+            'other'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_loaded IS NOT NULL AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
         ];
-        
+
         $fileStats[__('# checked files', 'wp-security-by-made-it')] = [
-            'core' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND core_file = 1')['aantal'],
-            'theme' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND theme_file = 1')['aantal'],
+            'core'   => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND core_file = 1')['aantal'],
+            'theme'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND theme_file = 1')['aantal'],
             'plugin' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND plugin_file = 1')['aantal'],
-            'other' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
+            'other'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE file_checked IS NOT NULL AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
         ];
-        
+
         $fileStats[__('# changed files', 'wp-security-by-made-it')] = [
-            'core' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND core_file = 1')['aantal'],
-            'theme' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND theme_file = 1')['aantal'],
+            'core'   => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND core_file = 1')['aantal'],
+            'theme'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND theme_file = 1')['aantal'],
             'plugin' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND plugin_file = 1')['aantal'],
-            'other' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
+            'other'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE changed = 1 AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
         ];
-        
+
         $fileStats[__('# files to backup', 'wp-security-by-made-it')] = [
-            'core' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND core_file = 1')['aantal'],
-            'theme' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND theme_file = 1')['aantal'],
+            'core'   => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND core_file = 1')['aantal'],
+            'theme'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND theme_file = 1')['aantal'],
             'plugin' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND plugin_file = 1')['aantal'],
-            'other' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
+            'other'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE need_backup = 1 AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
         ];
-        
+
         $fileStats[__('# files in last backup', 'wp-security-by-made-it')] = [
-            'core' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND core_file = 1')['aantal'],
-            'theme' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND theme_file = 1')['aantal'],
+            'core'   => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND core_file = 1')['aantal'],
+            'theme'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND theme_file = 1')['aantal'],
             'plugin' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND plugin_file = 1')['aantal'],
-            'other' => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
+            'other'  => $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE in_backup = 1 AND (core_file = 0 AND theme_file = 0 AND plugin_file = 0)')['aantal'],
         ];
-        
+
         include_once MADEIT_SECURITY_ADMIN.'/templates/system_info.php';
     }
 
@@ -473,7 +473,7 @@ class WP_MadeIT_Security_Admin
                 $path .= '/'.substr($key, 0, strpos($key, '/'));
             }
         }
-        
+
         $list = true;
         if (isset($_GET['file']) && strlen($version) > 2) {
             $file = sanitize_text_field($_GET['file']);
@@ -694,37 +694,36 @@ class WP_MadeIT_Security_Admin
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin_Installer.php';
         $cPlugin = new WP_MadeIT_Security_Plugin();
         $cPluginInstaller = new WP_MadeIT_Security_Plugin_Installer();
-        
+
         $plugins = $cPlugin->getPlugins();
         $pluginsUpdated = [];
         $pluginErrors = [];
         ob_start();
-        foreach($plugins as $plugin => $values) {
-            if($values['repository'] == "WORDPRESS.ORG" && version_compare($values['version'], $values['latest_version'], '<')) {
+        foreach ($plugins as $plugin => $values) {
+            if ($values['repository'] == 'WORDPRESS.ORG' && version_compare($values['version'], $values['latest_version'], '<')) {
                 //update plugin
                 $downloadUrl = $values['download_url'];
                 $result = $cPluginInstaller->upgradeWithPackage($plugin, $downloadUrl);
-                if($result === true) {
+                if ($result === true) {
                     $pluginsUpdated[] = $values['name'];
-                }
-                else {
+                } else {
                     $pluginErrors[$values['name']] = $result;
                 }
             }
         }
         $out = ob_get_clean();
-        
+
         //Update themes
-    
+
         //update core
-        
+
         do_action('madeit_security_check_plugin_updates');
-        
+
         echo json_encode([
-            'success' => count($pluginErrors) == 0, 
-            'updated_plugins' => $pluginsUpdated, 
+            'success'         => count($pluginErrors) == 0,
+            'updated_plugins' => $pluginsUpdated,
             'errored_plugins' => $pluginErrors,
-            'scan' => get_site_transient('madeit_security_update_scan'),
+            'scan'            => get_site_transient('madeit_security_update_scan'),
         ]);
         wp_die();
     }

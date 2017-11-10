@@ -1,5 +1,6 @@
 <?php
-include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
+
+include_once ABSPATH.'wp-admin/includes/class-wp-upgrader.php';
 
 class WP_MadeIT_Security_Plugin_Installer extends Plugin_Upgrader
 {
@@ -28,7 +29,7 @@ class WP_MadeIT_Security_Plugin_Installer extends Plugin_Upgrader
         $this->upgrade_strings();
 
         // Get the URL to the zip file
-        if($package == null) {
+        if ($package == null) {
             $current = get_site_transient('update_plugins');
             $package = $current->response[$plugin];
         }

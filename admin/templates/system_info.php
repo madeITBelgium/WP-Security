@@ -109,7 +109,7 @@ if (!defined('ABSPATH')) {
                             <?php echo esc_html(__('Cron jobs', 'wp-security-by-made-it')); ?>
                             <small>
                                 <?php
-                                if(!$cronJobsInSync) {
+                                if (!$cronJobsInSync) {
                                     echo esc_html(__('(Cron system is not in sync)', 'wp-security-by-made-it'));
                                 }
                                 ?>
@@ -127,19 +127,19 @@ if (!defined('ABSPATH')) {
                                     </thead>
                                     <tbody>
                                         <?php foreach ($cronjobs as $time => $crons) {
-    foreach ($crons as $cron => $settings) {
-        $schedule = '';
-        foreach ($settings as $setting) {
-            $schedule = $setting['schedule'];
-        } ?>
+                                    foreach ($crons as $cron => $settings) {
+                                        $schedule = '';
+                                        foreach ($settings as $setting) {
+                                            $schedule = $setting['schedule'];
+                                        } ?>
                                                 <tr>
                                                     <td><?php echo esc_html($cron); ?></td>
                                                     <td><?php echo esc_html($schedule); ?></td>
                                                     <td><?php echo date('Y-m-d H:i:s', $time); ?></td>
                                                 </tr>
                                             <?php
-    }
-} ?>
+                                    }
+                                } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -169,7 +169,8 @@ if (!defined('ABSPATH')) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($fileStats as $status => $stats) { ?>
+                                        <?php foreach ($fileStats as $status => $stats) {
+                                    ?>
                                             <tr>
                                                 <th><?php echo esc_html($status); ?></th>
                                                 <td><?php echo esc_html($stats['core']); ?></td>
@@ -177,7 +178,8 @@ if (!defined('ABSPATH')) {
                                                 <td><?php echo esc_html($stats['theme']); ?></td>
                                                 <td><?php echo esc_html($stats['other']); ?></td>
                                             </tr>
-                                        <?php } ?>
+                                        <?php
+                                } ?>
                                     </tbody>
                                 </table>
                             </div>
