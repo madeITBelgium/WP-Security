@@ -65,4 +65,22 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
         wp_set_current_user(1);
         $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security'));
     }
+
+    public function test_scan()
+    {
+        wp_set_current_user(1);
+        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security_scan'));
+    }
+
+    public function test_settings()
+    {
+        wp_set_current_user(1);
+        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security_settings'));
+    }
+
+    public function test_systeminfo()
+    {
+        wp_set_current_user(1);
+        $this->go_to(home_url('/wp-admin/admin.php?page=madeit_security_systeminfo'));
+    }
 }
