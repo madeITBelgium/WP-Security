@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
-                            <?php printf(esc_html(__('Compare file %s of %s', 'wp-security-by-made-it')), $fileName, $plugin); ?>
+                            <?php printf(esc_html(__('File %s of %s', 'wp-security-by-made-it')), $fileName, $plugin); ?>
                         </h4>
                         <div class="card-text">
                             <?php if ($error == null) {
@@ -34,11 +34,11 @@ if (!defined('ABSPATH')) {
                                     <div class="madeit-col">
                                         <?php
                                         if ($fileData['ignore'] == 0) {
-                                            echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file.'">'.__('Ignore this file').'</a>';
+                                            echo ' <a href="admin.php?page=madeit_security_scan&notexist='.$plugin.'&version='.$version.'&ignore='.$nonce.'&file='.$file.'">'.__('Ignore this file').'</a>';
                                         } else {
-                                            echo ' <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&deignore='.$nonce.'&file='.$file.'">'.__('Stop ignoring this file').'</a>';
+                                            echo ' <a href="admin.php?page=madeit_security_scan&notexist='.$plugin.'&version='.$version.'&deignore='.$nonce.'&file='.$file.'">'.__('Stop ignoring this file').'</a>';
                                         }
-    echo ' / <a href="admin.php?page=madeit_security_scan&changes='.$plugin.'&version='.$version.'&replace='.$nonceReplace.'&file='.$file.'">'.__('Replace this file with the original version.').'</a>'; ?>
+    echo ' / <a href="admin.php?page=madeit_security_scan&notexist='.$plugin.'&version='.$version.'&delete='.$nonceDelete.'&file='.$file.'">'.__('Delete this file.').'</a>'; ?>
                                     </div>
                                 </div>
                             <?php

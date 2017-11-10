@@ -20,13 +20,13 @@ if (!defined('ABSPATH')) {
         </div>
         
         <?php
-        if (isset($fileReplacedSuccesfull)) {
+        if (isset($fileDeletedSuccesfull)) {
             ?>
             <div class="updated">
                 <p>
                     <strong>
                         <?php
-                        printf(__('The file %s is replaced with the original version.', 'wp-security-by-made-it'), $file); ?>
+                        printf(__('The file %s is deleted from the server.', 'wp-security-by-made-it'), $file); ?>
                     </strong>
                 </p>
             </div>

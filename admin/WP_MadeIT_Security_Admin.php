@@ -473,10 +473,80 @@ class WP_MadeIT_Security_Admin
                 $path .= '/'.substr($key, 0, strpos($key, '/'));
             }
         }
-        $nonce = wp_create_nonce('madeit_security_ignore_file');
+        
+        $list = true;
+        if (isset($_GET['file']) && strlen($version) > 2) {
+            $file = sanitize_text_field($_GET['file']);
+            $fileData = $this->db->querySingleRecord('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE filename_md5 = %s', $file);
 
-        $files = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix()."madeit_sec_filelist` WHERE plugin_file = 1 AND reason = 'File not exist in repo' AND `ignore` != 1 AND plugin_theme = %s", $plugin);
-        include_once MADEIT_SECURITY_ADMIN.'/templates/list-not-exist-files.php';
+            $localFile = ABSPATH.$fileData['filename'];
+
+            $pluginName = $fileData['plugin_theme'];
+            $startDir = WP_PLUGIN_DIR;
+            $pluginDir = str_replace(ABSPATH, '', $path.'/');
+            $fileName = preg_replace('/'.preg_quote($pluginDir, '/').'/', '', $fileData['filename'], 1);
+
+            $error = null;
+            $list = false;
+            if (!is_file($localFile) || strpos($file, '../') === true) {
+                $error = sprintf(__('Local file %s doesn\'t exist on your WordPress installation.', 'wp-security-by-made-it'), $file);
+            } else {
+                if (isset($_GET['ignore'])) {
+                    $nonce = sanitize_text_field($_GET['ignore']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->ignoreFile($plugin, $file);
+                        $list = true;
+                    }
+                } elseif (isset($_GET['deignore'])) {
+                    $nonce = sanitize_text_field($_GET['deignore']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->disIgnoreFile($plugin, $file);
+                        $list = true;
+                    }
+                } elseif (isset($_GET['delete'])) {
+                    //Delete this file
+                    $nonce = sanitize_text_field($_GET['delete']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_delete_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->disIgnoreFile($plugin, $file);
+                        $this->delete($plugin, $localFile);
+                        $list = true;
+                        $fileDeletedSuccesfull = $file;
+                    }
+                } else {
+                    $a = explode("\n", file_get_contents($localFile));
+                    $b = [];
+                    if (!class_exists('DiffFiles')) {
+                        require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
+                    }
+                    $diff = new DiffFiles($a, $b, []);
+
+                    if (!class_exists('Diff_Renderer_Html_SideBySide')) {
+                        require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff/Renderer/Html/SideBySide.php';
+                    }
+                    $renderer = new Diff_Renderer_Html_SideBySide();
+                }
+            }
+            if (!$list) {
+                $nonce = wp_create_nonce('madeit_security_ignore_file');
+                $nonceDelete = wp_create_nonce('madeit_security_delete_file');
+                include_once MADEIT_SECURITY_ADMIN.'/templates/notexisting_files.php';
+            }
+        }
+        if ($list) {
+            $nonce = wp_create_nonce('madeit_security_ignore_file');
+
+            $files = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix()."madeit_sec_filelist` WHERE plugin_file = 1 AND reason = 'File not exist in repo' AND `ignore` != 1 AND plugin_theme = %s", $plugin);
+            include_once MADEIT_SECURITY_ADMIN.'/templates/list-not-exist-files.php';
+        }
     }
 
     private function timeAgo($ptime)
@@ -549,6 +619,11 @@ class WP_MadeIT_Security_Admin
         $fileContent = file_get_contents($remoteUrl);
 
         file_put_contents($localFile, $fileContent);
+    }
+
+    private function delete($plugin, $localFile)
+    {
+        unlink($localFile);
     }
 
     public function doFileScan()
