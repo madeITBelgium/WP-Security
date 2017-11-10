@@ -434,10 +434,10 @@ class WP_MadeIT_Security_Admin
                     }
                     $a = explode("\n", file_get_contents($localFile));
                     $b = explode("\n", file_get_contents($remoteUrl));
-                    if (!class_exists('Diff')) {
+                    if (!class_exists('DiffFiles')) {
                         require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
                     }
-                    $diff = new Diff($a, $b, []);
+                    $diff = new DiffFiles($a, $b, []);
 
                     if (!class_exists('Diff_Renderer_Html_SideBySide')) {
                         require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff/Renderer/Html/SideBySide.php';
