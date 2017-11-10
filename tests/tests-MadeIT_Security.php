@@ -86,7 +86,7 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
 
     public function test_actions()
     {
-        do_action( 'init' );
+        do_action('init');
 
         $actions = ['wp_ajax_madeit_security_start_scan',  'wp_ajax_madeit_security_stop_scan', 'wp_ajax_madeit_security_update_scan', 'wp_ajax_madeit_security_backup', 'wp_ajax_madeit_security_backup_check', 'wp_ajax_madeit_security_backup_stop', 'wp_ajax_madeit_security_check_scan', 'wp_ajax_madeit_security_do_update'];
         foreach ($actions as $action) {
