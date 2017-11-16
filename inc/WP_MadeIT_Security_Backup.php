@@ -255,6 +255,9 @@ class WP_MadeIT_Security_Backup
                 if (!$zip->addFromString('restore-config.php', $this->generateRestoreConfigFile())) {
                     error_log('Cannot add restore-config.php to zip.', 0);
                 }
+                if (!$zip->addFromString('restore-index.php', file_get_contents(MADEIT_SECURITY_DIR.'/inc/backup/restore_template.php'))) {
+                    error_log('Cannot add restore-index.php to zip.', 0);
+                }
 
                 return $zip->close();
             }
@@ -346,7 +349,7 @@ class WP_MadeIT_Security_Backup
 
     private function generateRestoreConfigFile()
     {
-        require_once 'WP_MadeIT_Security_SystemInfo.php';
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
         $systemInfo = new WP_MadeIT_Security_SystemInfo();
 
         $result = "<?php\n".
@@ -359,9 +362,15 @@ class WP_MadeIT_Security_Backup
             "\$php_version = '".$systemInfo->getSystemInfo()['php_version']."';\n".
             "\$mysql_version = '".$systemInfo->getSystemInfo()['mysql_version']."';\n".
             "\$wp_version = '".$systemInfo->getSystemInfo()['wp_version']."';\n".
+            "\$wp_locale = '".get_locale()."';\n".
             "\$url = '".$systemInfo->getSystemInfo()['url']."';\n".
             "\$admin_url = '".$systemInfo->getSystemInfo()['admin_url']."';\n".
             "\$path = '".$systemInfo->getSystemInfo()['path']."';\n".
+            "\n".
+            "\$db_host = '".DB_HOST."';\n".
+            "\$db_database = '".DB_NAME."';\n".
+            "\$db_username = '".DB_USER."';\n".
+            "\$db_password = '".DB_PASSWORD."';\n".
             '?>';
 
         return $result;
