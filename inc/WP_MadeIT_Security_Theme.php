@@ -99,7 +99,7 @@ class WP_MadeIT_Security_Theme
             ];
         }
 
-        $updateThems = $this->wp_update_themes();
+        $response = $this->wp_update_themes();
         if (isset($response['themes'])) {
             foreach ($response['themes'] as $style => $theme) {
                 if (isset($themes[$style])) {
