@@ -714,15 +714,39 @@ class WP_MadeIT_Security_Admin
         $out = ob_get_clean();
 
         //Update themes
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme.php';
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme_Installer.php';
+        $cTheme = new WP_MadeIT_Security_Theme();
+        $cThemeInstaller = new WP_MadeIT_Security_Theme_Installer();
+
+        $themes = $cTheme->getThemes();
+        $themesUpdated = [];
+        $themesErrors = [];
+        ob_start();
+        foreach ($themes as $theme => $values) {
+            if ($values['repository'] == 'WORDPRESS.ORG' && version_compare($values['version'], $values['latest_version'], '<')) {
+                //update plugin
+                $downloadUrl = $values['download_url'];
+                $result = $cThemeInstaller->upgradeWithPackage($theme, $downloadUrl);
+                if ($result === true) {
+                    $themesUpdated[] = $values['name'];
+                } else {
+                    $themesErrors[$values['name']] = $result;
+                }
+            }
+        }
+        $out = ob_get_clean();
 
         //update core
 
         do_action('madeit_security_check_plugin_updates');
 
         echo json_encode([
-            'success'         => count($pluginErrors) == 0,
+            'success'         => count($pluginErrors) == 0 && count($themesErrors) == 0,
             'updated_plugins' => $pluginsUpdated,
             'errored_plugins' => $pluginErrors,
+            'updated_themes' => $themesUpdated,
+            'errored_themes' => $themesErrors,
             'scan'            => get_site_transient('madeit_security_update_scan'),
         ]);
         wp_die();
