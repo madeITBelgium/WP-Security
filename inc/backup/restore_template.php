@@ -4,12 +4,12 @@
 /* This is the restore/duplicate script                                    */
 /*                                                                         */
 /***************************************************************************/
-if(!file_exists('restore-config.php')) {
+if (!file_exists('restore-config.php')) {
     exit;
 }
-include('restore-config.php');
+include 'restore-config.php';
 
-$cli = php_sapi_name() == "cli";
+$cli = php_sapi_name() == 'cli';
 
 function getPHPVersion()
 {
@@ -24,7 +24,7 @@ function getMySQLVersion()
 function installWordPress()
 {
     $downloadUrl = 'https://wordpress.org/wordpress-'.$wp_version.'.zip';
-    $downloadUrl = 'http://downloads.wordpress.org/release/' . $wp_locale . '/wordpress-' . $wp_version . '.zip';
+    $downloadUrl = 'http://downloads.wordpress.org/release/'.$wp_locale.'/wordpress-'.$wp_version.'.zip';
     file_put_contents('wordpress.zip', file_get_contents($downloadUrl));
 
     $zip = new ZipArchive();
@@ -37,7 +37,7 @@ function installWordPress()
         $dir = dir($directory);
 
         while (false !== ($file = $dir->read())) {
-            if ($file != '.' && $file != '..' && $file != "wp-config.php") {
+            if ($file != '.' && $file != '..' && $file != 'wp-config.php') {
                 rename($directory.'/'.$file, __DIR__.'/'.$file);
             }
         }
@@ -59,6 +59,7 @@ function installContent()
         $zip->extractTo('.');
         $zip->close();
         unlink('wp-content.zip');
+
         return true;
     } else {
         return false;
@@ -68,31 +69,31 @@ function installContent()
 function setUpDBSettings()
 {
     $urls = generateUrls();
-    
+
     //Create wp-config
-    $wp_config = file_get_contents("wp-config.php");
+    $wp_config = file_get_contents('wp-config.php');
     str_replace($path, __DIR__, $wp_config); //Replace path
     str_replace(backSlash($path), backSlash(__DIR__), $wp_config); //Replace path
-    str_replace("define('DB_NAME', '" . $db_database . "');", "define('DB_NAME', '" . $_POST['db_name'] . "');", $wp_config); //database name
-    str_replace("define('DB_USER', '" . $db_username . "');", "define('DB_USER', '" . $_POST['db_user'] . "');", $wp_config); //database user
-    str_replace("define('DB_HOST', '" . $db_password . "');", "define('DB_PASSWORD', '" . $_POST['db_pass'] . "');", $wp_config); //database pass
-    str_replace("define('DB_USER', '" . $db_host . "');", "define('DB_USER', '" . $_POST['db_host'] . "');", $wp_config); //database host
-   
-    foreach($urls as $oldUrl => $newUrl) {
+    str_replace("define('DB_NAME', '".$db_database."');", "define('DB_NAME', '".$_POST['db_name']."');", $wp_config); //database name
+    str_replace("define('DB_USER', '".$db_username."');", "define('DB_USER', '".$_POST['db_user']."');", $wp_config); //database user
+    str_replace("define('DB_HOST', '".$db_password."');", "define('DB_PASSWORD', '".$_POST['db_pass']."');", $wp_config); //database pass
+    str_replace("define('DB_USER', '".$db_host."');", "define('DB_USER', '".$_POST['db_host']."');", $wp_config); //database host
+
+    foreach ($urls as $oldUrl => $newUrl) {
         str_replace($oldUrl, $newUrl, $wp_config);
     }
     file_put_contents('wp-config.php', $wp_config);
-    
+
     //Create db script
-    $dbscript = file_get_contents("database.sql");
+    $dbscript = file_get_contents('database.sql');
     str_replace($path, __DIR__, $dbscript); //Replace path
     str_replace(backSlash($path), backSlash(__DIR__), $dbscript); //Replace path
-   
-    foreach($urls as $oldUrl => $newUrl) {
+
+    foreach ($urls as $oldUrl => $newUrl) {
         str_replace($oldUrl, $newUrl, $dbscript);
     }
     file_put_contents('database.sql', $dbscript);
-    
+
     $link = mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
 
     /* check connection */
@@ -101,36 +102,41 @@ function setUpDBSettings()
     }
 
     /* execute multi query */
-    if (mysqli_multi_query($link, $dbscript))
-         return true;
-    else 
+    if (mysqli_multi_query($link, $dbscript)) {
+        return true;
+    } else {
         return false;
+    }
 }
 
-function generateUrls() {
+function generateUrls()
+{
     //Old URL
     $oldUrl = [];
     $oldUrlData = parse_url($url);
-    
-    $addPath = "";
-    if(isset($oldUrlData['path'])) {
-        $addPath = "/" . $oldUrlData['path'];
-        $addPathEsc = "\/" . $oldUrlData['path'];
+
+    $addPath = '';
+    if (isset($oldUrlData['path'])) {
+        $addPath = '/'.$oldUrlData['path'];
+        $addPathEsc = "\/".$oldUrlData['path'];
     }
+
     return [
-        'http://' . $oldUrlData['host'] . $addPath => $_POST['url'],
-        'https://' . $oldUrlData['host'] . $addPath => $_POST['url'],
-        'http://' . $oldUrlData['host'] => $_POST['url'],
-        'https://' . $oldUrlData['host'] => $_POST['url'],
-        backSlash('http://' . $oldUrlData['host'] . $addPath) => backSlash($_POST['url']),
-        backSlash('https://' . $oldUrlData['host'] . $addPath) => backSlash($_POST['url']),
-        backSlash('http://' . $oldUrlData['host']) => backSlash($_POST['url']),
-        backSlash('https://' . $oldUrlData['host']) => backSlash($_POST['url']),
+        'http://'.$oldUrlData['host'].$addPath             => $_POST['url'],
+        'https://'.$oldUrlData['host'].$addPath            => $_POST['url'],
+        'http://'.$oldUrlData['host']                      => $_POST['url'],
+        'https://'.$oldUrlData['host']                     => $_POST['url'],
+        backSlash('http://'.$oldUrlData['host'].$addPath)  => backSlash($_POST['url']),
+        backSlash('https://'.$oldUrlData['host'].$addPath) => backSlash($_POST['url']),
+        backSlash('http://'.$oldUrlData['host'])           => backSlash($_POST['url']),
+        backSlash('https://'.$oldUrlData['host'])          => backSlash($_POST['url']),
     ];
 }
 
-function backSlash($str) {
+function backSlash($str)
+{
     $str = str_replace('\/', '/', $str);
+
     return str_replace('/', '\/', $str);
 }
 
@@ -138,50 +144,45 @@ function checkDBSettings($dbhost, $dbname, $dbuser, $dbpass)
 {
     $link = mysqli_connect($dbhost, $dbuser, $dbpass) or die(json_encode(['success' => false, 'error' => 'Cannot connect to the database server.']));
     mysqli_select_db($link, $dbname) or die(json_encode(['success' => false, 'error' => 'Cannot open the database.']));
-    
+
     echo json_encode(['success' => true]);
     exit;
 }
 
-if($cli) {
+if ($cli) {
     //Run restore
-    
+
     exit;
 }
 
-if(isset($_POST['step']) && $_POST['step'] == 1) {
+if (isset($_POST['step']) && $_POST['step'] == 1) {
     echo json_encode(['success' => true]);
     exit;
-}
-elseif(isset($_POST['step']) && $_POST['step'] == 2) { //Test DB connection
+} elseif (isset($_POST['step']) && $_POST['step'] == 2) { //Test DB connection
     checkDBSettings($_POST['database_host'], $_POST['database'], $_POST['database_user'], $_POST['database_password']);
     exit;
-}
-elseif(isset($_POST['step']) && $_POST['step'] == 3) { //Install WP
-    if($_POST['url'] == $url) {
+} elseif (isset($_POST['step']) && $_POST['step'] == 3) { //Install WP
+    if ($_POST['url'] == $url) {
         echo json_encode(['success' => true]);
         exit;
-    }
-    else {
+    } else {
         echo json_encode(['success' => true]);
         exit;
     }
     exit;
-}
-elseif(isset($_POST['step']) && $_POST['step'] == 4) { //Restore website
-    if(isset($_GET['partion']) && $_GET['partion'] == 1 || !isset($_GET['partition'])) {
+} elseif (isset($_POST['step']) && $_POST['step'] == 4) { //Restore website
+    if (isset($_GET['partion']) && $_GET['partion'] == 1 || !isset($_GET['partition'])) {
         installWordPress();
     }
-    if(isset($_GET['partion']) && $_GET['partion'] == 2 || !isset($_GET['partition'])) {
+    if (isset($_GET['partion']) && $_GET['partion'] == 2 || !isset($_GET['partition'])) {
         installContent();
     }
-    if(isset($_GET['partion']) && $_GET['partion'] == 3 || !isset($_GET['partition'])) {
+    if (isset($_GET['partion']) && $_GET['partion'] == 3 || !isset($_GET['partition'])) {
         setUpDBSettings();
     }
     echo json_encode(['success' => true]);
     exit;
-}
-else {
+} else {
     ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -416,5 +417,5 @@ else {
         </body>
     </html>
     <?php
-     }
+}
 ?>
