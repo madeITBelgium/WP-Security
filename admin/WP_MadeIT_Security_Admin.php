@@ -738,15 +738,41 @@ class WP_MadeIT_Security_Admin
         $out = ob_get_clean();
 
         //update core
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core_Installer.php';
+        $cCore = new WP_MadeIT_Security_Core();
+        $cCoreInstaller = new WP_MadeIT_Security_Core_Installer();
 
+        $coreUpdated = [];
+        $coreErrors = [];
+        ob_start();
+        if (version_compare($cCore->getCurrentWPVersion(), $cCore->getLatestWPVersion(), '<')) {
+            //update plugin
+            $downloadUrl = $cCore->getNewPacakgeUrl();
+            if($downloadUrl != null) {
+                $result = $cCoreInstaller->upgradeWithPackage($downloadUrl, false);
+            }
+            else {
+                $result = "No download available";
+            }
+            if ($result === true) {
+                $coreUpdated[] = "CORE";
+            } else {
+                $themesErrors[] = $result;
+            }
+        }
+        $out = ob_get_clean();
+        
         do_action('madeit_security_check_plugin_updates');
 
         echo json_encode([
-            'success'         => count($pluginErrors) == 0 && count($themesErrors) == 0,
+            'success'         => count($pluginErrors) == 0 && count($themesErrors) == 0 && count($coreErrors) == 0,
             'updated_plugins' => $pluginsUpdated,
             'errored_plugins' => $pluginErrors,
             'updated_themes' => $themesUpdated,
             'errored_themes' => $themesErrors,
+            'updated_core' => $coreUpdated,
+            'errored_core' => $coreErrors,
             'scan'            => get_site_transient('madeit_security_update_scan'),
         ]);
         wp_die();

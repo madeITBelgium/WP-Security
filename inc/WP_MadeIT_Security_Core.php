@@ -18,13 +18,29 @@ class WP_MadeIT_Security_Core
     public function getLatestWPVersion()
     {
         $core = $this->wp_version_check();
-        if (isset($core['offers'][0]['current'])) {
-            $latest_core_version = $core['offers'][0]['current'];
-        } else {
-            $latest_core_version = null;
+        $locale = get_locale();
+        if(isset($core['offers'])) {
+            foreach($core['offers'] as $offer) {
+                if($offer['locale'] == $locale) {
+                    return $offer['current'];
+                }
+            }
         }
+        return null;
+    }
 
-        return $latest_core_version;
+    public function getNewPacakgeUrl()
+    {
+        $core = $this->wp_version_check();
+        $locale = get_locale();
+        if(isset($core['offers'])) {
+            foreach($core['offers'] as $offer) {
+                if($offer['locale'] == $locale) {
+                    return $offer['download'];
+                }
+            }
+        }
+        return null;
     }
 
     private function wp_version_check()
