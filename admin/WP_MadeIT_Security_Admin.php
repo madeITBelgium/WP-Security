@@ -749,30 +749,29 @@ class WP_MadeIT_Security_Admin
         if (version_compare($cCore->getCurrentWPVersion(), $cCore->getLatestWPVersion(), '<')) {
             //update plugin
             $downloadUrl = $cCore->getNewPacakgeUrl();
-            if($downloadUrl != null) {
+            if ($downloadUrl != null) {
                 $result = $cCoreInstaller->upgradeWithPackage($downloadUrl, false);
-            }
-            else {
-                $result = "No download available";
+            } else {
+                $result = 'No download available';
             }
             if ($result === true) {
-                $coreUpdated[] = "CORE";
+                $coreUpdated[] = 'CORE';
             } else {
                 $themesErrors[] = $result;
             }
         }
         $out = ob_get_clean();
-        
+
         do_action('madeit_security_check_plugin_updates');
 
         echo json_encode([
             'success'         => count($pluginErrors) == 0 && count($themesErrors) == 0 && count($coreErrors) == 0,
             'updated_plugins' => $pluginsUpdated,
             'errored_plugins' => $pluginErrors,
-            'updated_themes' => $themesUpdated,
-            'errored_themes' => $themesErrors,
-            'updated_core' => $coreUpdated,
-            'errored_core' => $coreErrors,
+            'updated_themes'  => $themesUpdated,
+            'errored_themes'  => $themesErrors,
+            'updated_core'    => $coreUpdated,
+            'errored_core'    => $coreErrors,
             'scan'            => get_site_transient('madeit_security_update_scan'),
         ]);
         wp_die();
