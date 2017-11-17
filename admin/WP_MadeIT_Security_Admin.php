@@ -475,6 +475,15 @@ class WP_MadeIT_Security_Admin
         }
 
         $list = true;
+        if (isset($_GET['ignore_all'])) {
+            $nonce = sanitize_text_field($_GET['ignore_all']);
+            if (!wp_verify_nonce($nonce, 'madeit_security_ignore_file')) {
+                // This nonce is not valid.
+                wp_die('Security check');
+            } else {
+                $this->ignoreAll($plugin);
+            }
+        }
         if (isset($_GET['file']) && strlen($version) > 2) {
             $file = sanitize_text_field($_GET['file']);
             $fileData = $this->db->querySingleRecord('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE filename_md5 = %s', $file);
