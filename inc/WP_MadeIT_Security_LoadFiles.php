@@ -96,7 +96,7 @@ class WP_MadeIT_Security_LoadFiles
             set_site_transient('madeit_security_scan', $result);
 
             //start job
-            wp_schedule_single_event(time(), 'madeit_security_loadfiles');
+            wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
         }
     }
 
@@ -453,7 +453,7 @@ class WP_MadeIT_Security_LoadFiles
 
     public function startNextJob()
     {
-        wp_schedule_single_event(time(), 'madeit_security_loadfiles');
+        wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
     }
 
     private function fileLoadDirectory($directory, $type, $pluginTheme = null)
@@ -615,7 +615,8 @@ class WP_MadeIT_Security_LoadFiles
 
     public function addHooks()
     {
-        add_action('madeit_security_loadfiles', [$this, 'loadfiles']);
+        add_action('madeit_security_loadfiles', [$this, 'startLoadingFiles']);
+        add_action('madeit_security_loadfiles_run', [$this, 'loadfiles']);
 
         if (!wp_next_scheduled('madeit_security_scan_repo')) {
             wp_clear_scheduled_hook('madeit_security_scan_repo');
