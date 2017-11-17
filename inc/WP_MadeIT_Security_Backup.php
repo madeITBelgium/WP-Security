@@ -112,8 +112,32 @@ class WP_MadeIT_Security_Backup
 
         $zipPath = $this->backups_dir_location();
         $zipPath .= '/'.$this->getZipContentName();
-
+        
         if ($backupResult['step'] == 0) {
+            //Check if loading files is recent
+            
+            $scanResult = get_site_transient('madeit_security_scan');
+            if(!$scanResult['done'] && !$scanResult['stop']) {
+                //schedule event in 5 min
+                $backupResult['last_con_time'] = time();
+                $backupResult['step'] = 0;
+                set_site_transient('madeit_security_backup', $backupResult);
+                wp_schedule_single_event((time() + 60 * 5), 'madeit_security_backup_run');
+                exit;
+            }
+            else if($scanResult['start_time'] < (time() - 60 * 60)) {
+                //Start loading files and schedule event in 5 min
+                require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
+                $scan = new WP_MadeIT_Security_LoadFiles($this->settings, $this->db);
+                $scan->startLoadingFiles();
+                
+                $backupResult['last_con_time'] = time();
+                $backupResult['step'] = 0;
+                set_site_transient('madeit_security_backup', $backupResult);
+                wp_schedule_single_event((time() + 60 * 10), 'madeit_security_backup_run');
+                exit;
+            }
+            
             $this->deleteOlderBackups();
             $valid = $this->canICreateABackup();
             $backupResult['preCheck'] = $valid;
