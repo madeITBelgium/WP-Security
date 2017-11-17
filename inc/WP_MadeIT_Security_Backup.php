@@ -305,7 +305,7 @@ class WP_MadeIT_Security_Backup
             $this->backup_action = time().rand();
         }
 
-        return 'backup_'.$this->backup_action.'_backup.zip';
+        return 'backup_'.$this->backup_action.'.zip';
     }
 
     private function getDbScriptName()

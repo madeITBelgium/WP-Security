@@ -1,4 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('memory_limit','128M');
+set_time_limit (0);
+
 /***************************************************************************/
 /*                                                                         */
 /* This is the restore/duplicate script                                    */
@@ -18,11 +23,17 @@ function getPHPVersion()
 
 function getMySQLVersion()
 {
-    return mysql_get_server_info();
+    global $db_password, $db_host, $db_username;
+    $link = @mysqli_connect($db_host, $db_username, $db_password);
+    if($link === false) {
+        return "";
+    }
+    return mysqli_get_server_info($link);
 }
 
 function installWordPress()
 {
+    global $wp_version, $wp_locale, $wp_version;
     $downloadUrl = 'https://wordpress.org/wordpress-'.$wp_version.'.zip';
     $downloadUrl = 'http://downloads.wordpress.org/release/'.$wp_locale.'/wordpress-'.$wp_version.'.zip';
     file_put_contents('wordpress.zip', file_get_contents($downloadUrl));
@@ -38,7 +49,7 @@ function installWordPress()
 
         while (false !== ($file = $dir->read())) {
             if ($file != '.' && $file != '..' && $file != 'wp-config.php') {
-                rename($directory.'/'.$file, __DIR__.'/'.$file);
+                @rename($directory.'/'.$file, __DIR__.'/'.$file);
             }
         }
         rmdir('wordpress');
@@ -56,7 +67,7 @@ function installContent()
     $zip = new ZipArchive();
     $x = $zip->open('wp-content.zip');
     if ($x === true) {
-        $zip->extractTo('.');
+        $zip->extractTo('wp-content/');
         $zip->close();
         unlink('wp-content.zip');
 
@@ -68,49 +79,73 @@ function installContent()
 
 function setUpDBSettings()
 {
+    global $db_database, $db_username, $db_password, $db_host, $_POST, $path;
     $urls = generateUrls();
 
     //Create wp-config
     $wp_config = file_get_contents('wp-config.php');
-    str_replace($path, __DIR__, $wp_config); //Replace path
-    str_replace(backSlash($path), backSlash(__DIR__), $wp_config); //Replace path
-    str_replace("define('DB_NAME', '".$db_database."');", "define('DB_NAME', '".$_POST['db_name']."');", $wp_config); //database name
-    str_replace("define('DB_USER', '".$db_username."');", "define('DB_USER', '".$_POST['db_user']."');", $wp_config); //database user
-    str_replace("define('DB_HOST', '".$db_password."');", "define('DB_PASSWORD', '".$_POST['db_pass']."');", $wp_config); //database pass
-    str_replace("define('DB_USER', '".$db_host."');", "define('DB_USER', '".$_POST['db_host']."');", $wp_config); //database host
+    $wp_config = str_replace($path, __DIR__, $wp_config); //Replace path
+    $wp_config = str_replace(backSlash($path), backSlash(__DIR__), $wp_config); //Replace path
+    $wp_config = str_replace("define('DB_NAME', '".$db_database."');", "define('DB_NAME', '".$_POST['db_name']."');", $wp_config); //database name
+    $wp_config = str_replace("define('DB_USER', '".$db_username."');", "define('DB_USER', '".$_POST['db_user']."');", $wp_config); //database user
+    $wp_config = str_replace("define('DB_HOST', '".$db_password."');", "define('DB_PASSWORD', '".$_POST['db_pass']."');", $wp_config); //database pass
+    $wp_config = str_replace("define('DB_USER', '".$db_host."');", "define('DB_USER', '".$_POST['db_host']."');", $wp_config); //database host
 
     foreach ($urls as $oldUrl => $newUrl) {
-        str_replace($oldUrl, $newUrl, $wp_config);
+        $wp_config = str_replace($oldUrl, $newUrl, $wp_config);
     }
     file_put_contents('wp-config.php', $wp_config);
 
     //Create db script
-    $dbscript = file_get_contents('database.sql');
-    str_replace($path, __DIR__, $dbscript); //Replace path
-    str_replace(backSlash($path), backSlash(__DIR__), $dbscript); //Replace path
+    replace_file($path, __DIR__, 'database.sql'); //Replace path
+    replace_file(backSlash($path), backSlash(__DIR__), 'database.sql'); //Replace path
 
     foreach ($urls as $oldUrl => $newUrl) {
-        str_replace($oldUrl, $newUrl, $dbscript);
+        replace_file($oldUrl, $newUrl, 'database.sql'); //Replace path
     }
-    file_put_contents('database.sql', $dbscript);
+    
+    exec('mysql --user="' . $_POST['db_user'] . '" --password="' . $_POST['db_pass'] . '" --host="' . $_POST['db_host'] . '" ' . $_POST['db_name'] . ' < database.sql');
+    /*
+    $link = @mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
 
-    $link = mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
-
-    /* check connection */
-    if (mysqli_connect_errno()) {
+    if (@mysqli_connect_errno()) {
         return false;
     }
 
-    /* execute multi query */
-    if (mysqli_multi_query($link, $dbscript)) {
+    $dbscript = file_get_contents('database.sql');
+    if (@mysqli_multi_query($link, $dbscript)) {
         return true;
     } else {
         return false;
+    }*/
+}
+
+function replace_file($string, $replace, $path)
+{
+    if (is_file($path) === true)
+    {
+        $file = fopen($path, 'r');
+        $temp = tempnam('./', 'tmp');
+
+        if (is_resource($file) === true)
+        {
+            while (feof($file) === false)
+            {
+                file_put_contents($temp, str_replace($string, $replace, fgets($file)), FILE_APPEND);
+            }
+
+            fclose($file);
+        }
+
+        unlink($path);
     }
+
+    return rename($temp, $path);
 }
 
 function generateUrls()
 {
+    global $url, $_POST;
     //Old URL
     $oldUrl = [];
     $oldUrlData = parse_url($url);
@@ -124,10 +159,14 @@ function generateUrls()
     return [
         'http://'.$oldUrlData['host'].$addPath             => $_POST['url'],
         'https://'.$oldUrlData['host'].$addPath            => $_POST['url'],
+        rtrim('http://'.$oldUrlData['host'], '/') . '/'    => rtrim($_POST['url'], '/') . '/',
+        rtrim('https://'.$oldUrlData['host'], '/') . '/'   => rtrim($_POST['url'], '/') . '/',
         'http://'.$oldUrlData['host']                      => $_POST['url'],
         'https://'.$oldUrlData['host']                     => $_POST['url'],
         backSlash('http://'.$oldUrlData['host'].$addPath)  => backSlash($_POST['url']),
         backSlash('https://'.$oldUrlData['host'].$addPath) => backSlash($_POST['url']),
+        backSlash(rtrim('http://'.$oldUrlData['host'], '/') . '/')    => backSlash(rtrim($_POST['url'], '/') . '/'),
+        backSlash(rtrim('https://'.$oldUrlData['host'], '/') . '/')   => backSlash(rtrim($_POST['url'], '/') . '/'),
         backSlash('http://'.$oldUrlData['host'])           => backSlash($_POST['url']),
         backSlash('https://'.$oldUrlData['host'])          => backSlash($_POST['url']),
     ];
@@ -142,8 +181,8 @@ function backSlash($str)
 
 function checkDBSettings($dbhost, $dbname, $dbuser, $dbpass)
 {
-    $link = mysqli_connect($dbhost, $dbuser, $dbpass) or die(json_encode(['success' => false, 'error' => 'Cannot connect to the database server.']));
-    mysqli_select_db($link, $dbname) or die(json_encode(['success' => false, 'error' => 'Cannot open the database.']));
+    $link = @mysqli_connect($dbhost, $dbuser, $dbpass) or die(json_encode(['success' => false, 'error' => 'Cannot connect to the database server.']));
+    @mysqli_select_db($link, $dbname) or die(json_encode(['success' => false, 'error' => 'Cannot open the database.']));
 
     echo json_encode(['success' => true]);
     exit;
@@ -171,13 +210,13 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
     }
     exit;
 } elseif (isset($_POST['step']) && $_POST['step'] == 4) { //Restore website
-    if (isset($_GET['partion']) && $_GET['partion'] == 1 || !isset($_GET['partition'])) {
+    if (isset($_POST['partion']) && $_POST['partion'] == 1 || !isset($_POST['partion'])) {
         installWordPress();
     }
-    if (isset($_GET['partion']) && $_GET['partion'] == 2 || !isset($_GET['partition'])) {
+    if (isset($_POST['partion']) && $_POST['partion'] == 2 || !isset($_POST['partion'])) {
         installContent();
     }
-    if (isset($_GET['partion']) && $_GET['partion'] == 3 || !isset($_GET['partition'])) {
+    if (isset($_POST['partion']) && $_POST['partion'] == 3 || !isset($_POST['partion'])) {
         setUpDBSettings();
     }
     echo json_encode(['success' => true]);
@@ -371,21 +410,18 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
                         $('#step' + nextStep).show();
                         if(partion == 1) {
                             $('#step5 h3').html('Initializing WordPress');
-                            doRestore();
-                            partion++;
-                        }
-                        if(partion == 2) {
-                            $('#step5 h3').html('Restoring content');
-                            doRestore();
-                            partion++;
-                        }
-                        if(partion == 3) {
-                            $('#step5 h3').html('Restoring database');
-                            doRestore();
-                            partion++;
-                        }
-                        if(partion == 4) {
-                            $('#step5 h3').html('Restore completed');
+                            doRestore(function() {
+                                partion++;
+                                $('#step5 h3').html('Restoring content');
+                                doRestore(function() {
+                                    partion++;
+                                    $('#step5 h3').html('Restoring database');
+                                    doRestore(function() {
+                                        partion++;
+                                        $('#step5 h3').html('Restore completed');
+                                    });
+                                });
+                            });
                         }
                         
                     }
@@ -402,10 +438,10 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
                     }
                 });
                 
-                function doRestore() {
+                function doRestore(callback) {
                     $.post(window.location, {'step': 4, 'db_host': db_host, 'db_user': db_user, 'db_pass': db_pass, 'db_name': db_name, 'url': url, 'partion': partion}, function(data) {
                         if(data.success) {
-
+                            callback();
                         }
                         else {
                             alert(data.error);
