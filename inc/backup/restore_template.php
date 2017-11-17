@@ -218,6 +218,10 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
     }
     if (isset($_POST['partion']) && $_POST['partion'] == 3 || !isset($_POST['partion'])) {
         setUpDBSettings();
+        
+        unlink('database.sql');
+        unlink('restore-config.php');
+        unlink('restore-index.php');
     }
     echo json_encode(['success' => true]);
     exit;
