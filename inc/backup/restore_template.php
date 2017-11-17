@@ -1,8 +1,8 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-ini_set('memory_limit','128M');
-set_time_limit (0);
+ini_set('memory_limit', '128M');
+set_time_limit(0);
 
 /***************************************************************************/
 /*                                                                         */
@@ -25,9 +25,10 @@ function getMySQLVersion()
 {
     global $db_password, $db_host, $db_username;
     $link = @mysqli_connect($db_host, $db_username, $db_password);
-    if($link === false) {
-        return "";
+    if ($link === false) {
+        return '';
     }
+
     return mysqli_get_server_info($link);
 }
 
@@ -103,8 +104,8 @@ function setUpDBSettings()
     foreach ($urls as $oldUrl => $newUrl) {
         replace_file($oldUrl, $newUrl, 'database.sql'); //Replace path
     }
-    
-    exec('mysql --user="' . $_POST['db_user'] . '" --password="' . $_POST['db_pass'] . '" --host="' . $_POST['db_host'] . '" ' . $_POST['db_name'] . ' < database.sql');
+
+    exec('mysql --user="'.$_POST['db_user'].'" --password="'.$_POST['db_pass'].'" --host="'.$_POST['db_host'].'" '.$_POST['db_name'].' < database.sql');
     /*
     $link = @mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
 
@@ -122,15 +123,12 @@ function setUpDBSettings()
 
 function replace_file($string, $replace, $path)
 {
-    if (is_file($path) === true)
-    {
+    if (is_file($path) === true) {
         $file = fopen($path, 'r');
         $temp = tempnam('./', 'tmp');
 
-        if (is_resource($file) === true)
-        {
-            while (feof($file) === false)
-            {
+        if (is_resource($file) === true) {
+            while (feof($file) === false) {
                 file_put_contents($temp, str_replace($string, $replace, fgets($file)), FILE_APPEND);
             }
 
@@ -159,14 +157,14 @@ function generateUrls()
     return [
         'http://'.$oldUrlData['host'].$addPath             => $_POST['url'],
         'https://'.$oldUrlData['host'].$addPath            => $_POST['url'],
-        rtrim('http://'.$oldUrlData['host'], '/') . '/'    => rtrim($_POST['url'], '/') . '/',
-        rtrim('https://'.$oldUrlData['host'], '/') . '/'   => rtrim($_POST['url'], '/') . '/',
+        rtrim('http://'.$oldUrlData['host'], '/').'/'    => rtrim($_POST['url'], '/').'/',
+        rtrim('https://'.$oldUrlData['host'], '/').'/'   => rtrim($_POST['url'], '/').'/',
         'http://'.$oldUrlData['host']                      => $_POST['url'],
         'https://'.$oldUrlData['host']                     => $_POST['url'],
         backSlash('http://'.$oldUrlData['host'].$addPath)  => backSlash($_POST['url']),
         backSlash('https://'.$oldUrlData['host'].$addPath) => backSlash($_POST['url']),
-        backSlash(rtrim('http://'.$oldUrlData['host'], '/') . '/')    => backSlash(rtrim($_POST['url'], '/') . '/'),
-        backSlash(rtrim('https://'.$oldUrlData['host'], '/') . '/')   => backSlash(rtrim($_POST['url'], '/') . '/'),
+        backSlash(rtrim('http://'.$oldUrlData['host'], '/').'/')    => backSlash(rtrim($_POST['url'], '/').'/'),
+        backSlash(rtrim('https://'.$oldUrlData['host'], '/').'/')   => backSlash(rtrim($_POST['url'], '/').'/'),
         backSlash('http://'.$oldUrlData['host'])           => backSlash($_POST['url']),
         backSlash('https://'.$oldUrlData['host'])          => backSlash($_POST['url']),
     ];
