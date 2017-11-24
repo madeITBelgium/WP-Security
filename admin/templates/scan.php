@@ -171,180 +171,57 @@ if (!defined('ABSPATH')) {
             </div>
         </div>
         
-        
         <div class="madeit-row" style="margin-top: 20px;">
             <div class="madeit-col">
                 <div class="madeit-card">
                     <div class="madeit-card-body">
                         <h4 class="madeit-card-title">
                             <?php echo esc_html(__('Scan result', 'wp-security-by-made-it')); ?>
+                            <small>
+                                <h6 style="display:inline;">
+                                    <?php echo sprintf(_n('%s issue found', '%s issues found', count($issues), 'wp-security-by-made-it'),  count($issues)); ?>
+                                </h6>
+                            </small>
                         </h4>
                         <div class="card-text">
                             <div class="madeit-row">
-                                <h6 class="madeit-card-subtitle" id="repo-scan-time-ago">
-                                    <?php if (isset($lastScan['start_time'])) {
-        printf(__('Last scan %s ago.', 'wp-security-by-made-it'), $this->timeAgo($lastScan['start_time']));
-    } else {
-        echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it'));
-    } ?>
-                                </h6>
-                                <?php if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['plugin'] || $this->defaultSettings['scan']['repo']['theme']) {
-        ?>
-                                    <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
-                                        <div class="madeit-row">
-                                            <div class="madeit-col">
-                                                <?php if (isset($lastScan['start_time'])) {
-            ?>
-                                                    <div class="madeit-row" style="">
-                                                        <div class="madeit-col-1 madeit-text-center">
-                                                            <?php if (isset($lastScan['result']['core']['success'])) {
-                if ($lastScan['result']['core']['success'] == 1) {
-                    ?>
-                                                                    <i class="fa fa-2x fa-check madeit-text-success"></i>
-                                                                    <?php
-                } else {
-                    ?>
-                                                                    <i class="fa fa-2x fa-times madeit-text-danger"></i>
-                                                                    <?php
-                }
-            } else {
-                echo esc_html(__('N/A', 'wp-security-by-made-it'));
-            } ?>
-                                                        </div>
-                                                        <div class="madeit-col">
-                                                            <h3 style="margin: 0">
-                                                                <?php echo esc_html(__('WordPress Core', 'wp-security-by-made-it')); ?>
-                                                            </h3>
-                                                        </div>
+                                <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
+                                    <div class="madeit-row">
+                                        <div class="madeit-col">
+                                            <?php foreach($issues as $issue) { ?>
+                                                <?php $pluginData = $this->getPluginInfoByFile($issue['filename_md5']); ?>
+                                                <div class="madeit-row" style="border-bottom: 1px solid #DDD; margin-left: 15px; margin-right: 15px; padding-bottom: 10px">
+                                                    <h3 style="margin-bottom: 0; width: 100%; padding-left: 10px"><?php echo esc_html($issue['shortMsg']); ?> <small><?php echo sprintf(__('Issue created at %s', 'wp-security-by-made-it'), date('Y-m-d H:i:s', $issue['issue_created'])); ?></small></h3>
+                                                    <div class="madeit-col">
+                                                        <?php echo esc_html(__('Severity:', 'wp-security-by-made-it')); ?> <?php echo esc_html($this->getSeverityTxt($issue['severity'])); ?><br>
+                                                        <?php echo esc_html(__('Plugin:', 'wp-security-by-made-it')); ?> <?php echo esc_html($pluginData['plugin_data']['name']); ?><br>
+                                                        <?php echo esc_html($issue['longMsg']); ?><br>
+                                                        <?php if(in_array($issue['type'], [2, 3])) { ?>
+                                                            <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Compare file', 'wp-security-by-made-it')); ?></a>
+                                                        <?php } ?>
+                                                        <?php if(in_array($issue['type'], [5, 2, 3])) { ?>
+                                                            <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&replace=<?php echo $nonceReplace; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Restore file', 'wp-security-by-made-it')); ?></a>
+                                                        <?php } ?>
+                                                        <?php if(in_array($issue['type'], [6])) { ?>
+                                                            <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&delete=<?php echo $nonceDelete; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Delete file', 'wp-security-by-made-it')); ?></a>
+                                                        <?php } ?>
+                                                        <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a>
+                                                        <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
+                                                        <?php if($issue['issue_readed'] == null) { ?>
+                                                            <a href="admin.php?page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
+                                                        <?php } */ ?>
                                                     </div>
-                                                    <?php /* foreach ($repoScanData['core']['plugins'] as $result) { ?>
-                                                        <div class="madeit-row">
-                                                            <div class="madeit-col">
-                                                                <?php echo esc_html($result); ?>
-                                                            </div>
-                                                        </div>
-                                                    <?php  } */ ?>
-                                                    <div class="madeit-row" style="margin-top: 20px;">
-                                                        <div class="madeit-col-1 madeit-text-center">
-                                                            <?php if (isset($lastScan['result']['plugin']['success'])) {
-                if ($lastScan['result']['plugin']['success'] == 1) {
-                    ?>
-                                                                    <i class="fa fa-2x fa-check madeit-text-success"></i>
-                                                                    <?php
-                } else {
-                    ?>
-                                                                    <i class="fa fa-2x fa-times madeit-text-danger"></i>
-                                                                    <?php
-                }
-            } else {
-                echo esc_html(__('N/A', 'wp-security-by-made-it'));
-            } ?>
-                                                        </div>
-                                                        <div class="madeit-col">
-                                                            <h3 style="margin: 0">
-                                                                <?php echo esc_html(__('Plugins', 'wp-security-by-made-it')); ?>
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                    <?php
-                                                        foreach ($pluginScanData as $plugin => $files) {
-                                                            ?>
-                                                            <div class="madeit-row">
-                                                                <div class="madeit-col-3">
-                                                                    <?php echo esc_html($plugin); ?>
-                                                                </div>
-                                                                <div class="madeit-col">
-                                                                    <?php 
-                                                                    if (is_array($files)) {
-                                                                        if (isset($files['File not exist in repo']) && count($files['File not exist in repo']) > 0) {
-                                                                            printf(__('<a href="%s">%s files</a> on your system that not exist in the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&notexist='.$plugin, count($files['File not exist in repo']));
-                                                                        }
-                                                                        if (isset($files['File not equal to repo']) && count($files['File not equal to repo']) > 0) {
-                                                                            printf(__('<a href="%s">%s files</a> on your system are different then the original version.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&changes='.$plugin, count($files['File not equal to repo']));
-                                                                        }
-                                                                        if (isset($files['File required']) && count($files['File required']) > 0) {
-                                                                            printf(__('<a href="%s">%s files</a> on your system are deleted but are required in the plugin.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&required='.$plugin, count($files['File required']));
-                                                                        }
-                                                                        if (isset($files['File required and changed']) && count($files['File required and changed']) > 0) {
-                                                                            printf(__('<a href="%s">%s files</a> on your system are deleted but are required in the plugin.', 'wp-security-by-made-it'), 'admin.php?page=madeit_security_scan&required='.$plugin, count($files['File required and changed']));
-                                                                        }
-                                                                    } else {
-                                                                        echo esc_html(__('Some files of the plugin are not equal to the orignal file. Disable fast scanning to check which file.', 'wp-security-by-made-it'));
-                                                                    } ?>
-                                                                </div>
-                                                            </div>
-                                                        <?php
-                                                        } ?>
-                                                
-                                                    <div class="madeit-row" style="margin-top: 20px;">
-                                                        <div class="madeit-col-1 madeit-text-center">
-                                                            <?php if (isset($lastScan['result']['theme']['success'])) {
-                                                            if ($lastScan['result']['theme']['success'] == 1) {
-                                                                ?>
-                                                                    <i class="fa fa-2x fa-check madeit-text-success"></i>
-                                                                    <?php
-                                                            } else {
-                                                                ?>
-                                                                    <i class="fa fa-2x fa-times madeit-text-danger"></i>
-                                                                    <?php
-                                                            }
-                                                        } else {
-                                                            echo esc_html(__('N/A', 'wp-security-by-made-it'));
-                                                        } ?>
-                                                        </div>
-                                                        <div class="madeit-col">
-                                                            <h3 style="margin: 0">
-                                                                <?php echo esc_html(__('Themes', 'wp-security-by-made-it')); ?>
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                    <?php foreach ($themeScanData as $theme => $result) {
-                                                            ?>
-                                                        <div class="madeit-row">
-                                                            <div class="madeit-col-2">
-                                                                <?php echo esc_html($theme); ?>
-                                                            </div>
-                                                            <div class="madeit-col">
-                                                                <?php
-                                                                if (is_array($result)) {
-                                                                    if (isset($files['File not exist in repo']) && count($files['File not exist in repo']) > 0) {
-                                                                        printf(__('%s files on your system that not exist in the original version.', 'wp-security-by-made-it'), count($files['File not exist in repo']));
-                                                                    }
-                                                                } ?>
-                                                            </div>
-                                                        </div>
-                                                    <?php
-                                                        } ?>
-                                                <?php
-        } else {
-            ?>
-                                                    <?php echo esc_html(__('No recent scan data found.', 'wp-security-by-made-it')); ?>
-                                                <?php
-        } ?>
-                                            </div>
+                                                </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
-                                <?php
-    } else {
-        ?>
-                                    <div class="card-text">
-                                        <div class="madeit-row">
-                                            <div class="madeit-col">
-                                                <?php echo esc_html(__('Scanning changes against repo disabled.', 'wp-security-by-made-it')); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php
-    } ?>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        
-        
     </div>
 </div>
 

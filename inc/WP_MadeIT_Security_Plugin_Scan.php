@@ -3,10 +3,15 @@
 class WP_MadeIT_Security_Plugin_Scan
 {
     private $db;
+    private $issues;
 
     public function __construct($db = null)
     {
         $this->db = $db;
+        
+        
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Issue.php';
+        $this->issues = new WP_MadeIT_Security_Issue($db);
     }
 
     public function scan($fast = false)
@@ -50,15 +55,15 @@ class WP_MadeIT_Security_Plugin_Scan
 
             if ($file['file_deleted'] == null) {
                 $fileData[$fileName] = $file['new_md5'];
-                if (!$initialRun) {
-                    //Delete file in issue
-                    $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_issues (filename_md5, filename, old_md5, new_md5, type, serverity, issue_created, shortMsg, longMsg, data) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)', $file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 2, 3, time(), sprintf(__('The file %s is deleted', 'wp-security-by-made-it'), $file['filename']), sprintf(__('The file %s is deleted', 'wp-security-by-made-it'), $file['filename']), json_encode([]));
+                if (!$initialRun && $file['new_md5'] != $file['old_md5']) {
+                    //Changed file in issue
+                    $this->issues->createIssue($file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 1, 3);
                 }
             } else {
                 $deletedFiles[$fileName] = $file['new_md5'];
-                if (!$initialRun && $file['new_md5'] != $file['old_md5']) {
+                if (!$initialRun) {
                     //Delete file in issue
-                    $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_issues (filename_md5, filename, old_md5, new_md5, type, serverity, issue_created, shortMsg, longMsg, data) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)', $file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 1, 3, time(), sprintf(__('The file %s is changed', 'wp-security-by-made-it'), $file['filename']), sprintf(__('The file %s is changed', 'wp-security-by-made-it'), $file['filename']), json_encode([]));
+                    $this->issues->createIssue($file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 4, 3);
                 }
             }
 
@@ -176,10 +181,10 @@ class WP_MadeIT_Security_Plugin_Scan
                     if (isset($checkedFileList[$file])) {
                         if ($result == 'File not equal') {
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File not equal to repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
-
-                            //$this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_issues type = %s, serverity = %s, shortMsg = %s, longMsg = %s, data = %s) WHERE filename_md5 = %s ORDER BY id DESC LIMIT 1", 3, 4, sprintf(__('The file %s is deleted', 'wp-security-by-made-it'), $file), sprintf(__('The file %s is changed compared to the repo version', 'wp-security-by-made-it'), $file), json_encode([]), $checkedFileList[$file]);
+                            
+                            $this->issues->updateIssue($checkedFileList[$file], 2, 4);
                         } elseif ($result == 'File not exist') {
-                            $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File not exist in repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
+                            $this->issues->updateIssue($checkedFileList[$file], 1, 2);
                         }
                     }
                 }
@@ -189,8 +194,10 @@ class WP_MadeIT_Security_Plugin_Scan
                 foreach ($result['deletedFiles'] as $file => $result) {
                     if (isset($checkedFileList[$file])) {
                         if ($result == 'File required and changed') {
+                            $this->issues->updateIssue($checkedFileList[$file], 5, 4);
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File required and changed' WHERE filename_md5 = %s", $checkedFileList[$file]);
                         } elseif ($result == 'File required') {
+                            $this->issues->updateIssue($checkedFileList[$file], 5, 4);
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File required' WHERE filename_md5 = %s", $checkedFileList[$file]);
                         }
                     }

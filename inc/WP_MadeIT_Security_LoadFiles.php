@@ -279,7 +279,7 @@ class WP_MadeIT_Security_LoadFiles
                 $result['last_com_time'] = time();
 
                 $errorFiles = 0;
-                $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE core_file = 1 AND reason IS NOT NULL AND `ignore` != 1 ORDER BY `file_changed` DESC');
+                $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_issues` issue join '.$this->db->prefix().'madeit_sec_filelist file ON file.filename_md5 = issue.filename_md5 where file.core_file = 1 AND issue.`issue_fixed` IS NULL AND `issue_ignored` IS NULL');
                 if ($count != null && $count['aantal'] > 0) {
                     $errorFiles = $count['aantal'];
                 }
@@ -341,7 +341,7 @@ class WP_MadeIT_Security_LoadFiles
                 }
 
                 $errorFiles = 0;
-                $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1 AND reason IS NOT NULL AND `ignore` != 1');
+                $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_issues` issue join '.$this->db->prefix().'madeit_sec_filelist file ON file.filename_md5 = issue.filename_md5 where file.plugin_file = 1 AND issue.`issue_fixed` IS NULL AND `issue_ignored` IS NULL');
                 if ($count != null && $count['aantal'] > 0) {
                     $errorFiles = $count['aantal'];
                 }
@@ -408,7 +408,7 @@ class WP_MadeIT_Security_LoadFiles
                 }
 
                 $errorFiles = 0;
-                $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE theme_file = 1 AND `reason` IS NOT NULL AND `ignore` != 1');
+                $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_issues` issue join '.$this->db->prefix().'madeit_sec_filelist file ON file.filename_md5 = issue.filename_md5 where file.theme_file = 1 AND issue.`issue_fixed` IS NULL AND `issue_ignored` IS NULL');
                 if ($count != null && $count['aantal'] > 0) {
                     $errorFiles = $count['aantal'];
                 }

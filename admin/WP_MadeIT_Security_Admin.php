@@ -24,9 +24,9 @@ class WP_MadeIT_Security_Admin
         $themes = new WP_MadeIT_Security_Theme();
 
         $count = 0;
-        $errors = $this->db->querySingleRecord('SELECT count(*) as aantal FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE reason IS NOT NULL AND `ignore` != 1');
-        if (isset($errors['aantal'])) {
-            $count = $errors['aantal'];
+        $issues = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND issue_ignored IS NULL');
+        if (isset($issues['aantal'])) {
+            $count = $issues['aantal'];
         }
 
         return $plugins->countUpdates(false) + $themes->countUpdates(false) + ($core->hasUpdate() ? 1 : 0) + $count;
@@ -308,6 +308,19 @@ class WP_MadeIT_Security_Admin
 
     public function show_scan()
     {
+        if (isset($_GET['ignore-issue'])) {
+            $id = sanitize_text_field($_GET['ignore-issue']);
+            $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_ignored` = %s WHERE id = %s', time(), $id);
+        }
+        if (isset($_GET['read-issue'])) {
+            $id = sanitize_text_field($_GET['read-issue']);
+            $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_readed` = %s WHERE id = %s', time(), $id);
+        }
+        if (isset($_GET['fix-issue'])) {
+            $id = sanitize_text_field($_GET['fix-issue']);
+            $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_fixed` = %s WHERE id = %s', time(), $id);
+        }
+        
         if (isset($_GET['changes'])) {
             $this->showChanges();
         } elseif (isset($_GET['notexist'])) {
@@ -347,9 +360,64 @@ class WP_MadeIT_Security_Admin
             }
 
             $updateScanData = get_site_transient('madeit_security_update_scan');
+            
+            $issues = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND issue_ignored IS NULL ORDER BY severity DESC');
 
+            $nonceReplace = wp_create_nonce('madeit_security_replace_file');
+            $nonceDelete = wp_create_nonce('madeit_security_delete_file');
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
         }
+    }
+    
+    private function getSeverityTxt($severity)
+    {
+        //1 = trivial, 2 => minor 3 => major, 4 => critical, 5 => blocked
+        if($severity == 1) {
+            return __('Trivial', 'wp-security-by-made-it');
+        }
+        elseif($severity == 2) {
+            return __('Minor', 'wp-security-by-made-it');
+        }
+        elseif($severity == 3) {
+            return __('Major', 'wp-security-by-made-it');
+        }
+        elseif($severity == 4) {
+            return __('Critical', 'wp-security-by-made-it');
+        }
+        elseif($severity == 5) {
+            return __('Blocked', 'wp-security-by-made-it');
+        }
+        return "";
+    }
+    
+    private function getPluginInfoByFile($filenameMd5)
+    {
+        $fileData = $this->db->querySingleRecord('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1 AND filename_md5 = %s', $filenameMd5);
+        if($fileData == null) {
+            return null;
+        }
+        
+        $plugin = $fileData['plugin_theme'];
+        
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
+        $wp_plugin = new WP_MadeIT_Security_Plugin();
+        $pluginsData = $wp_plugin->getPlugins();
+        $version = '';
+        $path = WP_PLUGIN_DIR;
+        $data = null;
+        foreach ($pluginsData as $key => $pluginData) {
+            if ($pluginData['slug'] == $plugin) {
+                $version = $pluginData['version'];
+                $path .= '/'.substr($key, 0, strpos($key, '/'));
+                $data = $pluginData;
+            }
+        }
+        
+        return [
+            'plugin_data' => $data,
+            'version' => $version,
+            'plugin' => $plugin,
+        ];
     }
 
     private function showChanges()
@@ -421,10 +489,24 @@ class WP_MadeIT_Security_Admin
                         // This nonce is not valid.
                         wp_die('Security check');
                     } else {
+                        $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_fixed` = %s WHERE filename_md5 = %s AND issue_fixed IS NULL', time(), $file);
                         $this->disIgnoreFile($plugin, $file);
                         $this->replace($plugin, $fileName, $localFile, $version);
                         $list = true;
                         $fileReplacedSuccesfull = $file;
+                    }
+                } elseif (isset($_GET['delete'])) {
+                    //Replace the current file with the original
+                    $nonce = sanitize_text_field($_GET['replace']);
+                    if (!wp_verify_nonce($nonce, 'madeit_security_delete_file')) {
+                        // This nonce is not valid.
+                        wp_die('Security check');
+                    } else {
+                        $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_fixed` = %s WHERE filename_md5 = %s AND issue_fixed IS NULL', time(), $file);
+                        $this->disIgnoreFile($plugin, $file);
+                        $this->delete($plugin, $localFile);
+                        $list = true;
+                        $fileDeletedSuccesfull = $file;
                     }
                 } else {
                     if (false) { //Use Made I.T. Cache to not overlode WP repo. TODO: make setting for this.
@@ -451,14 +533,24 @@ class WP_MadeIT_Security_Admin
                 include_once MADEIT_SECURITY_ADMIN.'/templates/compare_files.php';
             }
         }
-        if ($list) {
+        if($list) {
+            $issues = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND issue_ignored IS NULL ORDER BY severity DESC');
+            $nonceReplace = wp_create_nonce('madeit_security_replace_file');
+            
+            include_once MADEIT_SECURITY_ADMIN.'/templates/list-issues.php';
+        }
+        if ($list && false) {
             $nonce = wp_create_nonce('madeit_security_ignore_file');
+            $nonceDelete = wp_create_nonce('madeit_security_delete_file');
 
             $files = $this->db->querySelect('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1 AND reason IS NOT NULL AND `ignore` != 1 AND plugin_theme = %s', $plugin);
             include_once MADEIT_SECURITY_ADMIN.'/templates/list-changed-files.php';
         }
     }
 
+    /* 
+     * @deprecated
+    */
     private function notExist()
     {
         $plugin = sanitize_text_field($_GET['notexist']);

@@ -38,7 +38,7 @@ class WP_MadeIT_Security_DB_Schema
             'filename'      => 'varchar(1000) NULL',
             'old_md5'       => 'varchar(64) NULL',
             'new_md5'       => 'varchar(64) NULL',
-            'type'          => 'int UNSIGNED NOT NULL default 0', //1 = File change, 2 = File deleted, 3 = File added
+            'type'          => 'int UNSIGNED NOT NULL default 0',
             'severity'      => 'tinyint UNSIGNED NOT NULL default 0', //1 = trivial, 2 => minor 3 => major, 4 => critical, 5 => blocked
             'issue_created' => 'int UNSIGNED NULL',
             'issue_fixed'   => 'int UNSIGNED NULL',
