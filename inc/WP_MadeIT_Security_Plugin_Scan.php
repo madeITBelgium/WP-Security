@@ -8,8 +8,7 @@ class WP_MadeIT_Security_Plugin_Scan
     public function __construct($db = null)
     {
         $this->db = $db;
-        
-        
+
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Issue.php';
         $this->issues = new WP_MadeIT_Security_Issue($db);
     }
@@ -181,7 +180,7 @@ class WP_MadeIT_Security_Plugin_Scan
                     if (isset($checkedFileList[$file])) {
                         if ($result == 'File not equal') {
                             $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set is_safe = 0, reason = 'File not equal to repo' WHERE filename_md5 = %s", $checkedFileList[$file]);
-                            
+
                             $this->issues->updateIssue($checkedFileList[$file], 2, 4);
                         } elseif ($result == 'File not exist') {
                             $this->issues->updateIssue($checkedFileList[$file], 1, 2);
