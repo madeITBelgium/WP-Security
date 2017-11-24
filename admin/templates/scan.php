@@ -179,7 +179,7 @@ if (!defined('ABSPATH')) {
                             <?php echo esc_html(__('Scan result', 'wp-security-by-made-it')); ?>
                             <small>
                                 <h6 style="display:inline;">
-                                    <?php echo sprintf(_n('%s issue found', '%s issues found', count($issues), 'wp-security-by-made-it'),  count($issues)); ?>
+                                    <?php echo sprintf(_n('%s issue found', '%s issues found', count($issues), 'wp-security-by-made-it'), count($issues)); ?>
                                 </h6>
                             </small>
                         </h4>
@@ -188,7 +188,8 @@ if (!defined('ABSPATH')) {
                                 <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
                                     <div class="madeit-row">
                                         <div class="madeit-col">
-                                            <?php foreach($issues as $issue) { ?>
+                                            <?php foreach ($issues as $issue) {
+        ?>
                                                 <?php $pluginData = $this->getPluginInfoByFile($issue['filename_md5']); ?>
                                                 <div class="madeit-row" style="border-bottom: 1px solid #DDD; margin-left: 15px; margin-right: 15px; padding-bottom: 10px">
                                                     <h3 style="margin-bottom: 0; width: 100%; padding-left: 10px"><?php echo esc_html($issue['shortMsg']); ?> <small><?php echo sprintf(__('Issue created at %s', 'wp-security-by-made-it'), date('Y-m-d H:i:s', $issue['issue_created'])); ?></small></h3>
@@ -196,15 +197,21 @@ if (!defined('ABSPATH')) {
                                                         <?php echo esc_html(__('Severity:', 'wp-security-by-made-it')); ?> <?php echo esc_html($this->getSeverityTxt($issue['severity'])); ?><br>
                                                         <?php echo esc_html(__('Plugin:', 'wp-security-by-made-it')); ?> <?php echo esc_html($pluginData['plugin_data']['name']); ?><br>
                                                         <?php echo esc_html($issue['longMsg']); ?><br>
-                                                        <?php if(in_array($issue['type'], [2, 3])) { ?>
+                                                        <?php if (in_array($issue['type'], [2, 3])) {
+            ?>
                                                             <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Compare file', 'wp-security-by-made-it')); ?></a>
-                                                        <?php } ?>
-                                                        <?php if(in_array($issue['type'], [5, 2, 3])) { ?>
+                                                        <?php
+        } ?>
+                                                        <?php if (in_array($issue['type'], [5, 2, 3])) {
+            ?>
                                                             <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&replace=<?php echo $nonceReplace; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Restore file', 'wp-security-by-made-it')); ?></a>
-                                                        <?php } ?>
-                                                        <?php if(in_array($issue['type'], [6])) { ?>
+                                                        <?php
+        } ?>
+                                                        <?php if (in_array($issue['type'], [6])) {
+            ?>
                                                             <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&delete=<?php echo $nonceDelete; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Delete file', 'wp-security-by-made-it')); ?></a>
-                                                        <?php } ?>
+                                                        <?php
+        } ?>
                                                         <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a>
                                                         <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
                                                         <?php if($issue['issue_readed'] == null) { ?>
@@ -212,7 +219,8 @@ if (!defined('ABSPATH')) {
                                                         <?php } */ ?>
                                                     </div>
                                                 </div>
-                                            <?php } ?>
+                                            <?php
+    } ?>
                                         </div>
                                     </div>
                                 </div>
