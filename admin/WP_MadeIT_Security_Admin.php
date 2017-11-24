@@ -320,7 +320,7 @@ class WP_MadeIT_Security_Admin
             $id = sanitize_text_field($_GET['fix-issue']);
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_fixed` = %s WHERE id = %s', time(), $id);
         }
-        
+
         if (isset($_GET['changes'])) {
             $this->showChanges();
         } elseif (isset($_GET['notexist'])) {
@@ -360,7 +360,7 @@ class WP_MadeIT_Security_Admin
             }
 
             $updateScanData = get_site_transient('madeit_security_update_scan');
-            
+
             $issues = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND issue_ignored IS NULL ORDER BY severity DESC');
 
             $nonceReplace = wp_create_nonce('madeit_security_replace_file');
@@ -368,37 +368,34 @@ class WP_MadeIT_Security_Admin
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
         }
     }
-    
+
     private function getSeverityTxt($severity)
     {
         //1 = trivial, 2 => minor 3 => major, 4 => critical, 5 => blocked
-        if($severity == 1) {
+        if ($severity == 1) {
             return __('Trivial', 'wp-security-by-made-it');
-        }
-        elseif($severity == 2) {
+        } elseif ($severity == 2) {
             return __('Minor', 'wp-security-by-made-it');
-        }
-        elseif($severity == 3) {
+        } elseif ($severity == 3) {
             return __('Major', 'wp-security-by-made-it');
-        }
-        elseif($severity == 4) {
+        } elseif ($severity == 4) {
             return __('Critical', 'wp-security-by-made-it');
-        }
-        elseif($severity == 5) {
+        } elseif ($severity == 5) {
             return __('Blocked', 'wp-security-by-made-it');
         }
-        return "";
+
+        return '';
     }
-    
+
     private function getPluginInfoByFile($filenameMd5)
     {
         $fileData = $this->db->querySingleRecord('SELECT * FROM `'.$this->db->prefix().'madeit_sec_filelist` WHERE plugin_file = 1 AND filename_md5 = %s', $filenameMd5);
-        if($fileData == null) {
-            return null;
+        if ($fileData == null) {
+            return;
         }
-        
+
         $plugin = $fileData['plugin_theme'];
-        
+
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
         $wp_plugin = new WP_MadeIT_Security_Plugin();
         $pluginsData = $wp_plugin->getPlugins();
@@ -412,11 +409,11 @@ class WP_MadeIT_Security_Admin
                 $data = $pluginData;
             }
         }
-        
+
         return [
             'plugin_data' => $data,
-            'version' => $version,
-            'plugin' => $plugin,
+            'version'     => $version,
+            'plugin'      => $plugin,
         ];
     }
 
@@ -533,10 +530,10 @@ class WP_MadeIT_Security_Admin
                 include_once MADEIT_SECURITY_ADMIN.'/templates/compare_files.php';
             }
         }
-        if($list) {
+        if ($list) {
             $issues = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND issue_ignored IS NULL ORDER BY severity DESC');
             $nonceReplace = wp_create_nonce('madeit_security_replace_file');
-            
+
             include_once MADEIT_SECURITY_ADMIN.'/templates/list-issues.php';
         }
         if ($list && false) {
@@ -548,7 +545,7 @@ class WP_MadeIT_Security_Admin
         }
     }
 
-    /* 
+    /*
      * @deprecated
     */
     private function notExist()
