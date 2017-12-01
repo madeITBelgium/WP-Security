@@ -4,6 +4,7 @@ class WP_MadeIT_Security_Plugin_Scan
 {
     private $db;
     private $issues;
+    private $patternData;
 
     public function __construct($db = null)
     {
@@ -23,6 +24,7 @@ class WP_MadeIT_Security_Plugin_Scan
     //Return array with files and there hash
     public function scanChanges($fast = false, $fileCount = 1000)
     {
+        $this->patternData = json_decode(file_get_contents('https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/getPattern/1'), true);
         $result = get_site_transient('madeit_security_scan');
         $initialRun = $result['init_run'];
         $fileData = [];
@@ -66,9 +68,9 @@ class WP_MadeIT_Security_Plugin_Scan
                 }
             }
 
-            if (!$fast && false) {
+            if (!$fast) {
                 //Check other things in the file
-                $pattern = json_decode('https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/getPatterns/APIKEY', true);
+                $patterns = $this->patternData;
                 $filePath = ABSPATH.$file['filename'];
                 if (file_exists($filePath)) {
                     $fileExt = '';
@@ -136,6 +138,7 @@ class WP_MadeIT_Security_Plugin_Scan
                             }
                             if ($totalRead > 2 * 1024 * 1024) {
                                 //Break loop
+                                break;
                             }
                         }
                         fclose($fh);

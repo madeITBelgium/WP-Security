@@ -279,6 +279,7 @@ if (!defined('ABSPATH')) {
                     clearInterval(interval);
                     $('.stop-repo-scan').hide();
                     $('.do-repo-scan').show();
+                    $('.scan-step').html('<?php echo __('Complete scan', 'wp-security-by-made-it'); ?>');
                     $('#repo-scan-time-ago').html(response.time_ago);
                     $('#repo-scan-core-status').html(response.result.result.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                     $('#repo-scan-plugins-status').html(response.result.result.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
@@ -319,7 +320,7 @@ if (!defined('ABSPATH')) {
                         $('#repo-scan-plugins-status').html(response.result.result.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                     }
                     if(response.result.step >= 10) {
-                        $('.scan-step').html('<?php echo __('Scan theme Vulnerabilities', 'wp-security-by-made-it'); ?>');
+                        $('.scan-step').html("<?php echo __('Scan theme Vulnerabilities', 'wp-security-by-made-it'); ?>");
                         $('#repo-scan-themes-status').html(response.result.result.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                     }
                     if(response.result.step >= 11) {
