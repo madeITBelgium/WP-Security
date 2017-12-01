@@ -14,7 +14,7 @@ class WP_MadeIT_Security_LoadFiles
         $this->settings = $settings;
         $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
-        
+
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Issue.php';
         $this->issues = new WP_MadeIT_Security_Issue($db);
     }
@@ -439,24 +439,25 @@ class WP_MadeIT_Security_LoadFiles
             //Core WPVulndb
             if (($bigRun || !$run) && $result['step'] == 8) {
                 $run = true;
+
                 try {
                     $coreResult = $this->scanCoreWPVulndb();
-                }
-                catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $result['step'] = 12;
                     $result['result']['content']['completed'] = true;
                     $result['done'] = true;
                     $result['last_com_time'] = time();
                     set_site_transient('madeit_security_scan', $result);
+
                     return;
                 }
-                
+
                 $result['step'] = 9;
                 $result['result']['core']['completed'] = true;
                 $result['result']['core']['success'] = $result['result']['core']['success'] && $coreResult;
                 $result['last_com_time'] = time();
                 set_site_transient('madeit_security_scan', $result);
-                
+
                 if ($this->checkToStop()) {
                     return;
                 }
@@ -467,19 +468,20 @@ class WP_MadeIT_Security_LoadFiles
                     return;
                 }
             }
-            
+
             //Plugin WPVulndb
             if (($bigRun || !$run) && $result['step'] == 9) {
                 $run = true;
+
                 try {
                     $pluginResult = $this->scanPluginWPVulndb();
-                }
-                catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $result['step'] = 12;
                     $result['result']['content']['completed'] = true;
                     $result['done'] = true;
                     $result['last_com_time'] = time();
                     set_site_transient('madeit_security_scan', $result);
+
                     return;
                 }
                 $result['step'] = 10;
@@ -487,7 +489,7 @@ class WP_MadeIT_Security_LoadFiles
                 $result['result']['plugin']['success'] = $result['result']['plugin']['success'] && $pluginResult;
                 $result['last_com_time'] = time();
                 set_site_transient('madeit_security_scan', $result);
-                
+
                 if ($this->checkToStop()) {
                     return;
                 }
@@ -498,27 +500,28 @@ class WP_MadeIT_Security_LoadFiles
                     return;
                 }
             }
-            
+
             //Theme WPVulndb
             if (($bigRun || !$run) && $result['step'] == 10) {
                 $run = true;
+
                 try {
                     $pluginResult = $this->scanThemeWPVulndb();
-                }
-                catch(\Exception $e) {
+                } catch (\Exception $e) {
                     $result['step'] = 12;
                     $result['result']['content']['completed'] = true;
                     $result['done'] = true;
                     $result['last_com_time'] = time();
                     set_site_transient('madeit_security_scan', $result);
+
                     return;
-                }  
+                }
                 $result['step'] = 11;
                 $result['result']['theme']['completed'] = true;
                 $result['result']['theme']['success'] = $result['result']['theme']['success'];
                 $result['last_com_time'] = time();
                 set_site_transient('madeit_security_scan', $result);
-                
+
                 if ($this->checkToStop()) {
                     return;
                 }
@@ -529,7 +532,7 @@ class WP_MadeIT_Security_LoadFiles
                     return;
                 }
             }
-            
+
             //finish
             if (($bigRun || !$run) && $result['step'] == 11) {
                 $result['step'] = 12;
@@ -584,7 +587,7 @@ class WP_MadeIT_Security_LoadFiles
 
         $dir->close();
     }
-    
+
     private function scanCoreWPVulndb()
     {
         if (!class_exists('WP_MadeIT_Security_Core')) {
@@ -593,40 +596,41 @@ class WP_MadeIT_Security_LoadFiles
         $core = new WP_MadeIT_Security_Core();
         $wpVersion = $core->getCurrentWPVersion();
         $wpVulndbVersion = preg_replace('/[^0-9]+/', '', $wpVersion);
-        $wpVulndbJson = $this->loadUrl("https://wpvulndb.com/api/v2/wordpresses/" . $wpVulndbVersion);
-        if($wpVulndbJson === false) {
+        $wpVulndbJson = $this->loadUrl('https://wpvulndb.com/api/v2/wordpresses/'.$wpVulndbVersion);
+        if ($wpVulndbJson === false) {
             return true;
         }
         $wpVulndbData = json_decode($wpVulndbJson, true);
         $issuesFound = 0;
-        foreach($wpVulndbData as $majorVersion => $data) {
+        foreach ($wpVulndbData as $majorVersion => $data) {
             $releaseDate = $data['release_date'];
             $changeLog = $data['changelog_url'];
             $vulnerabilities = $data['vulnerabilities'];
-            if(count($vulnerabilities) > 0) {
-                foreach($vulnerabilities as $vulnerabilityData) {
+            if (count($vulnerabilities) > 0) {
+                foreach ($vulnerabilities as $vulnerabilityData) {
                     $issuesFound++;
-                    
+
                     $title = $vulnerabilityData['title'];
                     $type = $vulnerabilityData['vuln_type'];
                     $fixedIn = $vulnerabilityData['fixed_in'];
                     $knowSince = date('Y-m-d', strtotime($vulnerabilityData['published_date']));
                     $references = $vulnerabilityData['references'];
-                        
-                    $this->issues->createIssue(md5("wp_core" . $title), "WP Core", null, null, 7, 5, [
-                        'title' => $title,
-                        'type' => $type,
-                        'fixedIn' => $fixedIn,
-                        'knowSince' => $knowSince,
+
+                    $this->issues->createIssue(md5('wp_core'.$title), 'WP Core', null, null, 7, 5, [
+                        'title'           => $title,
+                        'type'            => $type,
+                        'fixedIn'         => $fixedIn,
+                        'knowSince'       => $knowSince,
                         'current_version' => $wpVersion,
-                        'references' => $references,
+                        'references'      => $references,
                     ]);
                 }
             }
         }
+
         return $issuesFound == 0;
     }
-    
+
     private function scanPluginWPVulndb()
     {
         if (!class_exists('WP_MadeIT_Security_Plugin')) {
@@ -635,49 +639,49 @@ class WP_MadeIT_Security_LoadFiles
         $plugin = new WP_MadeIT_Security_Plugin();
         $plugins = $plugin->getPlugins();
         $issuesFound = 0;
-        foreach($plugins as $plugin) {
-            if($plugin['repository'] != "WORDPRESS.ORG" || $plugin['slug'] == null) {
+        foreach ($plugins as $plugin) {
+            if ($plugin['repository'] != 'WORDPRESS.ORG' || $plugin['slug'] == null) {
                 continue;
             }
             $version = $plugin['version'];
-            $wpVulndbJson = $this->loadUrl("https://wpvulndb.com/api/v2/plugins/" . $plugin['slug']);
-            if($wpVulndbJson === false) {
+            $wpVulndbJson = $this->loadUrl('https://wpvulndb.com/api/v2/plugins/'.$plugin['slug']);
+            if ($wpVulndbJson === false) {
                 continue;
             }
             $wpVulndbData = json_decode($wpVulndbJson, true);
-            
-            foreach($wpVulndbData as $slug => $data) {
+
+            foreach ($wpVulndbData as $slug => $data) {
                 $latestVersion = $data['latest_version'];
                 $last_updated = $data['last_updated'];
                 $popular = $data['popular'];
-                
+
                 $vulnerabilities = $data['vulnerabilities'];
-                foreach($vulnerabilities as $vulnerabilityData) {
-                    
+                foreach ($vulnerabilities as $vulnerabilityData) {
                     $title = $vulnerabilityData['title'];
                     $type = $vulnerabilityData['vuln_type'];
                     $fixedIn = $vulnerabilityData['fixed_in'];
                     $knowSince = date('Y-m-d', strtotime($vulnerabilityData['published_date']));
                     $references = $vulnerabilityData['references'];
-                    
-                    if(version_compare($version, $fixedIn, '<')) {
+
+                    if (version_compare($version, $fixedIn, '<')) {
                         $issuesFound++;
-                        
-                        $this->issues->createIssue(md5($slug . $title), $slug, null, null, 8, 5, [
-                            'title' => $title,
-                            'type' => $type,
-                            'fixedIn' => $fixedIn,
-                            'knowSince' => $knowSince,
+
+                        $this->issues->createIssue(md5($slug.$title), $slug, null, null, 8, 5, [
+                            'title'           => $title,
+                            'type'            => $type,
+                            'fixedIn'         => $fixedIn,
+                            'knowSince'       => $knowSince,
                             'current_version' => $version,
-                            'references' => $references,
+                            'references'      => $references,
                         ]);
                     }
                 }
             }
         }
+
         return $issuesFound == 0;
     }
-    
+
     private function scanThemeWPVulndb()
     {
         if (!class_exists('WP_MadeIT_Security_Theme')) {
@@ -686,49 +690,49 @@ class WP_MadeIT_Security_LoadFiles
         $theme = new WP_MadeIT_Security_Theme();
         $themes = $theme->getThemes();
         $issuesFound = 0;
-        foreach($themes as $theme) {
-            if($theme['slug'] == null) {
+        foreach ($themes as $theme) {
+            if ($theme['slug'] == null) {
                 continue;
             }
             $version = $theme['version'];
-            $wpVulndbJson = $this->loadUrl("https://wpvulndb.com/api/v2/themes/" . $theme['slug']);
-            if($wpVulndbJson === false) {
+            $wpVulndbJson = $this->loadUrl('https://wpvulndb.com/api/v2/themes/'.$theme['slug']);
+            if ($wpVulndbJson === false) {
                 continue;
             }
             $wpVulndbData = json_decode($wpVulndbJson, true);
-            
-            foreach($wpVulndbData as $slug => $data) {
+
+            foreach ($wpVulndbData as $slug => $data) {
                 $latestVersion = $data['latest_version'];
                 $last_updated = $data['last_updated'];
                 $popular = $data['popular'];
-                
+
                 $vulnerabilities = $data['vulnerabilities'];
-                foreach($vulnerabilities as $vulnerabilityData) {
-                    
+                foreach ($vulnerabilities as $vulnerabilityData) {
                     $title = $vulnerabilityData['title'];
                     $type = $vulnerabilityData['vuln_type'];
                     $fixedIn = $vulnerabilityData['fixed_in'];
                     $knowSince = date('Y-m-d', strtotime($vulnerabilityData['published_date']));
                     $references = $vulnerabilityData['references'];
-                    
-                    if(version_compare($version, $fixedIn, '<')) {
+
+                    if (version_compare($version, $fixedIn, '<')) {
                         $issuesFound++;
-                        
-                        $this->issues->createIssue(md5($slug . $title), $slug, null, null, 9, 5, [
-                            'title' => $title,
-                            'type' => $type,
-                            'fixedIn' => $fixedIn,
-                            'knowSince' => $knowSince,
+
+                        $this->issues->createIssue(md5($slug.$title), $slug, null, null, 9, 5, [
+                            'title'           => $title,
+                            'type'            => $type,
+                            'fixedIn'         => $fixedIn,
+                            'knowSince'       => $knowSince,
                             'current_version' => $version,
-                            'references' => $references,
+                            'references'      => $references,
                         ]);
                     }
                 }
             }
         }
+
         return $issuesFound == 0;
     }
-    
+
     private function loadUrl($url)
     {
         $ch = curl_init($url);
@@ -736,10 +740,11 @@ class WP_MadeIT_Security_LoadFiles
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $output = curl_exec($ch);
-        if(curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
+        if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
             $output = false;
         }
         curl_close($ch);
+
         return $output;
     }
 
