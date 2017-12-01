@@ -11,7 +11,7 @@ class WP_MadeIT_Security_Issue
         $this->db = $db;
     }
 
-    private function generateShortMessage($type, $filename)
+    private function generateShortMessage($type, $filename, $data = [])
     {
         //1 = File change, 2 = File different then repo, 3 = File infected, 4 = File deleted, 5 = File deleted, 6 = File is added
         if ($type == 1) {
@@ -26,12 +26,18 @@ class WP_MadeIT_Security_Issue
             $shortMsg = sprintf(__('File deleted', 'wp-security-by-made-it'), $filename);
         } elseif ($type == 6) {
             $shortMsg = sprintf(__('New file added', 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 7) {
+            $shortMsg = sprintf(__('The WordPress core is vulnerable', 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 8) {
+            $shortMsg = sprintf(__('The plugin %s is vulnerable', 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 9) {
+            $shortMsg = sprintf(__('The theme %s is vulnerable', 'wp-security-by-made-it'), $filename);
         }
 
         return $shortMsg;
     }
 
-    private function generateLongMessage($type, $filename)
+    private function generateLongMessage($type, $filename, $data = [])
     {
         //1 = File change, 2 = File different then repo, 3 = File infected, 4 = File deleted, 5 = File deleted, 6 = File is added
         if ($type == 1) {
@@ -46,6 +52,12 @@ class WP_MadeIT_Security_Issue
             $longMsg = sprintf(__('The file %s is deleted from you installation. But it exist in the original version.', 'wp-security-by-made-it'), $filename);
         } elseif ($type == 6) {
             $longMsg = sprintf(__('The file %s is added to your installation.', 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 7) {
+            $longMsg = sprintf(__("A vulnerability '%s' is found in the WP Core since %s in version %s.", 'wp-security-by-made-it'), $data['title'], $data['knowSince'], $data['fixedIn']);
+        } elseif ($type == 8) {
+            $longMsg = sprintf(__("A vulnerability '%s' is found in the '%s' plugin since %s in version %s.", 'wp-security-by-made-it'), $data['title'], $filename, $data['knowSince'], $data['fixedIn']);
+        } elseif ($type == 9) {
+            $longMsg = sprintf(__("A vulnerability '%s' is found in the '%s' theme since %s in version %s.", 'wp-security-by-made-it'), $data['title'], $filename, $data['knowSince'], $data['fixedIn']);
         }
 
         return $longMsg;
@@ -53,8 +65,8 @@ class WP_MadeIT_Security_Issue
 
     public function createIssue($filename_md5, $filename, $oldMd5, $newMd5, $type, $severity, $data = [])
     {
-        $shortMsg = $this->generateShortMessage($type, $filename);
-        $longMsg = $this->generateLongMessage($type, $filename);
+        $shortMsg = $this->generateShortMessage($type, $filename, $data);
+        $longMsg = $this->generateLongMessage($type, $filename, $data);
 
         $issues = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND filename_md5 = %s', $filename_md5);
         if (!isset($issues['aantal']) || (isset($issues['aantal']) && $issues['aantal'] == 0)) {

@@ -7,12 +7,16 @@ class WP_MadeIT_Security_LoadFiles
     private $settings;
     private $db;
     private $initRun = true;
+    private $issues;
 
     public function __construct($settings, $db)
     {
         $this->settings = $settings;
         $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
+        
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Issue.php';
+        $this->issues = new WP_MadeIT_Security_Issue($db);
     }
 
     public static function log_error($num, $str, $file, $line, $context = null)
@@ -138,6 +142,7 @@ class WP_MadeIT_Security_LoadFiles
             }
 
             $run = false;
+            //Clear database, prepare for run
             if (($bigRun || !$run) && $result['step'] == 0) {
                 //Set database
                 $run = true;
@@ -162,8 +167,8 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //Load core files
             if (($bigRun || !$run) && $result['step'] == 1) {
-                //Load core files
                 $run = true;
 
                 $this->loadCore();
@@ -184,8 +189,9 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //Load plugin files
             if (($bigRun || !$run) && $result['step'] == 2) {
-                //Do plugin scan
+                $run = true;
                 $this->loadPlugin();
 
                 $result['step'] = 3;
@@ -204,8 +210,9 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //Load theme files
             if (($bigRun || !$run) && $result['step'] == 3) {
-                //Do theme scan
+                $run = true;
                 $this->loadTheme();
 
                 $result['step'] = 4;
@@ -224,9 +231,9 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //Loading files completed
             if (($bigRun || !$run) && $result['step'] == 4) {
-                //Scan completed
-
+                $run = true;
                 //Change changed files
                 if (!$scanForBackup) {
                     $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_changed = %s, file_checked = null, changed = 1 WHERE old_md5 <> new_md5 AND old_md5 IS NOT NULL', time());
@@ -255,8 +262,9 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //Scan core
             if (($bigRun || !$run) && $result['step'] == 5) {
-                //Scan core
+                $run = true;
                 $count = 1;
                 while ($count > 0 && $count != null) {
                     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core_Scan.php';
@@ -275,7 +283,6 @@ class WP_MadeIT_Security_LoadFiles
                     $count = isset($count['aantal']) ? $count['aantal'] : 0;
                 }
                 $result['step'] = 6;
-                $result['result']['core']['completed'] = true;
                 $result['last_com_time'] = time();
 
                 $errorFiles = 0;
@@ -298,8 +305,9 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //plugin core
             if (($bigRun || !$run) && $result['step'] == 6) {
-                //plugin core
+                $run = true;
                 $count = 1;
                 while ($count > 0 && $count != null) {
                     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin_Scan.php';
@@ -347,7 +355,6 @@ class WP_MadeIT_Security_LoadFiles
                 }
 
                 $result['step'] = 7;
-                $result['result']['plugin']['completed'] = true;
                 $result['result']['plugin']['success'] = $errorFiles == 0;
                 $result['last_com_time'] = time();
                 set_site_transient('madeit_security_scan', $result);
@@ -363,8 +370,9 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //theme core
             if (($bigRun || !$run) && $result['step'] == 7) {
-                //theme core
+                $run = true;
                 $count = 1;
                 while ($count > 0 && $count != null) {
                     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme_Scan.php';
@@ -413,7 +421,6 @@ class WP_MadeIT_Security_LoadFiles
                     $errorFiles = $count['aantal'];
                 }
                 $result['step'] = 8;
-                $result['result']['theme']['completed'] = true;
                 $result['result']['theme']['success'] = $errorFiles == 0;
                 $result['last_com_time'] = time();
                 set_site_transient('madeit_security_scan', $result);
@@ -429,10 +436,103 @@ class WP_MadeIT_Security_LoadFiles
                 }
             }
 
+            //Core WPVulndb
             if (($bigRun || !$run) && $result['step'] == 8) {
-                //Scan other
-
+                $run = true;
+                try {
+                    $coreResult = $this->scanCoreWPVulndb();
+                }
+                catch(\Exception $e) {
+                    $result['step'] = 12;
+                    $result['result']['content']['completed'] = true;
+                    $result['done'] = true;
+                    $result['last_com_time'] = time();
+                    set_site_transient('madeit_security_scan', $result);
+                    return;
+                }
+                
                 $result['step'] = 9;
+                $result['result']['core']['completed'] = true;
+                $result['result']['core']['success'] = $result['result']['core']['success'] && $coreResult;
+                $result['last_com_time'] = time();
+                set_site_transient('madeit_security_scan', $result);
+                
+                if ($this->checkToStop()) {
+                    return;
+                }
+                if (!$bigRun) {
+                    //start next job
+                    $this->startNextJob();
+
+                    return;
+                }
+            }
+            
+            //Plugin WPVulndb
+            if (($bigRun || !$run) && $result['step'] == 9) {
+                $run = true;
+                try {
+                    $pluginResult = $this->scanPluginWPVulndb();
+                }
+                catch(\Exception $e) {
+                    $result['step'] = 12;
+                    $result['result']['content']['completed'] = true;
+                    $result['done'] = true;
+                    $result['last_com_time'] = time();
+                    set_site_transient('madeit_security_scan', $result);
+                    return;
+                }
+                $result['step'] = 10;
+                $result['result']['plugin']['completed'] = true;
+                $result['result']['plugin']['success'] = $result['result']['plugin']['success'] && $pluginResult;
+                $result['last_com_time'] = time();
+                set_site_transient('madeit_security_scan', $result);
+                
+                if ($this->checkToStop()) {
+                    return;
+                }
+                if (!$bigRun) {
+                    //start next job
+                    $this->startNextJob();
+
+                    return;
+                }
+            }
+            
+            //Theme WPVulndb
+            if (($bigRun || !$run) && $result['step'] == 10) {
+                $run = true;
+                try {
+                    $pluginResult = $this->scanThemeWPVulndb();
+                }
+                catch(\Exception $e) {
+                    $result['step'] = 12;
+                    $result['result']['content']['completed'] = true;
+                    $result['done'] = true;
+                    $result['last_com_time'] = time();
+                    set_site_transient('madeit_security_scan', $result);
+                    return;
+                }  
+                $result['step'] = 11;
+                $result['result']['theme']['completed'] = true;
+                $result['result']['theme']['success'] = $result['result']['theme']['success'];
+                $result['last_com_time'] = time();
+                set_site_transient('madeit_security_scan', $result);
+                
+                if ($this->checkToStop()) {
+                    return;
+                }
+                if (!$bigRun) {
+                    //start next job
+                    $this->startNextJob();
+
+                    return;
+                }
+            }
+            
+            //finish
+            if (($bigRun || !$run) && $result['step'] == 11) {
+                $result['step'] = 12;
                 $result['result']['content']['completed'] = true;
                 $result['done'] = true;
                 $result['last_com_time'] = time();
@@ -483,6 +583,164 @@ class WP_MadeIT_Security_LoadFiles
         }
 
         $dir->close();
+    }
+    
+    private function scanCoreWPVulndb()
+    {
+        if (!class_exists('WP_MadeIT_Security_Core')) {
+            include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
+        }
+        $core = new WP_MadeIT_Security_Core();
+        $wpVersion = $core->getCurrentWPVersion();
+        $wpVulndbVersion = preg_replace('/[^0-9]+/', '', $wpVersion);
+        $wpVulndbJson = $this->loadUrl("https://wpvulndb.com/api/v2/wordpresses/" . $wpVulndbVersion);
+        if($wpVulndbJson === false) {
+            return true;
+        }
+        $wpVulndbData = json_decode($wpVulndbJson, true);
+        $issuesFound = 0;
+        foreach($wpVulndbData as $majorVersion => $data) {
+            $releaseDate = $data['release_date'];
+            $changeLog = $data['changelog_url'];
+            $vulnerabilities = $data['vulnerabilities'];
+            if(count($vulnerabilities) > 0) {
+                foreach($vulnerabilities as $vulnerabilityData) {
+                    $issuesFound++;
+                    
+                    $title = $vulnerabilityData['title'];
+                    $type = $vulnerabilityData['vuln_type'];
+                    $fixedIn = $vulnerabilityData['fixed_in'];
+                    $knowSince = date('Y-m-d', strtotime($vulnerabilityData['published_date']));
+                    $references = $vulnerabilityData['references'];
+                        
+                    $this->issues->createIssue(md5("wp_core" . $title), "WP Core", null, null, 7, 5, [
+                        'title' => $title,
+                        'type' => $type,
+                        'fixedIn' => $fixedIn,
+                        'knowSince' => $knowSince,
+                        'current_version' => $wpVersion,
+                        'references' => $references,
+                    ]);
+                }
+            }
+        }
+        return $issuesFound == 0;
+    }
+    
+    private function scanPluginWPVulndb()
+    {
+        if (!class_exists('WP_MadeIT_Security_Plugin')) {
+            include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
+        }
+        $plugin = new WP_MadeIT_Security_Plugin();
+        $plugins = $plugin->getPlugins();
+        $issuesFound = 0;
+        foreach($plugins as $plugin) {
+            if($plugin['repository'] != "WORDPRESS.ORG" || $plugin['slug'] == null) {
+                continue;
+            }
+            $version = $plugin['version'];
+            $wpVulndbJson = $this->loadUrl("https://wpvulndb.com/api/v2/plugins/" . $plugin['slug']);
+            if($wpVulndbJson === false) {
+                continue;
+            }
+            $wpVulndbData = json_decode($wpVulndbJson, true);
+            
+            foreach($wpVulndbData as $slug => $data) {
+                $latestVersion = $data['latest_version'];
+                $last_updated = $data['last_updated'];
+                $popular = $data['popular'];
+                
+                $vulnerabilities = $data['vulnerabilities'];
+                foreach($vulnerabilities as $vulnerabilityData) {
+                    
+                    $title = $vulnerabilityData['title'];
+                    $type = $vulnerabilityData['vuln_type'];
+                    $fixedIn = $vulnerabilityData['fixed_in'];
+                    $knowSince = date('Y-m-d', strtotime($vulnerabilityData['published_date']));
+                    $references = $vulnerabilityData['references'];
+                    
+                    if(version_compare($version, $fixedIn, '<')) {
+                        $issuesFound++;
+                        
+                        $this->issues->createIssue(md5($slug . $title), $slug, null, null, 8, 5, [
+                            'title' => $title,
+                            'type' => $type,
+                            'fixedIn' => $fixedIn,
+                            'knowSince' => $knowSince,
+                            'current_version' => $version,
+                            'references' => $references,
+                        ]);
+                    }
+                }
+            }
+        }
+        return $issuesFound == 0;
+    }
+    
+    private function scanThemeWPVulndb()
+    {
+        if (!class_exists('WP_MadeIT_Security_Theme')) {
+            include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme.php';
+        }
+        $theme = new WP_MadeIT_Security_Theme();
+        $themes = $theme->getThemes();
+        $issuesFound = 0;
+        foreach($themes as $theme) {
+            if($theme['slug'] == null) {
+                continue;
+            }
+            $version = $theme['version'];
+            $wpVulndbJson = $this->loadUrl("https://wpvulndb.com/api/v2/themes/" . $theme['slug']);
+            if($wpVulndbJson === false) {
+                continue;
+            }
+            $wpVulndbData = json_decode($wpVulndbJson, true);
+            
+            foreach($wpVulndbData as $slug => $data) {
+                $latestVersion = $data['latest_version'];
+                $last_updated = $data['last_updated'];
+                $popular = $data['popular'];
+                
+                $vulnerabilities = $data['vulnerabilities'];
+                foreach($vulnerabilities as $vulnerabilityData) {
+                    
+                    $title = $vulnerabilityData['title'];
+                    $type = $vulnerabilityData['vuln_type'];
+                    $fixedIn = $vulnerabilityData['fixed_in'];
+                    $knowSince = date('Y-m-d', strtotime($vulnerabilityData['published_date']));
+                    $references = $vulnerabilityData['references'];
+                    
+                    if(version_compare($version, $fixedIn, '<')) {
+                        $issuesFound++;
+                        
+                        $this->issues->createIssue(md5($slug . $title), $slug, null, null, 9, 5, [
+                            'title' => $title,
+                            'type' => $type,
+                            'fixedIn' => $fixedIn,
+                            'knowSince' => $knowSince,
+                            'current_version' => $version,
+                            'references' => $references,
+                        ]);
+                    }
+                }
+            }
+        }
+        return $issuesFound == 0;
+    }
+    
+    private function loadUrl($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        if(curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
+            $output = false;
+        }
+        curl_close($ch);
+        return $output;
     }
 
     private function loadCore()

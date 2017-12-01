@@ -364,15 +364,24 @@ if (!defined('ABSPATH')) {
                     }
                     if(response.result.step >= 6) {
                         $('.scan-step').html('<?php echo __('Scan plugin files', 'wp-security-by-made-it'); ?>');
-                        $('#repo-scan-core-status').html(response.result.result.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                     }
                     if(response.result.step >= 7) {
                         $('.scan-step').html('<?php echo __('Scan theme files', 'wp-security-by-made-it'); ?>');
-                        $('#repo-scan-plugins-status').html(response.result.result.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
                     }
                     if(response.result.step >= 8) {
-                        $('.scan-step').html('<?php echo __('Complete scan', 'wp-security-by-made-it'); ?>');
+                        $('.scan-step').html('<?php echo __('Scan core Vulnerabilities', 'wp-security-by-made-it'); ?>');
+                        $('#repo-scan-core-status').html(response.result.result.core.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
+                    }
+                    if(response.result.step >= 9) {
+                        $('.scan-step').html('<?php echo __('Scan plugin Vulnerabilities', 'wp-security-by-made-it'); ?>');
+                        $('#repo-scan-plugins-status').html(response.result.result.plugin.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
+                    }
+                    if(response.result.step >= 10) {
+                        $('.scan-step').html('<?php echo __('Scan theme Vulnerabilities', 'wp-security-by-made-it'); ?>');
                         $('#repo-scan-themes-status').html(response.result.result.theme.success ? '<i class="fa fa-check madeit-text-success"></i>' : '<i class="fa fa-times madeit-text-danger"></i>');
+                    }
+                    if(response.result.step >= 11) {
+                        $('.scan-step').html('<?php echo __('Complete scan', 'wp-security-by-made-it'); ?>');
                     }
                     if(interval == null) {
                         $('.stop-repo-scan').show();
