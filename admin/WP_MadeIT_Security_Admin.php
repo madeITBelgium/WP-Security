@@ -809,7 +809,8 @@ class WP_MadeIT_Security_Admin
                 }
             }
         }
-        $out = ob_get_clean();
+        $out = ob_get_contents();
+        ob_end_clean();
 
         //Update themes
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme.php';
@@ -833,7 +834,9 @@ class WP_MadeIT_Security_Admin
                 }
             }
         }
-        $out = ob_get_clean();
+        $out = ob_get_contents();
+        ob_end_clean();
+
 
         //update core
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
@@ -858,7 +861,8 @@ class WP_MadeIT_Security_Admin
                 $themesErrors[] = $result;
             }
         }
-        $out = ob_get_clean();
+        $out = ob_get_contents();
+        ob_end_clean();
 
         do_action('madeit_security_check_plugin_updates');
 
