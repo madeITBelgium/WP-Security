@@ -22,6 +22,7 @@ This plugin relies on a third party service to functionally work. This plugin au
 * Backup your Website.
 * Made I.T. WordPress Maintenance integration.
 * Security Alerts
+* Vulnerability scanning thanks to wpvulndb.com
 
 
 = Comming Features =
@@ -56,6 +57,9 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 
 == Changelog ==
+= 1.5 =
+* VulnDB integration
+
 = 1.4 =
 * Rescan all files before taking backup
 * Added a function to update all plugins, themes and core at once.
