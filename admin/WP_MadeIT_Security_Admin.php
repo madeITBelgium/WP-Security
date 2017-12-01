@@ -837,7 +837,6 @@ class WP_MadeIT_Security_Admin
         $out = ob_get_contents();
         ob_end_clean();
 
-
         //update core
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core_Installer.php';
