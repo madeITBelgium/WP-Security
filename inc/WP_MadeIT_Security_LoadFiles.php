@@ -50,7 +50,7 @@ class WP_MadeIT_Security_LoadFiles
         if ($deactivate) {
             wp_clear_scheduled_hook('madeit_security_loadfiles');
         } else {
-            if (!wp_next_scheduled('madeit_security_loadfiles')) {
+            if (false === wp_next_scheduled('madeit_security_loadfiles')) {
                 wp_schedule_event(time(), 'daily', 'madeit_security_loadfiles');
             }
         }
@@ -556,7 +556,10 @@ class WP_MadeIT_Security_LoadFiles
 
     public function startNextJob()
     {
-        wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
+        if (false === wp_next_scheduled('madeit_security_loadfiles_run'))
+        {
+            wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
+        }
     }
 
     private function fileLoadDirectory($directory, $type, $pluginTheme = null)
@@ -880,12 +883,7 @@ class WP_MadeIT_Security_LoadFiles
     {
         add_action('madeit_security_loadfiles', [$this, 'startLoadingFiles']);
         add_action('madeit_security_loadfiles_run', [$this, 'loadfiles']);
-
-        if (!wp_next_scheduled('madeit_security_scan_repo')) {
-            wp_clear_scheduled_hook('madeit_security_scan_repo');
-            wp_schedule_event(time(), 'daily', 'madeit_security_loadfiles');
-        }
-
+        
         if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['theme'] || $this->defaultSettings['scan']['repo']['plugin']) {
             $this->activateSechduler(false);
         } else {
