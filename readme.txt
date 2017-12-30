@@ -59,6 +59,7 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 == Changelog ==
 = 1.5 =
 * VulnDB integration
+* Delete cronjobs
 
 = 1.4 =
 * Rescan all files before taking backup
