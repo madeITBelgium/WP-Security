@@ -16,7 +16,7 @@ class WP_MadeIT_Security_Plugin
 
         return $count;
     }
-    
+
     public function getActivePlugins()
     {
         $plugins = $this->getPlugins(false);
@@ -26,6 +26,7 @@ class WP_MadeIT_Security_Plugin
                 $activePlugins[] = $plugin;
             }
         }
+
         return $activePlugins;
     }
 
