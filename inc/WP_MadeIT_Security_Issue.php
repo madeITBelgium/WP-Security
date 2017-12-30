@@ -32,6 +32,10 @@ class WP_MadeIT_Security_Issue
             $shortMsg = sprintf(__('The plugin %s is vulnerable', 'wp-security-by-made-it'), $filename);
         } elseif ($type == 9) {
             $shortMsg = sprintf(__('The theme %s is vulnerable', 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 10) {
+            $shortMsg = sprintf(__('The plugin %s is activated', 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 11) {
+            $shortMsg = sprintf(__('The plugin %s is deactivated', 'wp-security-by-made-it'), $filename);
         }
 
         return $shortMsg;
@@ -58,6 +62,10 @@ class WP_MadeIT_Security_Issue
             $longMsg = sprintf(__("A vulnerability '%s' is found in the '%s' plugin since %s in version %s.", 'wp-security-by-made-it'), $data['title'], $filename, $data['knowSince'], $data['fixedIn']);
         } elseif ($type == 9) {
             $longMsg = sprintf(__("A vulnerability '%s' is found in the '%s' theme since %s in version %s.", 'wp-security-by-made-it'), $data['title'], $filename, $data['knowSince'], $data['fixedIn']);
+        } elseif ($type == 10) {
+            $longMsg = sprintf(__("The plugin '%s' is activated.", 'wp-security-by-made-it'), $filename);
+        } elseif ($type == 11) {
+            $longMsg = sprintf(__("The plugin '%s' is deactivated.", 'wp-security-by-made-it'), $filename);
         }
 
         return $longMsg;

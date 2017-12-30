@@ -5,12 +5,15 @@ class WP_MadeIT_Security_Update
     private $defaultSettings = [];
     private $settings;
     private $db;
+    private $issues;
 
     public function __construct($settings, $db)
     {
         $this->settings = $settings;
         $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Issue.php';
+        $this->issues = new WP_MadeIT_Security_Issue($db);
     }
 
     public function activateSechduler($deactivate)
@@ -86,7 +89,16 @@ class WP_MadeIT_Security_Update
             'theme'  => $themesC->countUpdates(false),
             'plugin' => $pluginsC->countUpdates(false),
             'time'   => time(),
+            'active_plugin' => $pluginsC->getActivePlugins(),
         ];
+        
+        $oldData = get_site_transient('madeit_security_update_scan');
+        if(isset($oldData['active_plugin']))
+        {
+            $this->checkActivePlugins($oldData['active_plugin'], $updateCounts['active_plugin']);
+        }
+        
+        
         set_site_transient('madeit_security_update_scan', $updateCounts);
 
         $result = [
@@ -97,6 +109,52 @@ class WP_MadeIT_Security_Update
         ];
 
         return $result;
+    }
+    
+    private function checkActivePlugins($oldActivePlugins, $newActivePlugins)
+    {
+        $disabledPlugins = [];
+        $activatedPlugins = [];
+        
+        $pluginNames = [];
+        foreach($oldActivePlugins as $plugin)
+        {
+            $pluginNames[] = $plugin['plugin'];
+        }
+        
+        foreach($newActivePlugins as $plugin)
+        {
+            if(in_array($plugin['plugin'], $pluginNames))
+            {
+                //Plugin is still active
+                $key = array_search($plugin['plugin'], $pluginNames);
+                unset($pluginNames[$key]);
+                unset($oldActivePlugins[$key]);
+            }
+            else
+            {
+                //Plugin is activated
+                $this->notifyActivatedPlugin($plugin);
+            }
+        }
+        
+        //pluginNames plugins are deactivated
+        if(count($oldActivePlugins) > 0) {
+            foreach($oldActivePlugins as $plugin)
+            {
+                $this->notifyDeactivatedPlugin($plugin);
+            }
+        }
+    }
+    
+    private function notifyActivatedPlugin($plugin)
+    {
+        $this->issues->createIssue(md5($plugin['name'] . time()), $plugin['name'], null, null, 10, 3);
+    }
+    
+    private function notifyDeactivatedPlugin($plugin)
+    {
+        $this->issues->createIssue(md5($plugin['name'] . time()), $plugin['name'], null, null, 11, 4);
     }
 
     public function addHooks()

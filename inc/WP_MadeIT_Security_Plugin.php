@@ -16,6 +16,18 @@ class WP_MadeIT_Security_Plugin
 
         return $count;
     }
+    
+    public function getActivePlugins()
+    {
+        $plugins = $this->getPlugins(false);
+        $activePlugins = [];
+        foreach ($plugins as $plugin) {
+            if ($plugin['active']) {
+                $activePlugins[] = $plugin;
+            }
+        }
+        return $activePlugins;
+    }
 
     public function getPlugins($checkUpdateOnline = false)
     {
