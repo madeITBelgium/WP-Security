@@ -188,25 +188,24 @@ function checkDBSettings($dbhost, $dbname, $dbuser, $dbpass)
 
 if ($cli) {
     //Run restore
-    $shortopts  = "";
-    $longopts  = array(
-        "dbhost:",
-        "dbname:",
-        "dbuser:",
-        "dbpass:",
-        "url:",
-    );
+    $shortopts = '';
+    $longopts = [
+        'dbhost:',
+        'dbname:',
+        'dbuser:',
+        'dbpass:',
+        'url:',
+    ];
     $options = getopt($shortopts, $longopts);
-    
-    
+
     $databaseHost = $options['dbhost'];
     $database = $options['dbname'];
     $databaseUser = $options['dbuser'];
     $databasePassword = $options['dbpass'];
     $newUrl = $options['url'];
-    
+
     checkDBSettings($databaseHost, $database, $databaseUser, $databasePassword);
-    
+
     installWordPress();
     installContent();
     setUpDBSettings($databaseHost, $database, $databaseUser, $databasePassword, $newUrl);
@@ -214,8 +213,8 @@ if ($cli) {
     unlink('database.sql');
     unlink('restore-config.php');
     unlink('restore-index.php');
-    
-    echo "Restore done!";
+
+    echo 'Restore done!';
     exit;
 }
 
