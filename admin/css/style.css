@@ -251,3 +251,13 @@ ul.config-error li a.external {
 .welcome-panel-close {
 	z-index: 2;
 }
+
+
+
+.hover-delete td a {
+	display: none;
+}
+
+.hover-delete tr:hover td a {
+	display: inline;
+}

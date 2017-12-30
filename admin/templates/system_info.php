@@ -120,26 +120,32 @@ if (!defined('ABSPATH')) {
                                 <table class="madeit-table">
                                     <thead>
                                         <tr>
-                                            <th><?php echo __('Job', 'wp-security-by-made-it'); ?></th>
-                                            <th><?php echo __('Schedule', 'wp-security-by-made-it'); ?></th>
-                                            <th><?php echo __('Next run (Server time)', 'wp-security-by-made-it'); ?></th>
+                                            <th><?php _e('Job', 'wp-security-by-made-it'); ?></th>
+                                            <th><?php _e('Schedule', 'wp-security-by-made-it'); ?></th>
+                                            <th><?php _e('Next run (Server time)', 'wp-security-by-made-it'); ?></th>
+                                            <th><?php _e('Delete', 'wp-security-by-made-it'); ?></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php foreach ($cronjobs as $time => $crons) {
-                                    foreach ($crons as $cron => $settings) {
-                                        $schedule = '';
-                                        foreach ($settings as $setting) {
-                                            $schedule = $setting['schedule'];
-                                        } ?>
-                                                <tr>
-                                                    <td><?php echo esc_html($cron); ?></td>
-                                                    <td><?php echo esc_html($schedule); ?></td>
-                                                    <td><?php echo date('Y-m-d H:i:s', $time); ?></td>
-                                                </tr>
-                                            <?php
-                                    }
-                                } ?>
+                                    <tbody class="hover-delete">
+                                        <?php
+                                        $deleteNonce = wp_create_nonce('madeit_security_delete_cron');
+                                        foreach ($cronjobs as $time => $crons) {
+                                            foreach ($crons as $cron => $settings) {
+                                                $schedule = '';
+                                                foreach ($settings as $key => $setting) {
+                                                    $schedule = $setting['schedule'];
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo esc_html($cron); ?></td>
+                                                        <td><?php echo esc_html($schedule); ?></td>
+                                                        <td><?php echo date('Y-m-d H:i:s', $time); ?></td>
+                                                        <td><a href="?page=madeit_security_systeminfo&delete_cron=<?php echo $deleteNonce; ?>&hook=<?php echo esc_html($cron); ?>&timestamp=<?php echo esc_html($time); ?>&key=<?php echo esc_html($key); ?>"><?php _e('Delete', 'wp-security-by-made-it'); ?></a></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            }
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
