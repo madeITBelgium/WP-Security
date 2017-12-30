@@ -16,7 +16,7 @@ class WP_MadeIT_Security_Theme
 
         return $count;
     }
-    
+
     public function getActiveThemes()
     {
         $themes = $this->getAllThemes(false);
@@ -26,6 +26,7 @@ class WP_MadeIT_Security_Theme
                 $activeThemes[] = $theme;
             }
         }
+
         return $activeThemes;
     }
 
