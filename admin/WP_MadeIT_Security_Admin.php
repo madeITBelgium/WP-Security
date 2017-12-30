@@ -246,20 +246,18 @@ class WP_MadeIT_Security_Admin
     public function show_server_info()
     {
         $cronjobs = _get_cron_array();
-        if(isset($_GET['delete_cron']) && wp_verify_nonce($_GET['delete_cron'], 'madeit_security_delete_cron'))
-        {
+        if (isset($_GET['delete_cron']) && wp_verify_nonce($_GET['delete_cron'], 'madeit_security_delete_cron')) {
             $timestamp = sanitize_text_field($_GET['timestamp']);
             $hook = sanitize_text_field($_GET['hook']);
             $key = sanitize_text_field($_GET['key']);
-            if(isset($cronjobs[$timestamp][$hook][$key]['args'])) {
+            if (isset($cronjobs[$timestamp][$hook][$key]['args'])) {
                 $args = $cronjobs[$timestamp][$hook][$key]['args'];
-                wp_unschedule_event($timestamp, $hook, $args);
-                ?>
+                wp_unschedule_event($timestamp, $hook, $args); ?>
                 <div class="updated"><p><strong><?php _e('The cronjob is succesfully unscheduled.', 'wp-security-by-made-it'); ?></strong></p></div>
                 <?php
             }
         }
-        
+
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
 
         $systeminfo = new WP_MadeIT_Security_SystemInfo();
