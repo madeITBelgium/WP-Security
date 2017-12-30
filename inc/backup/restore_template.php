@@ -78,19 +78,19 @@ function installContent()
     }
 }
 
-function setUpDBSettings()
+function setUpDBSettings($p_db_host, $p_db_name, $p_db_user, $p_db_pass, $p_url)
 {
-    global $db_database, $db_username, $db_password, $db_host, $_POST, $path;
-    $urls = generateUrls();
+    global $db_database, $db_username, $db_password, $db_host, $path;
+    $urls = generateUrls($p_url);
 
     //Create wp-config
     $wp_config = file_get_contents('wp-config.php');
     $wp_config = str_replace($path, __DIR__, $wp_config); //Replace path
     $wp_config = str_replace(backSlash($path), backSlash(__DIR__), $wp_config); //Replace path
-    $wp_config = str_replace("define('DB_NAME', '".$db_database."');", "define('DB_NAME', '".$_POST['db_name']."');", $wp_config); //database name
-    $wp_config = str_replace("define('DB_USER', '".$db_username."');", "define('DB_USER', '".$_POST['db_user']."');", $wp_config); //database user
-    $wp_config = str_replace("define('DB_HOST', '".$db_password."');", "define('DB_PASSWORD', '".$_POST['db_pass']."');", $wp_config); //database pass
-    $wp_config = str_replace("define('DB_USER', '".$db_host."');", "define('DB_USER', '".$_POST['db_host']."');", $wp_config); //database host
+    $wp_config = str_replace("define('DB_NAME', '".$db_database."');", "define('DB_NAME', '".$p_db_name."');", $wp_config); //database name
+    $wp_config = str_replace("define('DB_USER', '".$db_username."');", "define('DB_USER', '".$p_db_user."');", $wp_config); //database user
+    $wp_config = str_replace("define('DB_HOST', '".$db_password."');", "define('DB_PASSWORD', '".$p_db_pass."');", $wp_config); //database pass
+    $wp_config = str_replace("define('DB_USER', '".$db_host."');", "define('DB_USER', '".$p_db_host."');", $wp_config); //database host
 
     foreach ($urls as $oldUrl => $newUrl) {
         $wp_config = str_replace($oldUrl, $newUrl, $wp_config);
@@ -105,7 +105,7 @@ function setUpDBSettings()
         replace_file($oldUrl, $newUrl, 'database.sql'); //Replace path
     }
 
-    exec('mysql --user="'.$_POST['db_user'].'" --password="'.$_POST['db_pass'].'" --host="'.$_POST['db_host'].'" '.$_POST['db_name'].' < database.sql');
+    exec('mysql --user="'.$p_db_user.'" --password="'.$p_db_pass.'" --host="'.$p_db_host.'" '.$p_db_name.' < database.sql');
     /*
     $link = @mysqli_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
 
@@ -141,9 +141,9 @@ function replace_file($string, $replace, $path)
     return rename($temp, $path);
 }
 
-function generateUrls()
+function generateUrls($p_url)
 {
-    global $url, $_POST;
+    global $url;
     //Old URL
     $oldUrl = [];
     $oldUrlData = parse_url($url);
@@ -155,18 +155,18 @@ function generateUrls()
     }
 
     return [
-        'http://'.$oldUrlData['host'].$addPath             => $_POST['url'],
-        'https://'.$oldUrlData['host'].$addPath            => $_POST['url'],
-        rtrim('http://'.$oldUrlData['host'], '/').'/'    => rtrim($_POST['url'], '/').'/',
-        rtrim('https://'.$oldUrlData['host'], '/').'/'   => rtrim($_POST['url'], '/').'/',
-        'http://'.$oldUrlData['host']                      => $_POST['url'],
-        'https://'.$oldUrlData['host']                     => $_POST['url'],
-        backSlash('http://'.$oldUrlData['host'].$addPath)  => backSlash($_POST['url']),
-        backSlash('https://'.$oldUrlData['host'].$addPath) => backSlash($_POST['url']),
-        backSlash(rtrim('http://'.$oldUrlData['host'], '/').'/')    => backSlash(rtrim($_POST['url'], '/').'/'),
-        backSlash(rtrim('https://'.$oldUrlData['host'], '/').'/')   => backSlash(rtrim($_POST['url'], '/').'/'),
-        backSlash('http://'.$oldUrlData['host'])           => backSlash($_POST['url']),
-        backSlash('https://'.$oldUrlData['host'])          => backSlash($_POST['url']),
+        'http://'.$oldUrlData['host'].$addPath             => $p_url,
+        'https://'.$oldUrlData['host'].$addPath            => $p_url,
+        rtrim('http://'.$oldUrlData['host'], '/').'/'    => rtrim($p_url, '/').'/',
+        rtrim('https://'.$oldUrlData['host'], '/').'/'   => rtrim($p_url, '/').'/',
+        'http://'.$oldUrlData['host']                      => $p_url,
+        'https://'.$oldUrlData['host']                     => $p_url,
+        backSlash('http://'.$oldUrlData['host'].$addPath)  => backSlash($p_url),
+        backSlash('https://'.$oldUrlData['host'].$addPath) => backSlash($p_url),
+        backSlash(rtrim('http://'.$oldUrlData['host'], '/').'/')    => backSlash(rtrim($p_url, '/').'/'),
+        backSlash(rtrim('https://'.$oldUrlData['host'], '/').'/')   => backSlash(rtrim($p_url, '/').'/'),
+        backSlash('http://'.$oldUrlData['host'])           => backSlash($p_url),
+        backSlash('https://'.$oldUrlData['host'])          => backSlash($p_url),
     ];
 }
 
@@ -188,7 +188,34 @@ function checkDBSettings($dbhost, $dbname, $dbuser, $dbpass)
 
 if ($cli) {
     //Run restore
+    $shortopts  = "";
+    $longopts  = array(
+        "dbhost:",
+        "dbname:",
+        "dbuser:",
+        "dbpass:",
+        "url:",
+    );
+    $options = getopt($shortopts, $longopts);
+    
+    
+    $databaseHost = $options['dbhost'];
+    $database = $options['dbname'];
+    $databaseUser = $options['dbuser'];
+    $databasePassword = $options['dbpass'];
+    $newUrl = $options['url'];
+    
+    checkDBSettings($databaseHost, $database, $databaseUser, $databasePassword);
+    
+    installWordPress();
+    installContent();
+    setUpDBSettings($databaseHost, $database, $databaseUser, $databasePassword, $newUrl);
 
+    unlink('database.sql');
+    unlink('restore-config.php');
+    unlink('restore-index.php');
+    
+    echo "Restore done!";
     exit;
 }
 
@@ -196,7 +223,7 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
     echo json_encode(['success' => true]);
     exit;
 } elseif (isset($_POST['step']) && $_POST['step'] == 2) { //Test DB connection
-    checkDBSettings($_POST['database_host'], $_POST['database'], $_POST['database_user'], $_POST['database_password']);
+    checkDBSettings($_POST['database_host'], $_POST['database'], $_POST['database_user'], $_POST['database_password'], $_POST['url']);
     exit;
 } elseif (isset($_POST['step']) && $_POST['step'] == 3) { //Install WP
     if ($_POST['url'] == $url) {
@@ -215,7 +242,7 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
         installContent();
     }
     if (isset($_POST['partion']) && $_POST['partion'] == 3 || !isset($_POST['partion'])) {
-        setUpDBSettings();
+        setUpDBSettings($_POST['db_host'], $_POST['db_name'], $_POST['db_user'], $_POST['db_pass']);
 
         unlink('database.sql');
         unlink('restore-config.php');
