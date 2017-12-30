@@ -26,9 +26,8 @@ This plugin relies on a third party service to functionally work. This plugin au
 
 
 = Comming Features =
-* Restore backup through CLI [1.5]
-* Better issue management [1.5]
-* Check for malware and viruses. [1.5]
+* Better issue management [1.6]
+* Check for malware and viruses. [1.6]
 * Login prevention
 * Firewall [1.6]
 
@@ -60,6 +59,7 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 = 1.5 =
 * VulnDB integration
 * Delete cronjobs
+* Backup CLI POC
 
 = 1.4 =
 * Rescan all files before taking backup
