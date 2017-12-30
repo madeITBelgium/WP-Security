@@ -133,8 +133,7 @@ if (!defined('ABSPATH')) {
                                             foreach ($crons as $cron => $settings) {
                                                 $schedule = '';
                                                 foreach ($settings as $key => $setting) {
-                                                    $schedule = $setting['schedule'];
-                                                    ?>
+                                                    $schedule = $setting['schedule']; ?>
                                                     <tr>
                                                         <td><?php echo esc_html($cron); ?></td>
                                                         <td><?php echo esc_html($schedule); ?></td>
@@ -176,7 +175,7 @@ if (!defined('ABSPATH')) {
                                     </thead>
                                     <tbody>
                                         <?php foreach ($fileStats as $status => $stats) {
-                                    ?>
+                                            ?>
                                             <tr>
                                                 <th><?php echo esc_html($status); ?></th>
                                                 <td><?php echo esc_html($stats['core']); ?></td>
@@ -185,7 +184,7 @@ if (!defined('ABSPATH')) {
                                                 <td><?php echo esc_html($stats['other']); ?></td>
                                             </tr>
                                         <?php
-                                } ?>
+                                        } ?>
                                     </tbody>
                                 </table>
                             </div>
