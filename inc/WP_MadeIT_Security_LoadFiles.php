@@ -556,8 +556,7 @@ class WP_MadeIT_Security_LoadFiles
 
     public function startNextJob()
     {
-        if (false === wp_next_scheduled('madeit_security_loadfiles_run'))
-        {
+        if (false === wp_next_scheduled('madeit_security_loadfiles_run')) {
             wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
         }
     }
@@ -883,7 +882,7 @@ class WP_MadeIT_Security_LoadFiles
     {
         add_action('madeit_security_loadfiles', [$this, 'startLoadingFiles']);
         add_action('madeit_security_loadfiles_run', [$this, 'loadfiles']);
-        
+
         if ($this->defaultSettings['scan']['repo']['core'] || $this->defaultSettings['scan']['repo']['theme'] || $this->defaultSettings['scan']['repo']['plugin']) {
             $this->activateSechduler(false);
         } else {
