@@ -222,7 +222,7 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
     echo json_encode(['success' => true]);
     exit;
 } elseif (isset($_POST['step']) && $_POST['step'] == 2) { //Test DB connection
-    checkDBSettings($_POST['database_host'], $_POST['database'], $_POST['database_user'], $_POST['database_password'], $_POST['url']);
+    checkDBSettings($_POST['database_host'], $_POST['database'], $_POST['database_user'], $_POST['database_password']);
     exit;
 } elseif (isset($_POST['step']) && $_POST['step'] == 3) { //Install WP
     if ($_POST['url'] == $url) {
@@ -241,7 +241,7 @@ if (isset($_POST['step']) && $_POST['step'] == 1) {
         installContent();
     }
     if (isset($_POST['partion']) && $_POST['partion'] == 3 || !isset($_POST['partion'])) {
-        setUpDBSettings($_POST['db_host'], $_POST['db_name'], $_POST['db_user'], $_POST['db_pass']);
+        setUpDBSettings($_POST['db_host'], $_POST['db_name'], $_POST['db_user'], $_POST['db_pass'], $_POST['url']);
 
         unlink('database.sql');
         unlink('restore-config.php');
