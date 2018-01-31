@@ -191,12 +191,14 @@ if (!defined('ABSPATH')) {
                                             <?php foreach ($issues as $issue) {
         ?>
                                                 <?php $pluginData = $this->getPluginInfoByFile($issue['filename_md5']); ?>
-                                                <div class="madeit-row" style="border-bottom: 1px solid #DDD; margin-left: 15px; margin-right: 15px; padding-bottom: 10px">
+                                                <div class="madeit-row" id="issue-<?php echo $issue['id']; ?>" style="border-bottom: 1px solid #DDD; margin-left: 15px; margin-right: 15px; padding-bottom: 10px; <?php if($issue['issue_readed'] == null) { ?> background-color: #fdf6c8;<?php } ?>">
                                                     <h3 style="margin-bottom: 0; width: 100%; padding-left: 10px"><?php echo esc_html($issue['shortMsg']); ?> <small><?php echo sprintf(__('Issue created at %s', 'wp-security-by-made-it'), date('Y-m-d H:i:s', $issue['issue_created'])); ?></small></h3>
                                                     <div class="madeit-col">
                                                         <?php echo esc_html(__('Severity:', 'wp-security-by-made-it')); ?> <?php echo esc_html($this->getSeverityTxt($issue['severity'])); ?><br>
                                                         <?php echo esc_html(__('Plugin:', 'wp-security-by-made-it')); ?> <?php echo esc_html($pluginData['plugin_data']['name']); ?><br>
                                                         <?php echo esc_html($issue['longMsg']); ?><br>
+                                                        <?php echo esc_html($issue['type']); ?><br>
+                                                        <input type="checkbox" name="issue_id[]" class="issues" value="<?php echo $issue['id']; ?>" style="margin-right: 20px;" data-issue-type="<?php echo esc_html($issue['type']); ?>">
                                                         <?php if (in_array($issue['type'], [2, 3])) {
             ?>
                                                             <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Compare file', 'wp-security-by-made-it')); ?></a>
@@ -212,15 +214,22 @@ if (!defined('ABSPATH')) {
                                                             <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&delete=<?php echo $nonceDelete; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Delete file', 'wp-security-by-made-it')); ?></a>
                                                         <?php
         } ?>
-                                                        <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a>
-                                                        <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
+                                                        <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a> */ ?>
+                                                        <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>" class="ignore-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
                                                         <?php if($issue['issue_readed'] == null) { ?>
-                                                            <a href="admin.php?page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
-                                                        <?php } */ ?>
+                                                            <a href="admin.php?page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>" class="read-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             <?php
     } ?>
+                                        </div>
+                                    </div>
+                                    <div class="madeit-row" style="margin-top: 50px; margin-left: 15px; margin-right: 15px;">
+                                        <div class="madeit-col">
+                                            <input type="checkbox" value="" class="check_all"><?php _e('Select all', 'wp-security-by-made-it'); ?> 
+                                            <a href="" class="issues-ignore-selected"><?php _e('Ignore issues', 'wp-security-by-made-it'); ?></a>
+                                            <a href="" class="issues-read-selected"><?php _e('Read issues', 'wp-security-by-made-it'); ?></a>
                                         </div>
                                     </div>
                                 </div>
@@ -267,6 +276,46 @@ if (!defined('ABSPATH')) {
                 $('#repo-scan-plugins-status').html('<?php  echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>');
                 $('#repo-scan-themes-status').html('<?php  echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>');
             }, 'json');
+        });
+        
+        $('.issues-ignore-selected').click(function(e) {
+            e.preventDefault();
+            $('.issues').each(function() {
+                if($(this).is(':checked')) {
+                    var id = $(this).val();
+                    $.get('admin.php?page=madeit_security_scan&ignore-issue=' + id, function(data) {
+                        $('#issue-' + id).remove();
+                    });
+                }
+            });
+        });
+        
+        $('.ignore-issue').click(function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            $.get('admin.php?page=madeit_security_scan&ignore-issue=' + id, function(data) {
+                $('#issue-' + id).remove();
+            });
+        });
+        
+        $('.issues-read-selected').click(function(e) {
+            e.preventDefault();
+            $('.issues').each(function() {
+                if($(this).is(':checked')) {
+                    var id = $(this).val();
+                    $.get('admin.php?page=madeit_security_scan&read-issue=' + id, function(data) {
+                        $('#issue-' + id).css('background', 'none');
+                    });
+                }
+            });
+        });
+        
+        $('.read-issue').click(function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            $.get('admin.php?page=madeit_security_scan&read-issue=' + id, function(data) {
+                $('#issue-' + id).css('background', 'none');
+            });
         });
         
         function checkScanResult() {
@@ -346,7 +395,17 @@ if (!defined('ABSPATH')) {
                 }
             }, 'json');
         }
+        
         checkScanResult();
+        
+        $('.check_all').change(function(e) {
+            if($(this).is(':checked')) {
+                $('.issues').prop('checked', true);
+            }
+            else {
+                $('.issues').prop('checked', false);
+            }
+        });
         
         $('.do-update-scan').click(function(e) {
             e.preventDefault();
@@ -366,8 +425,6 @@ if (!defined('ABSPATH')) {
                 $('#update-scan-themes-status').html(response.theme);
             }, 'json');
         });
-        
-        
         
         $('.do-update-all').click(function(e) {
             e.preventDefault();
