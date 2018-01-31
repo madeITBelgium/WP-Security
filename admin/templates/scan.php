@@ -191,7 +191,9 @@ if (!defined('ABSPATH')) {
                                             <?php foreach ($issues as $issue) {
         ?>
                                                 <?php $pluginData = $this->getPluginInfoByFile($issue['filename_md5']); ?>
-                                                <div class="madeit-row" id="issue-<?php echo $issue['id']; ?>" style="border-bottom: 1px solid #DDD; margin-left: 15px; margin-right: 15px; padding-bottom: 10px; <?php if($issue['issue_readed'] == null) { ?> background-color: #fdf6c8;<?php } ?>">
+                                                <div class="madeit-row" id="issue-<?php echo $issue['id']; ?>" style="border-bottom: 1px solid #DDD; margin-left: 15px; margin-right: 15px; padding-bottom: 10px; <?php if ($issue['issue_readed'] == null) {
+            ?> background-color: #fdf6c8;<?php
+        } ?>">
                                                     <h3 style="margin-bottom: 0; width: 100%; padding-left: 10px"><?php echo esc_html($issue['shortMsg']); ?> <small><?php echo sprintf(__('Issue created at %s', 'wp-security-by-made-it'), date('Y-m-d H:i:s', $issue['issue_created'])); ?></small></h3>
                                                     <div class="madeit-col">
                                                         <?php echo esc_html(__('Severity:', 'wp-security-by-made-it')); ?> <?php echo esc_html($this->getSeverityTxt($issue['severity'])); ?><br>
@@ -216,9 +218,11 @@ if (!defined('ABSPATH')) {
         } ?>
                                                         <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a> */ ?>
                                                         <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>" class="ignore-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
-                                                        <?php if($issue['issue_readed'] == null) { ?>
+                                                        <?php if ($issue['issue_readed'] == null) {
+            ?>
                                                             <a href="admin.php?page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>" class="read-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
-                                                        <?php } ?>
+                                                        <?php
+        } ?>
                                                     </div>
                                                 </div>
                                             <?php
