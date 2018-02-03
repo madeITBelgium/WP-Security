@@ -204,46 +204,44 @@ class WP_MadeIT_Security_SystemInfo
 
         return round($bytes, 2).' '.$units[$i];
     }
-    
+
     public function getHandler()
     {
         return php_sapi_name();
     }
-    
-    public function getServerType() 
+
+    public function getServerType()
     {
-        if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false)
-        {
+        if (stripos($_SERVER['SERVER_SOFTWARE'], 'apache') !== false) {
             return 'apache';
         }
-        if (stripos($_SERVER['SERVER_SOFTWARE'], 'litespeed') !== false || $sapi == 'litespeed')
-        {
+        if (stripos($_SERVER['SERVER_SOFTWARE'], 'litespeed') !== false || $sapi == 'litespeed') {
             return 'litespeed';
         }
-        if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false)
-        {
+        if (strpos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false) {
             return 'nginx';
         }
-        if (strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'ExpressionDevServer') !== false)
-        {
+        if (strpos($_SERVER['SERVER_SOFTWARE'], 'Microsoft-IIS') !== false || strpos($_SERVER['SERVER_SOFTWARE'], 'ExpressionDevServer') !== false) {
             return 'iis';
         }
     }
-    
-    
+
     /**
      * @return bool
      */
-    public function isApacheModPHP() {
+    public function isApacheModPHP()
+    {
         return $this->getServerType() == 'apache' && function_exists('apache_get_modules');
     }
 
     /**
      * Not sure if this can be implemented at the PHP level.
+     *
      * @return bool
      */
-    public function isApacheSuPHP() {
-        return $this->getServerType() == 'apache' && 
+    public function isApacheSuPHP()
+    {
+        return $this->getServerType() == 'apache' &&
             $this->isCGI() &&
             function_exists('posix_getuid') &&
             getmyuid() === posix_getuid();
@@ -252,14 +250,16 @@ class WP_MadeIT_Security_SystemInfo
     /**
      * @return bool
      */
-    public function isCGI() {
+    public function isCGI()
+    {
         return !$this->isFastCGI() && stripos($this->getHandler(), 'cgi') !== false;
     }
 
     /**
      * @return bool
      */
-    public function isFastCGI() {
+    public function isFastCGI()
+    {
         return stripos($this->getHandler(), 'fastcgi') !== false || stripos($this->getHandler(), 'fpm-fcgi') !== false;
     }
 }

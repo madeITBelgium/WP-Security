@@ -31,7 +31,7 @@ if (!defined('MADEIT_SECURITY_API')) {
     define('MADEIT_SECURITY_API', false); // Is API active
 }
 if (!defined('MADEIT_SECURITY_SUBDIRECTORY_INSTALL')) {
-    define('MADEIT_SECURITY_SUBDIRECTORY_INSTALL', class_exists('WP_MadeIT_Security_Init') && !in_array(realpath(dirname(__FILE__) . '/inc/firewall/WP_MadeIT_Security_Init.php'), get_included_files()));
+    define('MADEIT_SECURITY_SUBDIRECTORY_INSTALL', class_exists('WP_MadeIT_Security_Init') && !in_array(realpath(dirname(__FILE__).'/inc/firewall/WP_MadeIT_Security_Init.php'), get_included_files()));
 }
 
 function wp_security_by_madeit_load_plugin_textdomain()
