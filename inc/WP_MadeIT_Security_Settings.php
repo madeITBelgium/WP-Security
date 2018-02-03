@@ -52,6 +52,9 @@ class WP_MadeIT_Security_Settings
                     'bucket_name' => get_option('madeit_security_backup_s3_bucket_name', ''),
                 ],
             ],
+            'firewall' => [
+                'enabled' => get_option('madeit_security_firewall_enabled', false),
+            ],
         ];
 
         return $this->defaultSettings;
@@ -119,6 +122,9 @@ class WP_MadeIT_Security_Settings
         if (get_option('madeit_security_backup_files', null) === null) {
             update_option('madeit_security_backup_files', 500);
         }
+        if (get_option('madeit_security_firewall_enabled', null) === null) {
+            update_option('madeit_security_firewall_enabled', false);
+        }
     }
 
     private function fetchNewApiKey()
@@ -184,5 +190,10 @@ class WP_MadeIT_Security_Settings
         $json = json_decode($content, true);
 
         return $json;
+    }
+
+    public function updateSetting($key, $value)
+    {
+        update_option($key, $value);
     }
 }

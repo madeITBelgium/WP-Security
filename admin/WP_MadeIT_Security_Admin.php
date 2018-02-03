@@ -42,6 +42,7 @@ class WP_MadeIT_Security_Admin
         add_menu_page(__('Security & Maintenance', 'wp-security-by-made-it'), __('Security', 'wp-security-by-made-it').' '.$new, 'manage_options', 'madeit_security', [$this, 'show_dashboard'], MADEIT_SECURITY_URL.'assets/icon-16x16.png', 9999);
         add_submenu_page('madeit_security', __('Security Dashboard', 'wp-security-by-made-it'), __('Dashboard', 'wp-security-by-made-it'), 'manage_options', 'madeit_security', [$this, 'show_dashboard']);
         add_submenu_page('madeit_security', __('Security Scan', 'wp-security-by-made-it'), __('Scan', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_scan', [$this, 'show_scan']);
+        add_submenu_page('madeit_security', __('Security Firewall', 'wp-security-by-made-it'), __('Firewall', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_firewall', [$this, 'show_firewall']);
         add_submenu_page('madeit_security', __('Security Settings', 'wp-security-by-made-it'), __('Settings', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_settings', [$this, 'settings']);
 
         add_submenu_page(null, __('Server info', 'wp-security-by-made-it'), __('Server info', 'wp-security-by-made-it'), 'manage_options', 'madeit_security_systeminfo', [$this, 'show_server_info']);
@@ -49,19 +50,19 @@ class WP_MadeIT_Security_Admin
 
     public function initStyle()
     {
-        wp_register_style('madeit-security-admin-style', MADEIT_SECURITY_URL.'/admin/css/style.css', [], null);
+        wp_register_style('madeit-security-admin-style', MADEIT_SECURITY_URL.'/admin/css/style.css', [], '1.0');
         wp_enqueue_style('madeit-security-admin-style');
 
-        wp_register_style('madeit-tabs', MADEIT_SECURITY_URL.'/admin/css/tabs.css', [], null);
+        wp_register_style('madeit-tabs', MADEIT_SECURITY_URL.'/admin/css/tabs.css', [], '1.0');
         wp_enqueue_style('madeit-tabs');
-        wp_register_style('madeit-grid', MADEIT_SECURITY_URL.'/admin/css/grid.css', [], null);
+        wp_register_style('madeit-grid', MADEIT_SECURITY_URL.'/admin/css/grid.css', [], '1.1');
         wp_enqueue_style('madeit-grid');
-        wp_register_style('madeit-card', MADEIT_SECURITY_URL.'/admin/css/card.css', [], null);
+        wp_register_style('madeit-card', MADEIT_SECURITY_URL.'/admin/css/card.css', [], '1.0');
         wp_enqueue_style('madeit-card');
-        wp_register_style('madeit-table', MADEIT_SECURITY_URL.'/admin/css/table.css', [], null);
+        wp_register_style('madeit-table', MADEIT_SECURITY_URL.'/admin/css/table.css', [], '1.0');
         wp_enqueue_style('madeit-table');
 
-        wp_register_style('font-awesome', MADEIT_SECURITY_URL.'/admin/css/font-awesome.min.css', [], null);
+        wp_register_style('font-awesome', MADEIT_SECURITY_URL.'/admin/css/font-awesome.min.css', [], '4.7');
         wp_enqueue_style('font-awesome');
 
         wp_enqueue_script('jquery-ui-core');
@@ -130,7 +131,9 @@ class WP_MadeIT_Security_Admin
                 }
 
                 if (!empty($destination)) {
-                    if (@ftp_nlist($conn_id, $destination) === false) {
+                    $list = @ftp_nlist($conn_id, $destination);
+                    error_log(print_r($list, true));
+                    if ($list === false) {
                         if (@ftp_mkdir($conn_id, $dir) === false) {
                             return __('Cannot create destination directory on FTP server.', 'wp-security-by-made-it');
                         }
@@ -380,6 +383,13 @@ class WP_MadeIT_Security_Admin
             $nonceDelete = wp_create_nonce('madeit_security_delete_file');
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
         }
+    }
+    
+    public function show_firewall()
+    {
+        require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Firewall.php';
+        $firewall = new WP_MadeIT_Security_Firewall($this->settings, $this->db);
+        $firewall->show();
     }
 
     private function getSeverityTxt($severity)
@@ -938,5 +948,12 @@ class WP_MadeIT_Security_Admin
         add_action('wp_ajax_madeit_security_backup_stop', [$this, 'stopBackup']);
         add_action('wp_ajax_madeit_security_check_scan', [$this, 'checkFileScan']);
         add_action('wp_ajax_madeit_security_do_update', [$this, 'doUpdate']);
+        
+        if(isset($_GET['page']) && $_GET['page'] == "madeit_security_firewall")
+        {
+            require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Firewall.php';
+            $firewall = new WP_MadeIT_Security_Firewall($this->settings, $this->db);
+            $firewall->addHooks();
+        }
     }
 }

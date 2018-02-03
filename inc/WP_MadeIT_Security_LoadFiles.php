@@ -122,6 +122,7 @@ class WP_MadeIT_Security_LoadFiles
 
     public function loadfiles()
     {
+        set_time_limit($this->timeLimit);
         ini_set('max_execution_time', $this->timeLimit);
         //Fetch all errors
         register_shutdown_function('WP_MadeIT_Security_LoadFiles::check_for_fatal');
