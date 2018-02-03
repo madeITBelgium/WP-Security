@@ -78,15 +78,18 @@ function madeit_security_fix_crons()
     $deleteCrons = array();
     foreach ($cronjobs as $time => $crons) {
         foreach ($crons as $cron => $settings) {
-            foreach($settings as $key => $setting) {
-                if(isset($cronCount[$cron])) {
-                    $cronCount[$cron]++;
-                    if($cronCount[$cron] > 1) {
-                        $deleteCrons[] = array('time' => $time, 'hook' => $cron, 'key' => $key, 'args' => $setting['args']);
+            if(strpos($cron, 'madeit_security') !== false)
+            {
+                foreach($settings as $key => $setting) {
+                    if(isset($cronCount[$cron])) {
+                        $cronCount[$cron]++;
+                        if($cronCount[$cron] > 1) {
+                            $deleteCrons[] = array('time' => $time, 'hook' => $cron, 'key' => $key, 'args' => $setting['args']);
+                        }
                     }
-                }
-                else {
-                    $cronCount[$cron] = 1;
+                    else {
+                        $cronCount[$cron] = 1;
+                    }
                 }
             }
         }
