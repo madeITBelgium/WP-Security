@@ -22,7 +22,7 @@ class WP_MadeIT_Security_Backup
         if ($deactivate) {
             wp_clear_scheduled_hook('madeit_security_backup');
         } else {
-            if (!wp_next_scheduled('madeit_security_backup')) {
+            if (wp_next_scheduled('madeit_security_backup') === false) {
                 wp_schedule_event(time(), 'weekly', 'madeit_security_backup');
             }
         }

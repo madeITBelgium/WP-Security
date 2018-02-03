@@ -60,6 +60,7 @@ if (defined('DOING_CRON')) {
         $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings, $wp_madeit_security_db);
         $wp_madeit_security_backup->addHooks();
     }
+    madeit_security_fix_crons();
 } else {
     require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Admin.php';
     $wp_madeit_security_admin = new WP_MadeIT_Security_Admin($wp_madeit_security_settings, $wp_madeit_security_db);
@@ -69,3 +70,29 @@ if (defined('DOING_CRON')) {
 require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
 $wp_madeit_security_plugin = new WP_MadeIT_Security_Update($wp_madeit_security_settings, $wp_madeit_security_db);
 $wp_madeit_security_plugin->addHooks();
+
+function madeit_security_fix_crons()
+{
+    $cronjobs = _get_cron_array();
+    $cronCount = array();
+    $deleteCrons = array();
+    foreach ($cronjobs as $time => $crons) {
+        foreach ($crons as $cron => $settings) {
+            foreach($settings as $key => $setting) {
+                if(isset($cronCount[$cron])) {
+                    $cronCount[$cron]++;
+                    if($cronCount[$cron] > 1) {
+                        $deleteCrons[] = array('time' => $time, 'hook' => $cron, 'key' => $key, 'args' => $setting['args']);
+                    }
+                }
+                else {
+                    $cronCount[$cron] = 1;
+                }
+            }
+        }
+    }
+    
+    foreach($deleteCrons as $cron) {
+        wp_unschedule_event($cron['time'], $cron['hook'], $cron['args']);
+    }
+}
