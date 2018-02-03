@@ -74,25 +74,24 @@ $wp_madeit_security_plugin->addHooks();
 function madeit_security_fix_crons()
 {
     $cronjobs = _get_cron_array();
-    $cronCount = array();
-    $deleteCrons = array();
+    $cronCount = [];
+    $deleteCrons = [];
     foreach ($cronjobs as $time => $crons) {
         foreach ($crons as $cron => $settings) {
-            foreach($settings as $key => $setting) {
-                if(isset($cronCount[$cron])) {
+            foreach ($settings as $key => $setting) {
+                if (isset($cronCount[$cron])) {
                     $cronCount[$cron]++;
-                    if($cronCount[$cron] > 1) {
-                        $deleteCrons[] = array('time' => $time, 'hook' => $cron, 'key' => $key, 'args' => $setting['args']);
+                    if ($cronCount[$cron] > 1) {
+                        $deleteCrons[] = ['time' => $time, 'hook' => $cron, 'key' => $key, 'args' => $setting['args']];
                     }
-                }
-                else {
+                } else {
                     $cronCount[$cron] = 1;
                 }
             }
         }
     }
-    
-    foreach($deleteCrons as $cron) {
+
+    foreach ($deleteCrons as $cron) {
         wp_unschedule_event($cron['time'], $cron['hook'], $cron['args']);
     }
 }
