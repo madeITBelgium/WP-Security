@@ -384,7 +384,7 @@ class WP_MadeIT_Security_Admin
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
         }
     }
-    
+
     public function show_firewall()
     {
         require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Firewall.php';
@@ -948,9 +948,8 @@ class WP_MadeIT_Security_Admin
         add_action('wp_ajax_madeit_security_backup_stop', [$this, 'stopBackup']);
         add_action('wp_ajax_madeit_security_check_scan', [$this, 'checkFileScan']);
         add_action('wp_ajax_madeit_security_do_update', [$this, 'doUpdate']);
-        
-        if(isset($_GET['page']) && $_GET['page'] == "madeit_security_firewall")
-        {
+
+        if (isset($_GET['page']) && $_GET['page'] == 'madeit_security_firewall') {
             require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Firewall.php';
             $firewall = new WP_MadeIT_Security_Firewall($this->settings, $this->db);
             $firewall->addHooks();

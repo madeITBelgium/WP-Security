@@ -13,17 +13,15 @@ if (!defined('ABSPATH')) {
 ?>
 <div class="wrap">
     <?php if (isset($successUninstall) && $successUninstall === true) {
-        ?>
+    ?>
         <div class="updated"><p><strong><?php echo __('The firewall is succesfully disabled.', 'wp-security-by-made-it'); ?></strong></p></div>
         <?php
-    }
-    elseif (isset($successUninstall) && $successUninstall === false) {
-        $url = esc_url(add_query_arg(array(
+} elseif (isset($successUninstall) && $successUninstall === false) {
+        $url = esc_url(add_query_arg([
             'action'              => 'uninstallFirewall',
             'firewallnonce'       => $nonceUninstall,
-            'remove_ini' => 1,
-        ), $adminURL));
-        ?>
+            'remove_ini'          => 1,
+        ], $adminURL)); ?>
         <div class="updated"><p><strong><?php printf(__('The firewall is succesfully disabled. To remove the firewall files please click here: <a href="%s">Finish firewall uninstall</a>.', 'wp-security-by-made-it'), $url); ?></strong></p></div>
         <?php
     }
@@ -60,7 +58,7 @@ if (!defined('ABSPATH')) {
                                     <?php echo esc_html(__('No recent data found.', 'wp-security-by-made-it')); ?>
                                 </h6>
                                 <?php if ($this->defaultSettings['firewall']['enabled']) {
-    ?>
+        ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
                                             <div class="madeit-col madeit-text-center">
@@ -90,7 +88,7 @@ if (!defined('ABSPATH')) {
                                         </div>
                                     </div>
                                 <?php
-} else {
+    } else {
         ?>
                                     <div class="card-text">
                                         <div class="madeit-row">
@@ -178,7 +176,8 @@ if (!defined('ABSPATH')) {
                 <!-- END Firewall stats -->
             </div>
         </div>
-        <?php if ($this->defaultSettings['firewall']['enabled']) { ?>
+        <?php if ($this->defaultSettings['firewall']['enabled']) {
+        ?>
             <div class="madeit-row" style="margin-top: 20px;">
                 <div class="madeit-col">
                     <div class="madeit-card">
@@ -197,12 +196,11 @@ if (!defined('ABSPATH')) {
                                         <div class="madeit-row">
                                             <div class="madeit-col">
                                                 <?php
-                                                $url = esc_url(add_query_arg(array(
+                                                $url = esc_url(add_query_arg([
                                                     'action'              => 'uninstallFirewall',
                                                     'firewallnonce'       => $nonceUninstall,
-                                                    'remove_ini' => 1,
-                                                ), $adminURL));
-                                                ?>
+                                                    'remove_ini'          => 1,
+                                                ], $adminURL)); ?>
                                                 <a href="<?php echo $url; ?>"><?php _e('Disable the firewall', 'wp-security-by-made-it'); ?></a>
                                             </div>
                                         </div>
@@ -213,8 +211,8 @@ if (!defined('ABSPATH')) {
                     </div>
                 </div>
             </div>
-        <?php }
-        else {
+        <?php
+    } else {
             ?>
             <div class="madeit-row" style="margin-top: 20px;">
                 <div class="madeit-col">
@@ -229,51 +227,54 @@ if (!defined('ABSPATH')) {
                                         <div class="madeit-row">
                                             <div class="madeit-col">
                                                 <?php
-                                                if (empty($currentAutoPrependFile)) { ?>
+                                                if (empty($currentAutoPrependFile)) {
+                                                    ?>
                                                     <p><?php _e('To make your site as secure as possible, the Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs.', 'wp-security-by-made-it'); ?></p>
-                                                <?php } else { ?>
+                                                <?php
+                                                } else {
+                                                    ?>
                                                     <p><?php _e('To make your site as secure as possible, the Firewall is designed to run via a PHP setting called <code>auto_prepend_file</code>, which ensures it runs before any potentially vulnerable code runs. This PHP setting is currently in use, and is including this file:', 'wp-security-by-made-it'); ?></p>
                                                     <pre><code><?php echo esc_html($currentAutoPrependFile); ?></code></pre>
                                                     <p><?php _e('If you don\'t recognize this file, please <a href="https://wordpress.org/support/plugin/wp-security-by-made-it" target="_blank" rel="noopener noreferrer">contact us on the WordPress support forums</a> before proceeding.', 'wp-security-by-made-it'); ?></p>
                                                     <p><?php _e('You can proceed with the installation and we will include this from within our <code>security-firewall.php</code> file which should maintain compatibility with your site.', 'wp-security-by-made-it'); ?></p>
-                                                <?php } ?>
+                                                <?php
+                                                } ?>
                                                 <div class="madeit-alert-warning"><strong><?php _e('NOTE:', 'wp-security-by-made-it'); ?></strong> <?php _e('If you have separate WordPress installations with WP Security installed within a subdirectory of this site, it is recommended that you perform the Firewall installation procedure on those sites before this one.', 'wp-security-by-made-it'); ?></div>
                                                 <?php
-                                                if(!$optionFound)
-                                                {
+                                                if (!$optionFound) {
                                                     ?>
                                                     <p><?php _e('We couldn\'t detect the web server\'s configuration.', 'wp-security-by-made-it'); ?></p>
                                                     <?php
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                     ?>
                                                     <p><?php printf(__('We\'ve preselected your server configuration based on our tests.: %s', 'wp-security-by-made-it'), $optionName); ?></p>
-                                                    <?php if($option == 'nginx') { ?>
+                                                    <?php if ($option == 'nginx') {
+                                                        ?>
                                                         <div class="madeit-alert-warning"><?php printf(__('Part of the Firewall configuration procedure for NGINX depends on creating a <code>%s</code> file in the root of your WordPress installation. This file can contain sensitive information and public access to it should be restricted. We have <a href="%s">instructions on our documentation site</a> on what directives to put in your nginx.conf to fix this.', 'wp-security-by-made-it'), esc_html(ini_get('user_ini.filename')), 'https://www.madeit.be'); ?></div>
-                                                    <?php } ?>
+                                                    <?php
+                                                    } ?>
                                                 
                                                     <p><?php _e('Please download a backup of the following files before we make the necessary changes:', 'wp-security-by-made-it'); ?></p>
                                                     <ul class="madeit-firewall-backup-files">
                                                         <?php
                                                         foreach ($backupFiles as $index => $backup) {
-                                                            echo '<li><a class="madeit-btn madeit-btn-outline-primary" data-backup-index="' . $index . '" href="' .
-                                                            esc_url(add_query_arg(array(
+                                                            echo '<li><a class="madeit-btn madeit-btn-outline-primary" data-backup-index="'.$index.'" href="'.
+                                                            esc_url(add_query_arg([
                                                                 'action'              => 'downloadConfigBackup',
                                                                 'downloadBackup'      => 1,
                                                                 'backupIndex'         => $index,
                                                                 'serverConfiguration' => $option,
                                                                 'firewallnonce'       => $nonceInstall,
-                                                                ), $adminURL)) . '">' . sprintf(__('Download %s', 'wp-security-by-made-it'), esc_html(basename($backup))) . '</a></li>';
-                                                        }
-                                                        ?>
+                                                                ], $adminURL)).'">'.sprintf(__('Download %s', 'wp-security-by-made-it'), esc_html(basename($backup))).'</a></li>';
+                                                        } ?>
                                                     </ul><br>
-                                                    <a class="madeit-btn madeit-btn-outline-primary install-firewall" style="display: none;" href="<?php echo esc_url(add_query_arg(array(
+                                                    <a class="madeit-btn madeit-btn-outline-primary install-firewall" style="display: none;" href="<?php echo esc_url(add_query_arg([
                                                                 'action'              => 'installFirewall',
                                                                 'serverConfiguration' => $option,
                                                                 'firewallnonce'       => $nonceInstall,
-                                                                ), $adminURL)); ?>"><?php _e('Enable Firewall', 'wp-security-by-made-it'); ?></a>
-                                            <?php } ?>
+                                                                ], $adminURL)); ?>"><?php _e('Enable Firewall', 'wp-security-by-made-it'); ?></a>
+                                            <?php
+                                                } ?>
                                                 
                                             </div>
                                         </div>
@@ -284,7 +285,8 @@ if (!defined('ABSPATH')) {
                     </div>
                 </div>
             </div>
-        <?php } ?>
+        <?php
+        } ?>
     </div>
 </div>
 
