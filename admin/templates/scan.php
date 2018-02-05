@@ -199,7 +199,6 @@ if (!defined('ABSPATH')) {
                                                         <?php echo esc_html(__('Severity:', 'wp-security-by-made-it')); ?> <?php echo esc_html($this->getSeverityTxt($issue['severity'])); ?><br>
                                                         <?php echo esc_html(__('Plugin:', 'wp-security-by-made-it')); ?> <?php echo esc_html($pluginData['plugin_data']['name']); ?><br>
                                                         <?php echo esc_html($issue['longMsg']); ?><br>
-                                                        <?php echo esc_html($issue['type']); ?><br>
                                                         <input type="checkbox" name="issue_id[]" class="issues" value="<?php echo $issue['id']; ?>" style="margin-right: 20px;" data-issue-type="<?php echo esc_html($issue['type']); ?>">
                                                         <?php if (in_array($issue['type'], [2, 3])) {
             ?>
@@ -218,8 +217,7 @@ if (!defined('ABSPATH')) {
         } ?>
                                                         <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a> */ ?>
                                                         <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>" class="ignore-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
-                                                        <?php if ($issue['issue_readed'] == null) {
-            ?>
+                                                        <?php if ($issue['issue_readed'] == null) { ?>
                                                             <a href="admin.php?page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>" class="read-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
                                                         <?php
         } ?>
