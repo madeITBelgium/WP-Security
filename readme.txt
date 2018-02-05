@@ -3,9 +3,9 @@ Contributors: madeit
 Donate link: http://www.madeit.be/donate/
 Tags: security, maintenance, secure, security plugin, wordpress security, maintenance plugin
 Requires at least: 4.0
-Tested up to: 4.9.1
+Tested up to: 4.9.3
 Requires PHP: 5.6
-Stable tag: 1.5.1
+Stable tag: 1.6
 License: GNU GPL v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,13 +23,13 @@ This plugin relies on a third party service to functionally work. This plugin au
 * Made I.T. WordPress Maintenance integration.
 * Security Alerts
 * Vulnerability scanning thanks to wpvulndb.com
+* Firewall (Experimental)
 
 
 = Comming Features =
-* Better issue management [1.6]
-* Check for malware and viruses. [1.6]
+* Check for malware and viruses. [1.7]
 * Login prevention
-* Firewall [1.6]
+* Firewall [1.7]
 
 
 == Installation ==
@@ -56,6 +56,11 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 
 == Changelog ==
+= 1.6 =
+* Better issue managment
+* Fix bug in restore backup
+* Fix hanging cronjobs 
+
 = 1.5 =
 * VulnDB integration
 * Delete cronjobs
