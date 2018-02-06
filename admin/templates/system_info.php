@@ -138,7 +138,10 @@ if (!defined('ABSPATH')) {
                                                         <td><?php echo esc_html($cron); ?></td>
                                                         <td><?php echo esc_html($schedule); ?></td>
                                                         <td><?php echo date('Y-m-d H:i:s', $time); ?></td>
-                                                        <td><a href="?page=madeit_security_systeminfo&delete_cron=<?php echo $deleteNonce; ?>&hook=<?php echo esc_html($cron); ?>&timestamp=<?php echo esc_html($time); ?>&key=<?php echo esc_html($key); ?>"><?php _e('Delete', 'wp-security-by-made-it'); ?></a></td>
+                                                        <td>
+                                                            <a href="?page=madeit_security_systeminfo&delete_cron=<?php echo $deleteNonce; ?>&hook=<?php echo esc_html($cron); ?>&timestamp=<?php echo esc_html($time); ?>&key=<?php echo esc_html($key); ?>"><?php _e('Delete', 'wp-security-by-made-it'); ?></a>
+                                                            <a href="?page=madeit_security_systeminfo&delete_all_cron=<?php echo $deleteNonce; ?>&hook=<?php echo esc_html($cron); ?>"><?php _e('Delete all of this', 'wp-security-by-made-it'); ?></a>
+                                                        </td>
                                                     </tr>
                                                     <?php
                                                 }

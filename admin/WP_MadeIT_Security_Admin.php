@@ -324,6 +324,9 @@ class WP_MadeIT_Security_Admin
 
     public function show_scan()
     {
+        if (isset($_GET['ignore-all'])) {
+            $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_ignored` = %s WHERE issue_fixed IS NULL AND issue_ignored IS NULL', time());
+        }
         if (isset($_GET['ignore-issue'])) {
             $id = sanitize_text_field($_GET['ignore-issue']);
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_ignored` = %s WHERE id = %s', time(), $id);
@@ -461,7 +464,7 @@ class WP_MadeIT_Security_Admin
                 // This nonce is not valid.
                 wp_die('Security check');
             } else {
-                $this->ignoreAll($plugin);
+                $this->ignoreAllByPlugin($plugin);
             }
         }
         if (isset($_GET['file']) && strlen($version) > 2) {
@@ -593,7 +596,7 @@ class WP_MadeIT_Security_Admin
                 // This nonce is not valid.
                 wp_die('Security check');
             } else {
-                $this->ignoreAll($plugin);
+                $this->ignoreAllByPlugin($plugin);
             }
         }
         if (isset($_GET['file']) && strlen($version) > 2) {
@@ -720,7 +723,7 @@ class WP_MadeIT_Security_Admin
         $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET `ignore` = 1 WHERE reason IS NOT NULL AND filename_md5 = %s AND plugin_theme = %s', $file, $plugin);
     }
 
-    private function ignoreAll($plugin)
+    private function ignoreAllByPlugin($plugin)
     {
         $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET `ignore` = 1 WHERE reason IS NOT NULL AND plugin_theme = %s', $plugin);
     }

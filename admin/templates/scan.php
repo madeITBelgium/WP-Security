@@ -232,7 +232,8 @@ if (!defined('ABSPATH')) {
                                         <div class="madeit-col">
                                             <input type="checkbox" value="" class="check_all"><?php _e('Select all', 'wp-security-by-made-it'); ?> 
                                             <a href="" class="issues-ignore-selected"><?php _e('Ignore issues', 'wp-security-by-made-it'); ?></a>
-                                            <a href="" class="issues-read-selected"><?php _e('Read issues', 'wp-security-by-made-it'); ?></a>
+                                            <a href="" class="issues-read-selected"><?php _e('Read issues', 'wp-security-by-made-it'); ?></a><br>
+                                            <a href="admin.php?page=madeit_security_scan&ignore-all=true" class="issues-ignore-all"><?php _e('Ignore All issues', 'wp-security-by-made-it'); ?></a>
                                         </div>
                                     </div>
                                 </div>

@@ -57,7 +57,7 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 == Changelog ==
 = 1.6 =
-* Better issue managment
+* Better issue management
 * Fix bug in restore backup
 * Fix hanging cronjobs 
 
@@ -65,7 +65,7 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 * VulnDB integration
 * Delete cronjobs
 * Backup CLI POC
-* Issue managment
+* Issue management
 
 = 1.4 =
 * Rescan all files before taking backup
