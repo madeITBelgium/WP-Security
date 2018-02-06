@@ -831,7 +831,7 @@ class WP_MadeIT_Security_LoadFiles
             }
         }
         $time += microtime(true);
-        error_log('Plugin loadtime 1 : ' . $time);
+        error_log('Plugin loadtime 1 : '.$time);
     }
 
     private function loadTheme()
