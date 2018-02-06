@@ -47,6 +47,7 @@ require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
 $wp_madeit_security_settings = new WP_MadeIT_Security_Settings();
 
 if (defined('DOING_CRON')) {
+    madeit_security_fix_crons();
     $settings = $wp_madeit_security_settings->loadDefaultSettings();
     $scan = $settings['scan']['repo']['core'] && $settings['scan']['repo']['theme'] && $settings['scan']['repo']['plugin'];
     if ($scan) {
@@ -60,7 +61,6 @@ if (defined('DOING_CRON')) {
         $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings, $wp_madeit_security_db);
         $wp_madeit_security_backup->addHooks();
     }
-    madeit_security_fix_crons();
 } else {
     require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Admin.php';
     $wp_madeit_security_admin = new WP_MadeIT_Security_Admin($wp_madeit_security_settings, $wp_madeit_security_db);
