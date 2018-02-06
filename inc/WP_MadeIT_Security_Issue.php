@@ -94,4 +94,9 @@ class WP_MadeIT_Security_Issue
                 $type, $severity, $shortMsg, $longMsg, json_encode($data), time(), $issue['id']);
         }
     }
+
+    public function deleteIssue($filename_md5)
+    {
+        $this->db->queryWrite('DELETE '.$this->db->prefix().'madeit_sec_issues WHERE filename_md5 = %s', $filename_md5);
+    }
 }

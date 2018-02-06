@@ -787,7 +787,7 @@ class WP_MadeIT_Security_LoadFiles
         ];
 
         while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
+            if ($file != '.' && $file != '..') {
                 if (in_array($file, $wpHeadFiles)) {
                     if ($directory.$file == WP_CONTENT_DIR) {
                         $this->fileLoadDirectory($directory.$file, 'WP_CONTENT');
@@ -816,7 +816,7 @@ class WP_MadeIT_Security_LoadFiles
         }
         $plugins = new WP_MadeIT_Security_Plugin();
         $plugins = $plugins->getPlugins(false);
-
+        $time = -microtime(true);
         foreach ($plugins as $plugin => $value) {
             $startDir = WP_PLUGIN_DIR;
             if (strpos($plugin, '/') > 0) {
@@ -830,6 +830,8 @@ class WP_MadeIT_Security_LoadFiles
                 return;
             }
         }
+        $time += microtime(true);
+        error_log('Plugin loadtime 1 : ' . $time);
     }
 
     private function loadTheme()
