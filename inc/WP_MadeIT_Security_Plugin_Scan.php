@@ -238,12 +238,12 @@ class WP_MadeIT_Security_Plugin_Scan
                 }
             }
         }
-        
-        foreach($changedFilesList as $file => $fileNameMd5) {
+
+        foreach ($changedFilesList as $file => $fileNameMd5) {
             $this->issues->deleteIssue($fileNameMd5);
         }
-        
-        foreach($deletedFileList as $file => $fileNameMd5) {
+
+        foreach ($deletedFileList as $file => $fileNameMd5) {
             $this->issues->deleteIssue($fileNameMd5);
         }
     }
