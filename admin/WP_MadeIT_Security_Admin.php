@@ -543,8 +543,12 @@ class WP_MadeIT_Security_Admin
                     } else {
                         $remoteUrl = 'https://plugins.trac.wordpress.org/browser/'.$plugin.'/tags/'.$version.'/'.$fileName.'?format=txt';
                     }
-                    $a = explode("\n", file_get_contents($localFile));
-                    $b = explode("\n", file_get_contents($remoteUrl));
+                    $localFileContent = file_get_contents($localFile);
+                    $remoteFileContent = file_get_contents($remoteUrl);
+                    $localFileContent = str_replace("\r\n", "\n", $localFileContent);
+                    $remoteFileContent = str_replace("\r\n", "\n", $remoteFileContent);
+                    $a = explode("\n", $localFileContent);
+                    $b = explode("\n", $remoteFileContent);
                     if (!class_exists('DiffFiles')) {
                         require_once MADEIT_SECURITY_DIR.'/inc/compare/Diff.php';
                     }
