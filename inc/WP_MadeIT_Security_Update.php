@@ -21,7 +21,7 @@ class WP_MadeIT_Security_Update
         if ($deactivate) {
             wp_clear_scheduled_hook('madeit_security_check_plugin_updates');
         } else {
-            if (false !== wp_next_scheduled('madeit_security_check_plugin_updates')) {
+            if (false === wp_next_scheduled('madeit_security_check_plugin_updates')) {
                 wp_schedule_event(time(), 'hourly', 'madeit_security_check_plugin_updates');
             }
         }
