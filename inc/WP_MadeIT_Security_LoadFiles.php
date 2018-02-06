@@ -30,6 +30,13 @@ class WP_MadeIT_Security_LoadFiles
         $result = get_site_transient('madeit_security_scan');
         $result['stop'] = true;
         set_site_transient('madeit_security_scan', $result);
+        /*
+        if(strpos($e->getMessage(), 'Maximum execution time of') !== false) {
+            $filesAtOnce = round($this->defaultSettings['backup']['files'] - ($this->defaultSettings['backup']['files'] / 100 * 25));
+            $this->settings->updateSetting('madeit_security_backup_files', $filesAtOnce);
+            $message = date('Y-m-d H:i:s').' Type: '. $filesAtOnce;
+            file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', $message.PHP_EOL, FILE_APPEND);
+        }*/
 
         $message = date('Y-m-d H:i:s').' Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
         file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', $message.PHP_EOL, FILE_APPEND);

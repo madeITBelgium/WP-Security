@@ -619,7 +619,7 @@ class WP_MadeIT_Security_Backup
         add_action('madeit_security_backup', [$this, 'startBackup']);
         add_action('madeit_security_backup_run', [$this, 'backup']);
 
-        if ($this->defaultSettings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {
+        if ($this->defaultSettings['maintenance']['backup'] || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
             $this->activateSechduler(false);
         } else {
             $this->activateSechduler(true);
