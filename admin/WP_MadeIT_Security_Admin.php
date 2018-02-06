@@ -260,6 +260,13 @@ class WP_MadeIT_Security_Admin
                 <?php
             }
         }
+        if (isset($_GET['delete_all_cron']) && wp_verify_nonce($_GET['delete_all_cron'], 'madeit_security_delete_cron')) {
+            $hook = sanitize_text_field($_GET['hook']);
+            wp_unschedule_hook($hook);
+            ?>
+            <div class="updated"><p><strong><?php _e('The cronjob is succesfully unscheduled.', 'wp-security-by-made-it'); ?></strong></p></div>
+            <?php
+        }
 
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
 
