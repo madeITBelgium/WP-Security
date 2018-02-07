@@ -347,7 +347,7 @@ class WP_MadeIT_Security_Backup
         }
         $backup_dir = $this->settings->createLoggingDir();
         $this->backup_dir = $backup_dir;
-        
+
         return $backup_dir;
     }
 

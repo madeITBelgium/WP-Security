@@ -40,7 +40,7 @@ class WP_MadeIT_Security_LoadFiles
         }*/
 
         $message = date('Y-m-d H:i:s').' Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
-        file_put_contents($dir . '/error.log', $message.PHP_EOL, FILE_APPEND);
+        file_put_contents($dir.'/error.log', $message.PHP_EOL, FILE_APPEND);
         //header( "Location: {$config["error_page"]}" );
         exit();
     }
