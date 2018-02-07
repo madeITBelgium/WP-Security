@@ -52,11 +52,11 @@ class WP_MadeIT_Security_Settings
             ],
             'firewall' => [
                 'enabled' => get_option('madeit_security_firewall_enabled', false),
-                'login' => [
-                    'attempts_delay_time' => get_option('madeit_security_firewall_login_attempts_delay_time', 1000 * 60 * 15), //15 minutes
-                    'attempts_failed' => get_option('madeit_security_firewall_login_attempts_failed', 5),
-                    'attempts_block_time' => get_option('madeit_security_firewall_login_attempts_block_time', 1000 * 60 * 60), //1uur
-                    'attempts_block_wrong_user' => get_option('madeit_security_firewall_login_attempts_block_wrong_user', true),
+                'login'   => [
+                    'attempts_delay_time'             => get_option('madeit_security_firewall_login_attempts_delay_time', 1000 * 60 * 15), //15 minutes
+                    'attempts_failed'                 => get_option('madeit_security_firewall_login_attempts_failed', 5),
+                    'attempts_block_time'             => get_option('madeit_security_firewall_login_attempts_block_time', 1000 * 60 * 60), //1uur
+                    'attempts_block_wrong_user'       => get_option('madeit_security_firewall_login_attempts_block_wrong_user', true),
                     'attempts_block_wrong_user_count' => get_option('madeit_security_firewall_login_attempts_block_wrong_user_count', 2),
                 ],
             ],
@@ -64,7 +64,7 @@ class WP_MadeIT_Security_Settings
 
         return $this->defaultSettings;
     }
-    
+
     private function fetchNewApiKey()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
@@ -134,11 +134,11 @@ class WP_MadeIT_Security_Settings
     {
         update_option($key, $value);
     }
-    
+
     public function createLoggingDir()
     {
         $dir = WP_CONTENT_DIR.'/madeit-security-backup';
-        $madeitIps = array(
+        $madeitIps = [
             '2a02:7b40:b945:36e5::1', //s1
             '185.69.54.229', //s1
             '2a02:7b40:5eb0:ef7f::1', //s2
@@ -146,10 +146,10 @@ class WP_MadeIT_Security_Settings
             '209.250.249.53', //s3
             '2001:19f0:5001:722:5400:1ff:fe55:d9b2',
             '108.61.170.137', //s5
-        );
-        
+        ];
+
         $correctHtAccessContent = "order deny,allow\ndeny from all\n";
-        foreach($madeitIps as $ip) {
+        foreach ($madeitIps as $ip) {
             $correctHtAccessContent .= "allow from $ip\n";
         }
 
@@ -164,33 +164,34 @@ class WP_MadeIT_Security_Settings
             if (!is_file($dir.'/web.config')) {
                 file_put_contents($dir.'/web.config', "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n");
             }
-        }
-        else {
+        } else {
             $htaccessContent = file_get_contents($dir.'/.htaccess');
-            foreach($madeitIps as $ip) {
+            foreach ($madeitIps as $ip) {
                 if (strpos($htaccessContent, $ip) === false) {
                     file_put_contents($dir.'/.htaccess', $correctHtAccessContent);
+
                     return $dir;
                 }
             }
         }
+
         return $dir;
     }
-    
+
     public function saveConfigs($load = false)
     {
         $dir = $this->createLoggingDir();
-        if(count($this->defaultSettings) == 0) {
+        if (count($this->defaultSettings) == 0) {
             $this->loadDefaultSettings();
         }
-        
-        if($load && file_exists($dir . '/wp-security-config.php')) {
+
+        if ($load && file_exists($dir.'/wp-security-config.php')) {
             return;
         }
-        
+
         $content = "<?php\n";
         $content .= "//WP Security By Made I.T. Configs\n";
-        $content .= "\$wp_security_by_madeit_configs = json_decode('" . json_encode($this->defaultSettings) . "', true);\n";
-        file_put_contents($dir . '/wp-security-config.php', $content);
+        $content .= "\$wp_security_by_madeit_configs = json_decode('".json_encode($this->defaultSettings)."', true);\n";
+        file_put_contents($dir.'/wp-security-config.php', $content);
     }
 }

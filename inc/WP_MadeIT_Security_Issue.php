@@ -93,7 +93,7 @@ class WP_MadeIT_Security_Issue
 
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET type = %s, severity = %s, shortMsg = %s, longMsg = %s, data = %s WHERE id = %s',
                 $type, $severity, $shortMsg, $longMsg, json_encode($data), $issue['id']);
-            
+
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET issue_created = %s, issue_fixed = NULL, issue_ignored = NULL, issue_readed = NULL, issue_remind = NULL WHERE id = %s AND new_md5 <> %s', time(), $issue['id'], $file['new_md5']);
         }
     }
