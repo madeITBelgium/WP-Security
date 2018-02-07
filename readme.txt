@@ -24,11 +24,12 @@ This plugin relies on a third party service to functionally work. This plugin au
 * Security Alerts
 * Vulnerability scanning thanks to wpvulndb.com
 * Firewall (Experimental)
+* Login prevention (Experimental)
 
 
 = Comming Features =
 * Check for malware and viruses. [1.7]
-* Login prevention
+* Login prevention [1.7]
 * Firewall [1.7]
 
 
@@ -61,6 +62,8 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 * Improved loading files
 * Fix bug that files look equal but diff tool show differences
 * Add debug info for security jobs
+* Fixed bug that many files are flagged as changed
+* and more
 
 
 = 1.6 =
