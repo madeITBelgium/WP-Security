@@ -60,7 +60,6 @@ class WP_MadeIT_Security_Plugin_Scan
                 $changedFilesList[$fileName] = $file['filename_md5'];
                 $fileData[$fileName] = $file['new_md5'];
                 if (!$initialRun && $file['new_md5'] != $file['old_md5']) {
-                    error_log($file['new_md5'] . ' - ' . $file['old_md5']);
                     //Changed file in issue
                     $this->issues->createIssue($file['filename_md5'], $file['filename'], $file['old_md5'], $file['new_md5'], 1, 3);
                 }
