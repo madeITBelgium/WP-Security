@@ -157,7 +157,7 @@ class WP_MadeIT_Security_LoadFiles
 
                 //Update db md5 codes
                 $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET old_md5 = new_md5 WHERE old_md5 <> new_md5');
-                $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_loaded = null');
+                $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_loaded = null, changed = 0');
                 $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_checked = null, `reason` = null WHERE is_safe = 0 OR `reason` IS NOT NULL');
 
                 $result['step'] = 1;
@@ -816,7 +816,6 @@ class WP_MadeIT_Security_LoadFiles
         }
         $plugins = new WP_MadeIT_Security_Plugin();
         $plugins = $plugins->getPlugins(false);
-        $time = -microtime(true);
         foreach ($plugins as $plugin => $value) {
             $startDir = WP_PLUGIN_DIR;
             if (strpos($plugin, '/') > 0) {
@@ -830,8 +829,6 @@ class WP_MadeIT_Security_LoadFiles
                 return;
             }
         }
-        $time += microtime(true);
-        error_log('Plugin loadtime 1 : '.$time);
     }
 
     private function loadTheme()
