@@ -27,6 +27,7 @@ class WP_MadeIT_Security_LoadFiles
     public static function log_exception(Exception $e)
     {
         //Stop scan
+        $dir = $this->settings->createLoggingDir();
         $result = get_site_transient('madeit_security_scan');
         $result['stop'] = true;
         set_site_transient('madeit_security_scan', $result);
@@ -39,7 +40,7 @@ class WP_MadeIT_Security_LoadFiles
         }*/
 
         $message = date('Y-m-d H:i:s').' Type: '.get_class($e)."; Message: {$e->getMessage()}; File: {$e->getFile()}; Line: {$e->getLine()};";
-        file_put_contents(WP_CONTENT_DIR.'/madeit-security-backup/error.log', $message.PHP_EOL, FILE_APPEND);
+        file_put_contents($dir . '/error.log', $message.PHP_EOL, FILE_APPEND);
         //header( "Location: {$config["error_page"]}" );
         exit();
     }

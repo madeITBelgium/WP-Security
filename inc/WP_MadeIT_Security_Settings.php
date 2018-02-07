@@ -11,8 +11,6 @@ class WP_MadeIT_Security_Settings
 
     public function loadDefaultSettings()
     {
-        $this->generateOptions();
-
         if (trim(get_option('madeit_security_api_key', '')) == '' && MADEIT_SECURITY_API == false) {
             @define('MADEIT_SECURITY_API', true);
             update_option('madeit_security_api_key', $this->fetchNewApiKey());
@@ -59,74 +57,7 @@ class WP_MadeIT_Security_Settings
 
         return $this->defaultSettings;
     }
-
-    /**
-     * @deprecated
-     */
-    private function generateOptions()
-    {
-        if (get_option('madeit_security_scan_repo_fast', null) === null) {
-            update_option('madeit_security_scan_repo_fast', false);
-        }
-        if (get_option('madeit_security_scan_repo_core', null) === null) {
-            update_option('madeit_security_scan_repo_core', true);
-        }
-        if (get_option('madeit_security_scan_repo_theme', null) === null) {
-            update_option('madeit_security_scan_repo_theme', true);
-        }
-        if (get_option('madeit_security_scan_repo_plugin', null) === null) {
-            update_option('madeit_security_scan_repo_plugin', true);
-        }
-        if (get_option('madeit_security_scan_update', null) === null) {
-            update_option('madeit_security_scan_update', true);
-        }
-        if (get_option('madeit_security_maintenance_api_key', null) === null) {
-            update_option('madeit_security_maintenance_api_key', '');
-        }
-        if (get_option('madeit_security_api_key', null) === null) {
-            update_option('madeit_security_api_key', '');
-        }
-        if (get_option('madeit_security_maintenance_enable', null) === null) {
-            update_option('madeit_security_maintenance_enable', false);
-        }
-        if (get_option('madeit_security_maintenance_backup', null) === null) {
-            update_option('madeit_security_maintenance_backup', false);
-        }
-        if (get_option('madeit_security_backup_ftp_enable', null) === null) {
-            update_option('madeit_security_backup_ftp_enable', false);
-        }
-        if (get_option('madeit_security_backup_ftp_server', null) === null) {
-            update_option('madeit_security_backup_ftp_server', '');
-        }
-        if (get_option('madeit_security_backup_ftp_username', null) === null) {
-            update_option('madeit_security_backup_ftp_username', '');
-        }
-        if (get_option('madeit_security_backup_ftp_password', null) === null) {
-            update_option('madeit_security_backup_ftp_password', '');
-        }
-        if (get_option('madeit_security_backup_ftp_destination_directory', null) === null) {
-            update_option('madeit_security_backup_ftp_destination_directory', '');
-        }
-        if (get_option('madeit_security_backup_s3_enable', null) === null) {
-            update_option('madeit_security_backup_s3_enable', false);
-        }
-        if (get_option('madeit_security_backup_s3_access_key', null) === null) {
-            update_option('madeit_security_backup_s3_access_key', '');
-        }
-        if (get_option('madeit_security_backup_s3_secret_key', null) === null) {
-            update_option('madeit_security_backup_s3_secret_key', '');
-        }
-        if (get_option('madeit_security_backup_s3_bucket_name', null) === null) {
-            update_option('madeit_security_backup_s3_bucket_name', '');
-        }
-        if (get_option('madeit_security_backup_files', null) === null) {
-            update_option('madeit_security_backup_files', 500);
-        }
-        if (get_option('madeit_security_firewall_enabled', null) === null) {
-            update_option('madeit_security_firewall_enabled', false);
-        }
-    }
-
+    
     private function fetchNewApiKey()
     {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php';
@@ -195,5 +126,64 @@ class WP_MadeIT_Security_Settings
     public function updateSetting($key, $value)
     {
         update_option($key, $value);
+    }
+    
+    public function createLoggingDir()
+    {
+        $dir = WP_CONTENT_DIR.'/madeit-security-backup';
+        $madeitIps = array(
+            '2a02:7b40:b945:36e5::1', //s1
+            '185.69.54.229', //s1
+            '2a02:7b40:5eb0:ef7f::1', //s2
+            '94.176.239.127',
+            '209.250.249.53', //s3
+            '2001:19f0:5001:722:5400:1ff:fe55:d9b2',
+            '108.61.170.137', //s5
+        );
+        
+        $correctHtAccessContent = "order deny,allow\ndeny from all\n";
+        foreach($madeitIps as $ip) {
+            $correctHtAccessContent .= "allow from $ip\n";
+        }
+
+        // Check for the existence of the dir and prevent enumeration
+        // index.php is for a sanity check - make sure that we're not somewhere unexpected
+        if ((!is_dir($dir) || !is_file($dir.'/index.html') || !is_file($dir.'/.htaccess')) && !is_file($dir.'/index.php') || !is_file($dir.'/web.config')) {
+            mkdir($dir, 0775, true);
+            file_put_contents($dir.'/index.html', '<html><body><a href="https://www.madeit.be">WordPress backups by Security by Made I.T.</a></body></html>');
+            if (!is_file($dir.'/.htaccess')) {
+                file_put_contents($dir.'/.htaccess', $correctHtAccessContent);
+            }
+            if (!is_file($dir.'/web.config')) {
+                file_put_contents($dir.'/web.config', "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n");
+            }
+        }
+        else {
+            $htaccessContent = file_get_contents($dir.'/.htaccess');
+            foreach($madeitIps as $ip) {
+                if (strpos($htaccessContent, $ip) === false) {
+                    file_put_contents($dir.'/.htaccess', $correctHtAccessContent);
+                    return $dir;
+                }
+            }
+        }
+        return $dir;
+    }
+    
+    public function saveConfigs($load = false)
+    {
+        $dir = $this->createLoggingDir();
+        if(count($this->defaultSettings) == 0) {
+            $this->loadDefaultSettings();
+        }
+        
+        if($load && file_exists($dir . '/wp-security-config.php')) {
+            return;
+        }
+        
+        $content = "<?php\n";
+        $content .= "//WP Security By Made I.T. Configs\n";
+        $content .= "\$wp_security_by_madeit_configs = json_decode('" . json_encode($this->defaultSettings) . "', true);\n";
+        file_put_contents($dir . '/wp-security-config.php', $content);
     }
 }

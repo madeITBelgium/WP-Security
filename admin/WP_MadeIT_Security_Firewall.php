@@ -64,6 +64,9 @@ class WP_MadeIT_Security_Firewall
     private function installFirewall($optionFound, $option, $optionName, $backupFiles, $currentAutoPrependFile, $autoPrependHelper)
     {
         global $wp_filesystem;
+        
+        $dir = $this->settings->createLoggingDir();
+        
         $currentAutoPrepend = null;
         if ($optionFound) {
             ob_start();

@@ -345,28 +345,9 @@ class WP_MadeIT_Security_Backup
         if ($allow_cache && !empty($this->backup_dir)) {
             return $this->backup_dir;
         }
-
-        $backup_dir = WP_CONTENT_DIR.'/madeit-security-backup';
-
-        // Check for the existence of the dir and prevent enumeration
-        // index.php is for a sanity check - make sure that we're not somewhere unexpected
-        if ((!is_dir($backup_dir) || !is_file($backup_dir.'/index.html') || !is_file($backup_dir.'/.htaccess')) && !is_file($backup_dir.'/index.php') || !is_file($backup_dir.'/web.config')) {
-            mkdir($backup_dir, 0775, true);
-            file_put_contents($backup_dir.'/index.html', '<html><body><a href="https://www.madeit.be">WordPress backups by Security by Made I.T.</a></body></html>');
-            if (!is_file($backup_dir.'/.htaccess')) {
-                file_put_contents($backup_dir.'/.htaccess', "order deny,allow\ndeny from all\nallow from 108.61.170.137");
-            }
-            if (!is_file($backup_dir.'/web.config')) {
-                file_put_contents($backup_dir.'/web.config', "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n");
-            }
-        }
-
-        if (strpos(file_get_contents($backup_dir.'/.htaccess'), '108.61.170.137') !== false) {
-            file_put_contents($backup_dir.'/.htaccess', "order deny,allow\ndeny from all\nallow from 108.61.170.137");
-        }
-
+        $backup_dir = $this->settings->createLoggingDir();
         $this->backup_dir = $backup_dir;
-
+        
         return $backup_dir;
     }
 

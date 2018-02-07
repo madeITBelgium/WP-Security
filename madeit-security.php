@@ -71,6 +71,8 @@ require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Update.php';
 $wp_madeit_security_plugin = new WP_MadeIT_Security_Update($wp_madeit_security_settings, $wp_madeit_security_db);
 $wp_madeit_security_plugin->addHooks();
 
+$wp_madeit_security_settings->saveConfigs(true);
+
 function madeit_security_fix_crons()
 {
     $cronjobs = _get_cron_array();
