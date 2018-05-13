@@ -46,17 +46,19 @@ $wp_madeit_security_db = new WP_MadeIT_Security_DB();
 require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
 $wp_madeit_security_settings = new WP_MadeIT_Security_Settings();
 
-function wp_security_by_madeit_cron_schedules($schedules){
-    if(!isset($schedules["5min"])){
-        $schedules["5min"] = array(
-            'interval' => 5*60,
-            'display' => __('Once every 5 minutes'));
+function wp_security_by_madeit_cron_schedules($schedules)
+{
+    if (!isset($schedules['5min'])) {
+        $schedules['5min'] = [
+            'interval' => 5 * 60,
+            'display'  => __('Once every 5 minutes'), ];
     }
-    if(!isset($schedules["30min"])){
-        $schedules["30min"] = array(
-            'interval' => 30*60,
-            'display' => __('Once every 30 minutes'));
+    if (!isset($schedules['30min'])) {
+        $schedules['30min'] = [
+            'interval' => 30 * 60,
+            'display'  => __('Once every 30 minutes'), ];
     }
+
     return $schedules;
 }
 add_filter('cron_schedules', 'wp_security_by_madeit_cron_schedules');
