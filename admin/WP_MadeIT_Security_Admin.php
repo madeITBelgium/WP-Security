@@ -330,7 +330,7 @@ class WP_MadeIT_Security_Admin
 
     public function show_scan()
     {
-        $token = isset($_GET['token']) ? $_GET['token'] : "";
+        $token = isset($_GET['token']) ? $_GET['token'] : '';
         if (isset($_GET['ignore-all'])) {
             if (!wp_verify_nonce($token, 'madeit_security_scan_action')) {
                 wp_die('Security check');
@@ -854,9 +854,9 @@ class WP_MadeIT_Security_Admin
                 $pluginIsActive = $values['active'];
                 $result = $cPluginInstaller->upgradeWithPackage($plugin, $downloadUrl);
                 if ($result === true) {
-                    if($pluginIsActive) {
+                    if ($pluginIsActive) {
                         // Include the plugin.php file so you have access to the activate_plugin() function
-                        require_once(ABSPATH .'/wp-admin/includes/plugin.php');
+                        require_once ABSPATH.'/wp-admin/includes/plugin.php';
                         // Activate your plugin
                         activate_plugin($plugin);
                     }
