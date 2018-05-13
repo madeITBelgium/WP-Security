@@ -213,7 +213,7 @@ if (!defined('ABSPATH')) {
             </div>
         <?php
     } else {
-            ?>
+        ?>
             <div class="madeit-row" style="margin-top: 20px;">
                 <div class="madeit-col">
                     <div class="madeit-card">
@@ -286,7 +286,7 @@ if (!defined('ABSPATH')) {
                 </div>
             </div>
         <?php
-        } ?>
+    } ?>
     </div>
 </div>
 

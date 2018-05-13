@@ -37,17 +37,16 @@ class WP_MadeIT_Security_Init
     {
         return in_array($ip, $this->blockIp);
     }
-    
+
     public function loadBlockedIps()
     {
-        if(file_exists(MADEIT_SECURITY_LOG_PATH . '/wp-security-blocks.php')) {
+        if (file_exists(MADEIT_SECURITY_LOG_PATH.'/wp-security-blocks.php')) {
             try {
-                require_once MADEIT_SECURITY_LOG_PATH . '/wp-security-blocks.php';
-                if(isset($wp_security_by_madeit_ip_blocks) && is_array($wp_security_by_madeit_ip_blocks)) {
+                require_once MADEIT_SECURITY_LOG_PATH.'/wp-security-blocks.php';
+                if (isset($wp_security_by_madeit_ip_blocks) && is_array($wp_security_by_madeit_ip_blocks)) {
                     $this->blockIp = $wp_security_by_madeit_ip_blocks;
                 }
-            }
-            catch(Exception $e) {
+            } catch (Exception $e) {
                 error_log($e->getMessage());
             }
         }
