@@ -115,12 +115,12 @@ class WP_MadeIT_Security_LimitLogin
 
         return $ip;
     }
-    
+
     public function renderBlockFile()
     {
         $this->block->createBlockFile();
     }
-    
+
     public function activateSechduler($deactivate)
     {
         if ($deactivate) {
@@ -135,7 +135,7 @@ class WP_MadeIT_Security_LimitLogin
     public function addHooks()
     {
         add_filter('authenticate', [$this, 'limit_login_auth_signon'], 30, 3);
-        
+
         add_action('madeit_security_firewall_renderblockfile', [$this, 'renderBlockFile']);
 
         $this->activateSechduler(false);
