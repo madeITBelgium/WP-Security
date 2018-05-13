@@ -33,9 +33,9 @@ class WP_MadeIT_Security_Block
         $this->createBlockFile();
     }
 
-    private function createBlockFile()
+    public function createBlockFile()
     {
-        $blocks = $this->db->querySelect('SELECT DISTINCT ipaddress FROM '.$this->db->prefix().'madeit_sec_blockip WHERE start_block <= %s AND (end_block >= %s OR end_block IS NULL)', time(), time());
+        $blocks = $this->db->querySelect('SELECT DISTINCT ipaddress FROM '.$this->db->prefix().'madeit_sec_blockip WHERE start_block <= %d AND (end_block >= %d OR end_block IS NULL) AND blocked = 1', time(), time());
 
         $result = [];
         foreach ($blocks as $subArray) {

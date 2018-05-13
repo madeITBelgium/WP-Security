@@ -53,9 +53,9 @@ class WP_MadeIT_Security_Settings
             'firewall' => [
                 'enabled' => get_option('madeit_security_firewall_enabled', false),
                 'login'   => [
-                    'attempts_delay_time'             => get_option('madeit_security_firewall_login_attempts_delay_time', 1000 * 60 * 15), //15 minutes
+                    'attempts_delay_time'             => get_option('madeit_security_firewall_login_attempts_delay_time', 60 * 15), //15 minutes
                     'attempts_failed'                 => get_option('madeit_security_firewall_login_attempts_failed', 5),
-                    'attempts_block_time'             => get_option('madeit_security_firewall_login_attempts_block_time', 1000 * 60 * 60), //1uur
+                    'attempts_block_time'             => get_option('madeit_security_firewall_login_attempts_block_time', 60 * 60), //1uur
                     'attempts_block_wrong_user'       => get_option('madeit_security_firewall_login_attempts_block_wrong_user', true),
                     'attempts_block_wrong_user_count' => get_option('madeit_security_firewall_login_attempts_block_wrong_user_count', 2),
                 ],
