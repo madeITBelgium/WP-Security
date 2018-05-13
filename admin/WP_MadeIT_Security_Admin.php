@@ -851,8 +851,15 @@ class WP_MadeIT_Security_Admin
             if ($values['repository'] == 'WORDPRESS.ORG' && version_compare($values['version'], $values['latest_version'], '<')) {
                 //update plugin
                 $downloadUrl = $values['download_url'];
+                $pluginIsActive = $values['active'];
                 $result = $cPluginInstaller->upgradeWithPackage($plugin, $downloadUrl);
                 if ($result === true) {
+                    if($pluginIsActive) {
+                        // Include the plugin.php file so you have access to the activate_plugin() function
+                        require_once(ABSPATH .'/wp-admin/includes/plugin.php');
+                        // Activate your plugin
+                        activate_plugin($plugin);
+                    }
                     $pluginsUpdated[] = $values['name'];
                 } else {
                     $pluginErrors[$values['name']] = $result;
