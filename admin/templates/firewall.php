@@ -64,17 +64,15 @@ if (!defined('ABSPATH')) {
                                             <div class="madeit-col madeit-text-center">
                                                 <p class="madeit-card-title" id="repo-scan-core-status">
                                                     <?php
-                                                        if(defined('MADEIT_SECURITY_FIREWALL_ENABLED') && MADEIT_SECURITY_FIREWALL_ENABLED === true) {
+                                                        if (defined('MADEIT_SECURITY_FIREWALL_ENABLED') && MADEIT_SECURITY_FIREWALL_ENABLED === true) {
                                                             ?>
                                                             <i class="fa fa-check madeit-text-success"></i>
                                                             <?php
-                                                        }
-                                                        else {
+                                                        } else {
                                                             ?>
                                                             <i class="fa fa-times madeit-text-danger"></i>
                                                             <?php
-                                                        }
-                                                        ?>
+                                                        } ?>
                                                 </p>
                                                 <p>
                                                     <?php echo esc_html(__('Firewall active', 'wp-security-by-made-it')); ?>
@@ -223,8 +221,7 @@ if (!defined('ABSPATH')) {
                                                             <td><?php echo date('Y-m-d H:i:s', $block['end_block']); ?></td>
                                                         </tr>
                                                     <?php
-                                                    }
-                                                    ?>
+                                                    } ?>
                                                 </table>
                                             </div>
                                         </div>
@@ -267,7 +264,7 @@ if (!defined('ABSPATH')) {
             </div>
         <?php
     } else {
-            ?>
+        ?>
             <div class="madeit-row" style="margin-top: 20px;">
                 <div class="madeit-col">
                     <div class="madeit-card">
@@ -340,7 +337,7 @@ if (!defined('ABSPATH')) {
                 </div>
             </div>
         <?php
-        } ?>
+    } ?>
     </div>
 </div>
 

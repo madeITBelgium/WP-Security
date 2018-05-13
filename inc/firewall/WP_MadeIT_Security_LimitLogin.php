@@ -42,7 +42,7 @@ class WP_MadeIT_Security_LimitLogin
 
         $failedAttemptsDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_login_attempts WHERE login_failed = 1 AND ipaddress = %s AND created_at >= %d', $this->ip, time() - $this->attempts_delay_time);
         $failedAttempts = isset($failedAttemptsDB['aantal']) ? $failedAttemptsDB['aantal'] : 0;
-        
+
         $failedAttemptsUsernameDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_login_attempts WHERE login_failed = 1 AND ipaddress = %s AND reasonNr = 1 AND created_at >= %d', $this->ip, time() - $this->attempts_delay_time);
         $failedAttemptsUsername = isset($failedAttemptsUsernameDB['aantal']) ? $failedAttemptsUsernameDB['aantal'] : 0;
 
@@ -76,12 +76,14 @@ class WP_MadeIT_Security_LimitLogin
             }
 
             $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_login_attempts (ipaddress, country, username, hash, login_failed, notify, reasonNr, reason, user_agent, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $this->ip, '', $username, base64_encode($password), 1, 0, $errorNr, json_encode($err_codes), $_SERVER['HTTP_USER_AGENT'], time());
-            if($this->attempts_block_wrong_user && $errorNr == 1 && ++$failedAttemptsUsername >= $this->attempts_block_wrong_user_count) {
+            if ($this->attempts_block_wrong_user && $errorNr == 1 && ++$failedAttemptsUsername >= $this->attempts_block_wrong_user_count) {
                 $this->block->createBlock($this->ip, $this->attempts_block_time, $errorNr);
+
                 return new WP_Error('blocked_to_wron_username', 'To many wrong usernames entered.');
             }
             if (++$failedAttempts >= $this->attempts_failed) {
                 $this->block->createBlock($this->ip, $this->attempts_block_time, $errorNr);
+
                 return new WP_Error('blocked_to_many_failed', 'To many failed logins.');
             }
         } elseif ($user instanceof WP_User) {
@@ -117,7 +119,7 @@ class WP_MadeIT_Security_LimitLogin
     public function addHooks()
     {
         add_filter('authenticate', [$this, 'limit_login_auth_signon'], 30, 3);
-        
+
         //TODO add schedular to clean up blocked IPs
     }
 }
