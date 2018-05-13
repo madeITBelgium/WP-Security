@@ -73,7 +73,7 @@ if (file_exists(%1$s)) {
 }
 ?>',
         var_export(MADEIT_SECURITY_DIR.'/inc/firewall/WP_MadeIT_Security_Init.php', true),
-        var_export(!MADEIT_SECURITY_SUBDIRECTORY_INSTALL ? WP_CONTENT_DIR.'/firewall_logs/' : MADEIT_SECURITY_LOG_PATH, true),
+        var_export(!MADEIT_SECURITY_SUBDIRECTORY_INSTALL ? WP_CONTENT_DIR.'/madeit-security-backup/' : MADEIT_SECURITY_LOG_PATH, true),
         $currentAutoPrepend);
     }
 

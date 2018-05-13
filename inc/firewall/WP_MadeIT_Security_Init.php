@@ -37,12 +37,29 @@ class WP_MadeIT_Security_Init
     {
         return in_array($ip, $this->blockIp);
     }
+    
+    public function loadBlockedIps()
+    {
+        if(file_exists(MADEIT_SECURITY_LOG_PATH . '/wp-security-blocks.php')) {
+            try {
+                require_once MADEIT_SECURITY_LOG_PATH . '/wp-security-blocks.php';
+                if(isset($wp_security_by_madeit_ip_blocks) && is_array($wp_security_by_madeit_ip_blocks)) {
+                    $this->blockIp = $wp_security_by_madeit_ip_blocks;
+                }
+            }
+            catch(Exception $e) {
+                error_log($e->getMessage());
+            }
+        }
+    }
 }
 
 define('MADEIT_SECURITY_FIREWALL_ENABLED', true);
 
 $madeit_security_firewall_init = new WP_MadeIT_Security_Init();
 $ipaddress = $madeit_security_firewall_init->getIp();
+$madeit_security_firewall_init->loadBlockedIps();
+
 $isIpv4 = $madeit_security_firewall_init->isIpv4($ipaddress);
 $requestedUrl = (isset($_SERVER['HTTPS']) ? 'https' : 'http')."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;

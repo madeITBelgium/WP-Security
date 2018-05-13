@@ -30,33 +30,7 @@ class WP_MadeIT_Security_LimitLogin
         $this->ip = $this->getIp();
 
         require_once MADEIT_SECURITY_DIR.'/inc/firewall/WP_MadeIT_Security_Block.php';
-        $this->block = new WP_MadeIT_Security_Block($db);
-    }
-
-    public function limit_login_failed($username)
-    {
-        //Find login attempts
-        $loginAttemptCount = 0;
-        $maxLoginAttempts = 5;
-        if ($loginAttemptCount <= $maxLoginAttempts) {
-            $loginAttemptCount++;
-        //Insert attempt
-        } else {
-            //Block user
-        }
-    }
-
-    public function limit_login_admin_init()
-    {
-        if (is_user_logged_in()) {
-            //reset attempts
-        }
-    }
-
-    public function limit_login_errors($error)
-    {
-        //$error = "<strong>Login Failed</strong>: Sorry..! Wrong information..!  </br>";
-        return $error;
+        $this->block = new WP_MadeIT_Security_Block($settings, $db);
     }
 
     public function limit_login_auth_signon($user, $username, $password)
@@ -68,8 +42,11 @@ class WP_MadeIT_Security_LimitLogin
 
         $failedAttemptsDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_login_attempts WHERE login_failed = 1 AND ipaddress = %s AND created_at >= %d', $this->ip, time() - $this->attempts_delay_time);
         $failedAttempts = isset($failedAttemptsDB['aantal']) ? $failedAttemptsDB['aantal'] : 0;
+        
+        $failedAttemptsUsernameDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_login_attempts WHERE login_failed = 1 AND ipaddress = %s AND reasonNr = 1 AND created_at >= %d', $this->ip, time() - $this->attempts_delay_time);
+        $failedAttemptsUsername = isset($failedAttemptsUsernameDB['aantal']) ? $failedAttemptsUsernameDB['aantal'] : 0;
 
-        $blockedDB = $this->db->querySingleRecord('SELECT * FROM '.$this->db->prefix().'madeit_sec_blockip WHERE ipaddress = %s AND start_block >= %d', $this->ip, time() - $this->attempts_block_time);
+        $blockedDB = $this->db->querySingleRecord('SELECT * FROM '.$this->db->prefix().'madeit_sec_blockip WHERE ipaddress = %s AND start_block >= %d AND end_block <= %d', $this->ip, time(), time());
         if (isset($blockedDB['id'])) {
             return new WP_Error('blocked_to_many_failed', 'To many failed logins.');
         }
@@ -99,12 +76,12 @@ class WP_MadeIT_Security_LimitLogin
             }
 
             $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_login_attempts (ipaddress, country, username, hash, login_failed, notify, reasonNr, reason, user_agent, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', $this->ip, '', $username, base64_encode($password), 1, 0, $errorNr, json_encode($err_codes), $_SERVER['HTTP_USER_AGENT'], time());
+            if($this->attempts_block_wrong_user && $errorNr == 1 && ++$failedAttemptsUsername >= $this->attempts_block_wrong_user_count) {
+                $this->block->createBlock($this->ip, $this->attempts_block_time, $errorNr);
+                return new WP_Error('blocked_to_wron_username', 'To many wrong usernames entered.');
+            }
             if (++$failedAttempts >= $this->attempts_failed) {
-                if (!isset($blockedDB['id'])) {
-                    //Insert block
-                    $this->block->createBlock($this->ip, $this->attempts_block_time, $errorNr);
-                }
-
+                $this->block->createBlock($this->ip, $this->attempts_block_time, $errorNr);
                 return new WP_Error('blocked_to_many_failed', 'To many failed logins.');
             }
         } elseif ($user instanceof WP_User) {
@@ -139,9 +116,8 @@ class WP_MadeIT_Security_LimitLogin
 
     public function addHooks()
     {
-        //add_action('wp_login_failed', [$this, 'limit_login_failed']);
-        add_action('login_errors', [$this, 'limit_login_errors']);
         add_filter('authenticate', [$this, 'limit_login_auth_signon'], 30, 3);
-        //add_action('admin_init', [$this, 'limit_login_admin_init']);
+        
+        //TODO add schedular to clean up blocked IPs
     }
 }
