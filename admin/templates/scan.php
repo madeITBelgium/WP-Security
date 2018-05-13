@@ -202,24 +202,24 @@ if (!defined('ABSPATH')) {
                                                         <input type="checkbox" name="issue_id[]" class="issues" value="<?php echo $issue['id']; ?>" style="margin-right: 20px;" data-issue-type="<?php echo esc_html($issue['type']); ?>">
                                                         <?php if (in_array($issue['type'], [2, 3])) {
             ?>
-                                                            <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Compare file', 'wp-security-by-made-it')); ?></a>
+                                                            <a href="admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Compare file', 'wp-security-by-made-it')); ?></a>
                                                         <?php
         } ?>
                                                         <?php if (in_array($issue['type'], [5, 2, 3])) {
             ?>
-                                                            <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&replace=<?php echo $nonceReplace; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Restore file', 'wp-security-by-made-it')); ?></a>
+                                                            <a href="admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&replace=<?php echo $nonceReplace; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Restore file', 'wp-security-by-made-it')); ?></a>
                                                         <?php
         } ?>
                                                         <?php if (in_array($issue['type'], [6])) {
             ?>
-                                                            <a href="admin.php?page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&delete=<?php echo $nonceDelete; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Delete file', 'wp-security-by-made-it')); ?></a>
+                                                            <a href="admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&changes=<?php echo $pluginData['plugin']; ?>&version=<?php echo $pluginData['version']; ?>&delete=<?php echo $nonceDelete; ?>&file=<?php echo $issue['filename_md5']; ?>"><?php echo esc_html(__('Delete file', 'wp-security-by-made-it')); ?></a>
                                                         <?php
         } ?>
                                                         <?php /*<a href="admin.php?page=madeit_security_scan&fix-issue=<?php echo $issue['id']; ?>"><?php echo esc_html(__('Fix issue', 'wp-security-by-made-it')); ?></a> */ ?>
                                                         <a href="admin.php?page=madeit_security_scan&ignore-issue=<?php echo $issue['id']; ?>" class="ignore-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Ignore issue', 'wp-security-by-made-it')); ?></a>
                                                         <?php if ($issue['issue_readed'] == null) {
             ?>
-                                                            <a href="admin.php?page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>" class="read-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
+                                                            <a href="admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&read-issue=<?php echo $issue['id']; ?>" class="read-issue" data-id="<?php echo $issue['id']; ?>"><?php echo esc_html(__('Read issue', 'wp-security-by-made-it')); ?></a>
                                                         <?php
         } ?>
                                                     </div>
@@ -233,7 +233,7 @@ if (!defined('ABSPATH')) {
                                             <input type="checkbox" value="" class="check_all"><?php _e('Select all', 'wp-security-by-made-it'); ?> 
                                             <a href="" class="issues-ignore-selected"><?php _e('Ignore issues', 'wp-security-by-made-it'); ?></a>
                                             <a href="" class="issues-read-selected"><?php _e('Read issues', 'wp-security-by-made-it'); ?></a><br>
-                                            <a href="admin.php?page=madeit_security_scan&ignore-all=true" class="issues-ignore-all"><?php _e('Ignore All issues', 'wp-security-by-made-it'); ?></a>
+                                            <a href="admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&ignore-all=true" class="issues-ignore-all"><?php _e('Ignore All issues', 'wp-security-by-made-it'); ?></a>
                                         </div>
                                     </div>
                                 </div>
@@ -297,7 +297,7 @@ if (!defined('ABSPATH')) {
         $('.ignore-issue').click(function(e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
-            $.get('admin.php?page=madeit_security_scan&ignore-issue=' + id, function(data) {
+            $.get('admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&ignore-issue=' + id, function(data) {
                 $('#issue-' + id).remove();
             });
         });
@@ -307,7 +307,7 @@ if (!defined('ABSPATH')) {
             $('.issues').each(function() {
                 if($(this).is(':checked')) {
                     var id = $(this).val();
-                    $.get('admin.php?page=madeit_security_scan&read-issue=' + id, function(data) {
+                    $.get('admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&read-issue=' + id, function(data) {
                         $('#issue-' + id).css('background', 'none');
                     });
                 }
@@ -317,7 +317,7 @@ if (!defined('ABSPATH')) {
         $('.read-issue').click(function(e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
-            $.get('admin.php?page=madeit_security_scan&read-issue=' + id, function(data) {
+            $.get('admin.php?token=<?php echo $token; ?>&page=madeit_security_scan&read-issue=' + id, function(data) {
                 $('#issue-' + id).css('background', 'none');
             });
         });

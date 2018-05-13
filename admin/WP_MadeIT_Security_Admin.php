@@ -330,18 +330,31 @@ class WP_MadeIT_Security_Admin
 
     public function show_scan()
     {
+        $token = isset($_GET['token']) ? $_GET['token'] : "";
         if (isset($_GET['ignore-all'])) {
+            if (!wp_verify_nonce($token, 'madeit_security_scan_action')) {
+                wp_die('Security check');
+            }
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_ignored` = %s WHERE issue_fixed IS NULL AND issue_ignored IS NULL', time());
         }
         if (isset($_GET['ignore-issue'])) {
+            if (!wp_verify_nonce($token, 'madeit_security_scan_action')) {
+                wp_die('Security check');
+            }
             $id = sanitize_text_field($_GET['ignore-issue']);
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_ignored` = %s WHERE id = %s', time(), $id);
         }
         if (isset($_GET['read-issue'])) {
+            if (!wp_verify_nonce($token, 'madeit_security_scan_action')) {
+                wp_die('Security check');
+            }
             $id = sanitize_text_field($_GET['read-issue']);
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_readed` = %s WHERE id = %s', time(), $id);
         }
         if (isset($_GET['fix-issue'])) {
+            if (!wp_verify_nonce($token, 'madeit_security_scan_action')) {
+                wp_die('Security check');
+            }
             $id = sanitize_text_field($_GET['fix-issue']);
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET `issue_fixed` = %s WHERE id = %s', time(), $id);
         }
@@ -390,6 +403,7 @@ class WP_MadeIT_Security_Admin
 
             $nonceReplace = wp_create_nonce('madeit_security_replace_file');
             $nonceDelete = wp_create_nonce('madeit_security_delete_file');
+            $token = wp_create_nonce('madeit_security_scan_action');
             include_once MADEIT_SECURITY_ADMIN.'/templates/scan.php';
         }
     }
