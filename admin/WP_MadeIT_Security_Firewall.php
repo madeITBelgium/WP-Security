@@ -54,7 +54,15 @@ class WP_MadeIT_Security_Firewall
             $this->settings->updateSetting('madeit_security_firewall_enabled', true);
             $this->defaultSettings = $this->settings->loadDefaultSettings();
         }
-
+        
+        $failedAttemptsDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_login_attempts WHERE login_failed = 1');
+        $failedAttempts = isset($failedAttemptsDB['aantal']) ? $failedAttemptsDB['aantal'] : 0;
+        
+        $blockedDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_blockip');
+        $blockedCount = isset($blockedDB['aantal']) ? $blockedDB['aantal'] : 0;
+        
+        $blockedIps = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_blockip');
+        
         $adminURL = network_admin_url('admin.php?page=madeit_security_firewall');
         $nonceInstall = wp_create_nonce('madeit_security_firewall_install');
         $nonceUninstall = wp_create_nonce('madeit_security_firewall_uninstall');

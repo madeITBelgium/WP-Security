@@ -63,18 +63,29 @@ if (!defined('ABSPATH')) {
                                         <div class="madeit-row">
                                             <div class="madeit-col madeit-text-center">
                                                 <p class="madeit-card-title" id="repo-scan-core-status">
-                                                    <?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>
+                                                    <?php
+                                                        if(defined('MADEIT_SECURITY_FIREWALL_ENABLED') && MADEIT_SECURITY_FIREWALL_ENABLED === true) {
+                                                            ?>
+                                                            <i class="fa fa-check madeit-text-success"></i>
+                                                            <?php
+                                                        }
+                                                        else {
+                                                            ?>
+                                                            <i class="fa fa-times madeit-text-danger"></i>
+                                                            <?php
+                                                        }
+                                                        ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('WordPress Core', 'wp-security-by-made-it')); ?>
+                                                    <?php echo esc_html(__('Firewall active', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                             <div class="madeit-col  madeit-text-center">
                                                 <p class="madeit-card-title" id="repo-scan-plugins-status">
-                                                    <?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>
+                                                    <i class="fa fa-check madeit-text-success"></i>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('Plugins', 'wp-security-by-made-it')); ?>
+                                                    <?php echo esc_html(__('Brute Force scanner', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                             <div class="madeit-col madeit-text-center">
@@ -82,7 +93,7 @@ if (!defined('ABSPATH')) {
                                                    <?php echo esc_html(__('N/A', 'wp-security-by-made-it')); ?>
                                                 </p>
                                                 <p>
-                                                    <?php echo esc_html(__('Themes', 'wp-security-by-made-it')); ?>
+                                                    <?php echo esc_html(__('Made I.T. Protect', 'wp-security-by-made-it')); ?>
                                                 </p>
                                             </div>
                                         </div>
@@ -121,8 +132,8 @@ if (!defined('ABSPATH')) {
                                         <div class="madeit-row">
                                             <div class="madeit-col  madeit-text-center">
                                                 <p class="madeit-card-title" id="update-scan-core-status">
-                                                    <?php if (isset($updateScanData['core'])) {
-            echo esc_html($updateScanData['core']);
+                                                    <?php if (isset($blockedCount)) {
+            echo esc_html($blockedCount);
         } else {
             echo esc_html(__('N/A', 'wp-security-by-made-it'));
         } ?>
@@ -133,8 +144,8 @@ if (!defined('ABSPATH')) {
                                             </div>
                                             <div class="madeit-col  madeit-text-center">
                                                 <p class="madeit-card-title" id="update-scan-plugins-status">
-                                                    <?php if (isset($updateScanData['plugin'])) {
-            echo esc_html($updateScanData['plugin']);
+                                                    <?php if (isset($failedAttempts)) {
+            echo esc_html($failedAttempts);
         } else {
             echo esc_html(__('N/A', 'wp-security-by-made-it'));
         } ?>
@@ -183,12 +194,55 @@ if (!defined('ABSPATH')) {
                     <div class="madeit-card">
                         <div class="madeit-card-body">
                             <h4 class="madeit-card-title">
-                                <?php echo esc_html(__('Scan result', 'wp-security-by-made-it')); ?>
+                                <?php echo esc_html(__('Block list', 'wp-security-by-made-it')); ?>
                                 <small>
                                     <h6 style="display:inline;">
-                                        <?php echo sprintf(_n('%s issue found', '%s issues found', 0, 'wp-security-by-made-it'), 0); ?>
+                                        <?php echo sprintf(_n('%s blocked IPs', '%s blocked IPs', 0, 'wp-security-by-made-it'), 0); ?>
                                     </h6>
                                 </small>
+                            </h4>
+                            <div class="card-text">
+                                <div class="madeit-row">
+                                    <div class="card-text" style="margin-top: 20px; margin-bottom: 20px; width: 100%">
+                                        <div class="madeit-row">
+                                            <div class="madeit-col">
+                                                <table class="madeit-table">
+                                                    <tr>
+                                                        <th>IP</th>
+                                                        <th>Reason</th>
+                                                        <th>Block started</th>
+                                                        <th>Block ended</th>
+                                                    </tr>
+                                                    <?php
+                                                    foreach ($blockedIps as $block) {
+                                                        ?>
+                                                        <tr>
+                                                            <td><?php echo $block['ipaddress']; ?></td>
+                                                            <td><?php echo $block['reason']; ?></td>
+                                                            <td><?php echo date('Y-m-d H:i:s', $block['start_block']); ?></td>
+                                                            <td><?php echo date('Y-m-d H:i:s', $block['end_block']); ?></td>
+                                                        </tr>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        
+            <div class="madeit-row" style="margin-top: 20px;">
+                <div class="madeit-col">
+                    <div class="madeit-card">
+                        <div class="madeit-card-body">
+                            <h4 class="madeit-card-title">
+                                <?php echo esc_html(__('Disable Firewall', 'wp-security-by-made-it')); ?>
                             </h4>
                             <div class="card-text">
                                 <div class="madeit-row">
