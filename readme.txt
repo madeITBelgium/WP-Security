@@ -28,10 +28,7 @@ This plugin relies on a third party service to functionally work. This plugin au
 
 
 = Comming Features =
-* Check for malware and viruses. [1.7]
-* Login prevention [1.7]
-* Firewall [1.7]
-
+* Check for malware and viruses. [1.8]
 
 == Installation ==
 
@@ -57,6 +54,10 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 
 == Changelog ==
+= 1.7 =
+* Firewall
+* Login prevention
+
 = 1.6.1 =
 * Fix bug in reschedule of update scanner
 * Improved loading files
