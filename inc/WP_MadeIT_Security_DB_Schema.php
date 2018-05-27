@@ -49,7 +49,7 @@ class WP_MadeIT_Security_DB_Schema
             'longMsg'       => 'text NULL',
             'data'          => 'text NULL',
         ],
-        /*'madeit_sec_login_attempts' => [ //Columns
+        'madeit_sec_login_attempts' => [ //Columns
             'id'            => 'int UNSIGNED NOT NULL auto_increment PRIMARY KEY',
             'ipaddress'     => 'varchar(50) NULL',
             'country'       => 'varchar(255) NULL',
@@ -83,7 +83,7 @@ class WP_MadeIT_Security_DB_Schema
             'reason'        => 'varchar(64) NULL',
             'notify'        => 'tinyint UNSIGNED NOT NULL default 0',
             'created_at'    => 'int UNSIGNED NOT NULL',
-        ],*/
+        ],
         /*'madeit_sec_hits' => [ //Columns
             'id'            => 'int UNSIGNED NOT NULL auto_increment PRIMARY KEY',
             'ipaddress'     => 'varchar(50) NULL',
