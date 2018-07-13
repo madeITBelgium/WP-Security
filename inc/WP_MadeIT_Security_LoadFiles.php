@@ -27,7 +27,9 @@ class WP_MadeIT_Security_LoadFiles
     public static function log_exception(Exception $e)
     {
         //Stop scan
-        $dir = $this->settings->createLoggingDir();
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
+        $settings = new WP_MadeIT_Security_Settings();
+        $dir = $settings->createLoggingDir();
         $result = get_site_transient('madeit_security_scan');
         $result['stop'] = true;
         set_site_transient('madeit_security_scan', $result);
