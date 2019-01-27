@@ -64,7 +64,7 @@ function wp_security_by_madeit_cron_schedules($schedules)
 add_filter('cron_schedules', 'wp_security_by_madeit_cron_schedules');
 
 if (defined('DOING_CRON')) {
-    madeit_security_fix_crons();
+    //madeit_security_fix_crons();
     $settings = $wp_madeit_security_settings->loadDefaultSettings();
     $scan = $settings['scan']['repo']['core'] && $settings['scan']['repo']['theme'] && $settings['scan']['repo']['plugin'];
     if ($scan) {
