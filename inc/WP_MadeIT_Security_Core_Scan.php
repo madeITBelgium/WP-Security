@@ -68,6 +68,11 @@ class WP_MadeIT_Security_Core_Scan
     private function postInfoToMadeIT($version, $changedFiles, $deletedFiles)
     {
         global $wp_madeit_security_settings;
+        
+        if($wp_madeit_security_settings === null) {
+            require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
+            $wp_madeit_security_settings = new WP_MadeIT_Security_Settings();
+        }
         $settings = $wp_madeit_security_settings->loadDefaultSettings();
         $data = [
             'version'      => $version,

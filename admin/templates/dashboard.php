@@ -306,7 +306,7 @@ if (!defined('ABSPATH')) {
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
                 $('.stop-repo-scan').show();
-                interval = setInterval(function(){ checkScanResult(); }, 5000);
+                interval = setInterval(function(){ checkScanResult(); }, 30000);
             }, 'json');
         });
         
@@ -391,7 +391,7 @@ if (!defined('ABSPATH')) {
                         $('#repo-scan-plugins-status').html('<i class="fa fa-spinner fa-pulse"></i>');
                         $('#repo-scan-themes-status').html('<i class="fa fa-spinner fa-pulse"></i>');
                         $('.do-repo-scan').hide();
-                        interval = setInterval(function(){ checkScanResult(); }, 5000);
+                        interval = setInterval(function(){ checkScanResult(); }, 30000);
                     }
                     $('#repo-scan-time-ago').html(response.time_ago);
                     
@@ -438,7 +438,7 @@ if (!defined('ABSPATH')) {
             };
             // We can also pass the url value separately from ajaxurl for front end AJAX implementations
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-                backupInterval = setInterval(function(){ checkBackup(); }, 15000);
+                backupInterval = setInterval(function(){ checkBackup(); }, 30000);
             }, 'json');
         });
         
@@ -464,29 +464,31 @@ if (!defined('ABSPATH')) {
             };
             
             jQuery.post('<?php echo admin_url('admin-ajax.php'); ?>', data, function(response) {
-                if(response.result.step >= 0) {
-                    $('.backup-step').html('<?php echo __('Starting backup', 'wp-security-by-made-it'); ?>');
-                }
-                if(response.result.step >= 1) {
-                    $('.backup-step').html(('<?php echo __('Backing up files. %s / %d', 'wp-security-by-made-it'); ?>').replace('%s', response.result.files).replace('%d', response.result.total_files));
-                }
-                if(response.result.step >= 2) {
-                    $('.backup-step').html('<?php echo __('Backking up database', 'wp-security-by-made-it'); ?>');
-                }
-                if(response.result.step >= 3) {
-                    $('.backup-step').html('<?php echo __('Creating zip file', 'wp-security-by-made-it'); ?>');
-                }
-                if(response.result.step >= 4) {
-                    $('.backup-step').html('<?php echo __('Upload to Made I.T.', 'wp-security-by-made-it'); ?>');
-                }
-                if(response.result.step >= 5) {
-                    $('.backup-step').html('<?php echo __('Upload to FTP server', 'wp-security-by-made-it'); ?>');
-                }
-                if(response.result.step >= 6) {
-                    $('.backup-step').html('<?php echo __('Upload to S3', 'wp-security-by-made-it'); ?>');
-                }
-                if(response.result.step >= 7) {
-                    $('.backup-step').html('<?php echo __('Complete backup', 'wp-security-by-made-it'); ?>');
+                if(response.result !== undefined) {
+                    if(response.result.step >= 0) {
+                        $('.backup-step').html('<?php echo __('Starting backup', 'wp-security-by-made-it'); ?>');
+                    }
+                    if(response.result.step >= 1) {
+                        $('.backup-step').html(('<?php echo __('Backing up files. %s / %d', 'wp-security-by-made-it'); ?>').replace('%s', response.result.files).replace('%d', response.result.total_files));
+                    }
+                    if(response.result.step >= 2) {
+                        $('.backup-step').html('<?php echo __('Backking up database', 'wp-security-by-made-it'); ?>');
+                    }
+                    if(response.result.step >= 3) {
+                        $('.backup-step').html('<?php echo __('Creating zip file', 'wp-security-by-made-it'); ?>');
+                    }
+                    if(response.result.step >= 4) {
+                        $('.backup-step').html('<?php echo __('Upload to Made I.T.', 'wp-security-by-made-it'); ?>');
+                    }
+                    if(response.result.step >= 5) {
+                        $('.backup-step').html('<?php echo __('Upload to FTP server', 'wp-security-by-made-it'); ?>');
+                    }
+                    if(response.result.step >= 6) {
+                        $('.backup-step').html('<?php echo __('Upload to S3', 'wp-security-by-made-it'); ?>');
+                    }
+                    if(response.result.step >= 7) {
+                        $('.backup-step').html('<?php echo __('Complete backup', 'wp-security-by-made-it'); ?>');
+                    }
                 }
                 
                 
@@ -511,14 +513,14 @@ if (!defined('ABSPATH')) {
                 }
                 else if(response.running) {
                     if(backupInterval == null) {
-                        backupInterval = setInterval(function(){ checkBackup(); }, 15000);
+                        backupInterval = setInterval(function(){ checkBackup(); }, 30000);
                     }
                     $('.do-backup').hide();
                     $('.stop-backup').show();
                     $('#backup-status').html('<i class="fa fa-spinner fa-pulse"></i>');
                     $('#backup-result').html('<i class="fa fa-spinner fa-pulse"></i>');
                 }
-                else {
+                else if(response.result !== undefined) {
                     $('.do-backup').show();
                     $('.stop-backup').hide();
                     $('#backup-time-ago').html(response.time_ago);

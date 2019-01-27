@@ -24,7 +24,7 @@ class WP_MadeIT_Security_LoadFiles
         self::log_exception(new ErrorException($str, 0, $num, $file, $line));
     }
 
-    public static function log_exception(Exception $e)
+    public static function log_exception($e)
     {
         //Stop scan
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
@@ -135,11 +135,11 @@ class WP_MadeIT_Security_LoadFiles
         set_time_limit($this->timeLimit);
         ini_set('max_execution_time', $this->timeLimit);
         //Fetch all errors
-        register_shutdown_function('WP_MadeIT_Security_LoadFiles::check_for_fatal');
-        set_error_handler('WP_MadeIT_Security_LoadFiles::log_error', E_ALL);
-        set_exception_handler('WP_MadeIT_Security_LoadFiles::log_exception');
-        ini_set('display_errors', 'off');
-        error_reporting(E_ALL);
+        //register_shutdown_function('WP_MadeIT_Security_LoadFiles::check_for_fatal');
+        //set_error_handler('WP_MadeIT_Security_LoadFiles::log_error', E_ALL);
+        //set_exception_handler('WP_MadeIT_Security_LoadFiles::log_exception');
+        //ini_set('display_errors', 'off');
+        //error_reporting(E_ALL);
 
         $bigRun = false;
         $scanForBackup = false;
@@ -484,9 +484,9 @@ class WP_MadeIT_Security_LoadFiles
             if (($bigRun || !$run) && $result['step'] == 9) {
                 $run = true;
 
-                try {
+                //try {
                     $pluginResult = $this->scanPluginWPVulndb();
-                } catch (\Exception $e) {
+                /*} catch (\Exception $e) {
                     $result['step'] = 12;
                     $result['result']['content']['completed'] = true;
                     $result['done'] = true;
@@ -494,7 +494,7 @@ class WP_MadeIT_Security_LoadFiles
                     set_site_transient('madeit_security_scan', $result);
 
                     return;
-                }
+                }*/
                 $result['step'] = 10;
                 $result['result']['plugin']['completed'] = true;
                 $result['result']['plugin']['success'] = $result['result']['plugin']['success'] && $pluginResult;
@@ -603,6 +603,7 @@ class WP_MadeIT_Security_LoadFiles
 
     private function scanCoreWPVulndb()
     {
+        return;
         if (!class_exists('WP_MadeIT_Security_Core')) {
             include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
         }
@@ -646,6 +647,7 @@ class WP_MadeIT_Security_LoadFiles
 
     private function scanPluginWPVulndb()
     {
+        return;
         if (!class_exists('WP_MadeIT_Security_Plugin')) {
             include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
         }
@@ -697,6 +699,7 @@ class WP_MadeIT_Security_LoadFiles
 
     private function scanThemeWPVulndb()
     {
+        return;
         if (!class_exists('WP_MadeIT_Security_Theme')) {
             include_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme.php';
         }
