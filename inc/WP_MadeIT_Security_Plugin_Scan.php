@@ -251,8 +251,8 @@ class WP_MadeIT_Security_Plugin_Scan
     private function postInfoToMadeIT($pluginInfo, $changedFiles, $deletedFiles)
     {
         global $wp_madeit_security_settings;
-        
-        if($wp_madeit_security_settings === null) {
+
+        if ($wp_madeit_security_settings === null) {
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php';
             $wp_madeit_security_settings = new WP_MadeIT_Security_Settings();
         }
