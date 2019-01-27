@@ -3,9 +3,9 @@ Contributors: madeit
 Donate link: http://www.madeit.be/donate/
 Tags: security, maintenance, secure, security plugin, wordpress security, maintenance plugin
 Requires at least: 4.0
-Tested up to: 4.9.7
-Requires PHP: 5.6
-Stable tag: 1.7.1
+Tested up to: 5.0.3
+Requires PHP: 7.0
+Stable tag: 1.7.2
 License: GNU GPL v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,9 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 
 == Changelog ==
+= 1.7.2 =
+* Fix scan bug
+
 = 1.7 =
 * Firewall
 * Login prevention
