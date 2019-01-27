@@ -147,8 +147,6 @@ class WP_MadeIT_Security_Settings
             '2001:19f0:5001:722:5400:1ff:fe55:d9b2',
             '167.99.222.145', //s5 new
             '2a03:b0c0:2:d0::c03:2001', //s5 new
-
-            '108.61.170.137', //s5
         ];
 
         $correctHtAccessContent = "order deny,allow\ndeny from all\n";
@@ -158,14 +156,19 @@ class WP_MadeIT_Security_Settings
 
         // Check for the existence of the dir and prevent enumeration
         // index.php is for a sanity check - make sure that we're not somewhere unexpected
-        if ((!is_dir($dir) || !is_file($dir.'/index.html') || !is_file($dir.'/.htaccess')) && !is_file($dir.'/index.php') || !is_file($dir.'/web.config')) {
-            mkdir($dir, 0775, true);
+        if ((!is_dir($dir) || !is_file($dir.'/index.html') || !is_file($dir.'/.htaccess')) && !is_file($dir.'/index.php') || !is_file($dir.'/web.config') || !is_file($dir.'/error.log')) {
+            if(!is_dir($dir)) {
+                mkdir($dir, 0775, true);
+            }
             file_put_contents($dir.'/index.html', '<html><body><a href="https://www.madeit.be">WordPress backups by Security by Made I.T.</a></body></html>');
             if (!is_file($dir.'/.htaccess')) {
                 file_put_contents($dir.'/.htaccess', $correctHtAccessContent);
             }
             if (!is_file($dir.'/web.config')) {
                 file_put_contents($dir.'/web.config', "<configuration>\n<system.webServer>\n<authorization>\n<deny users=\"*\" />\n</authorization>\n</system.webServer>\n</configuration>\n");
+            }
+            if (!is_file($dir.'/error.log')) {
+                file_put_contents($dir.'/error.log', "");
             }
         } else {
             $htaccessContent = file_get_contents($dir.'/.htaccess');
