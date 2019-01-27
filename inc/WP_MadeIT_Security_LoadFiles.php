@@ -485,7 +485,7 @@ class WP_MadeIT_Security_LoadFiles
                 $run = true;
 
                 //try {
-                    $pluginResult = $this->scanPluginWPVulndb();
+                $pluginResult = $this->scanPluginWPVulndb();
                 /*} catch (\Exception $e) {
                     $result['step'] = 12;
                     $result['result']['content']['completed'] = true;
