@@ -5,7 +5,7 @@ Tags: security, maintenance, secure, security plugin, wordpress security, mainte
 Requires at least: 4.0
 Tested up to: 5.0.3
 Requires PHP: 7.0
-Stable tag: 1.7.3
+Stable tag: 1.7.4
 License: GNU GPL v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
