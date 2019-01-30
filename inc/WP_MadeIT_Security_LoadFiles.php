@@ -136,7 +136,7 @@ class WP_MadeIT_Security_LoadFiles
     {
         set_time_limit($this->timeLimit);
         ini_set('max_execution_time', $this->timeLimit);
-        
+
         $limit = ini_get('max_execution_time');
         $this->limit = floor($limit - ($limit / 100 * 30));
         $this->startTime = time();
@@ -176,7 +176,7 @@ class WP_MadeIT_Security_LoadFiles
                 if ($this->checkToStop()) {
                     return;
                 }
-                
+
                 if (!$bigRun && !$this->checkCanDoNextJob()) {
                     //start next job
                     $this->startNextJob();
@@ -896,10 +896,12 @@ class WP_MadeIT_Security_LoadFiles
                              $fileHash, $hasUrl, $safeUrl, time(), $pluginTheme
                              );
     }
-    
-    private function checkCanDoNextJob() {
+
+    private function checkCanDoNextJob()
+    {
         $duration = time() - $this->startTime;
-        return ($duration < $this->limit);
+
+        return $duration < $this->limit;
     }
 
     public function addHooks()
