@@ -20,11 +20,11 @@ class WP_MadeIT_Security_Settings
             'scan' => [
                 'fast' => get_option('madeit_security_scan_repo_fast', false),
                 'repo' => [
-                    'core'   => get_option('madeit_security_scan_repo_core', false),
-                    'theme'  => get_option('madeit_security_scan_repo_theme', false),
-                    'plugin' => get_option('madeit_security_scan_repo_plugin', false),
+                    'core'   => get_option('madeit_security_scan_repo_core', true),
+                    'theme'  => get_option('madeit_security_scan_repo_theme', true),
+                    'plugin' => get_option('madeit_security_scan_repo_plugin', true),
                 ],
-                'update' => get_option('madeit_security_scan_update', false),
+                'update' => get_option('madeit_security_scan_update', true),
             ],
             'api' => [
                 'key' => get_option('madeit_security_api_key', ''),
@@ -60,6 +60,12 @@ class WP_MadeIT_Security_Settings
                     'attempts_block_wrong_user_count' => get_option('madeit_security_firewall_login_attempts_block_wrong_user_count', 2),
                 ],
             ],
+            'report' => [
+                'weekly' => [
+                    'enabled' => get_option('madeit_security_report_weekly_enabled', false),
+                    'email' => get_option('madeit_security_report_weekly_email', get_option('admin_email')),
+                ]
+            ]
         ];
 
         return $this->defaultSettings;

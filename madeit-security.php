@@ -5,7 +5,7 @@
  * Description: Secure your WordPress Website.
  * Author: Made I.T.
  * Author URI: https://www.madeit.be
- * Version: 1.7.4
+ * Version: 1.8.0
  * Text Domain: wp-security-by-made-it
  * Domain Path: /languages
  * License: GPLv3.
@@ -51,12 +51,20 @@ function wp_security_by_madeit_cron_schedules($schedules)
     if (!isset($schedules['5min'])) {
         $schedules['5min'] = [
             'interval' => 5 * 60,
-            'display'  => __('Once every 5 minutes'), ];
+            'display'  => __('Once every 5 minutes'),
+        ];
     }
     if (!isset($schedules['30min'])) {
         $schedules['30min'] = [
             'interval' => 30 * 60,
-            'display'  => __('Once every 30 minutes'), ];
+            'display'  => __('Once every 30 minutes'),
+        ];
+    }
+    if (!isset($schedules['weekly'])) {
+        $schedules['weekly'] = [
+            'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
+            'display' => __( 'Weekly' )
+        ];
     }
 
     return $schedules;
@@ -77,6 +85,12 @@ if (defined('DOING_CRON')) {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
         $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings, $wp_madeit_security_db);
         $wp_madeit_security_backup->addHooks();
+    }
+
+    if ($settings['report']['weekly']['enabled']) {
+        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Report.php';
+        $wp_madeit_security_report = new WP_MadeIT_Security_Report($wp_madeit_security_settings, $wp_madeit_security_db);
+        $wp_madeit_security_report->addHooks();
     }
 } else {
     require_once MADEIT_SECURITY_DIR.'/admin/WP_MadeIT_Security_Admin.php';

@@ -315,7 +315,7 @@ if (!defined('ABSPATH')) {
                                                                 'downloadBackup'      => 1,
                                                                 'backupIndex'         => $index,
                                                                 'serverConfiguration' => $option,
-                                                                'firewallnonce'       => $nonceInstall,
+                                                                'firewallnonce'       => $nonceBackupDownload,
                                                                 ], $adminURL)).'">'.sprintf(__('Download %s', 'wp-security-by-made-it'), esc_html(basename($backup))).'</a></li>';
                                                         } ?>
                                                     </ul><br>

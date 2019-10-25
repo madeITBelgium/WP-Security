@@ -114,6 +114,31 @@ if (!defined('ABSPATH')) {
                                 </table>
                             </section>
                             <section class="section">
+                                <h3><?php echo esc_html(__('Reports', 'wp-security-by-made-it')); ?></h3>
+                                <table class="form-table">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Weekly reports', 'wp-security-by-made-it')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="checkbox" name="madeit_security_report_weekly_enabled" class="" value="1" <?php if ($this->defaultSettings['report']['weekly']['enabled']) {
+            echo 'CHECKED';
+        } ?> />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Weekly reports', 'wp-security-by-made-it')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="email" name="madeit_security_report_weekly_email" class="large-text code" size="70" value="<?php echo $this->defaultSettings['report']['weekly']['email']; ?>" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                            <section class="section">
                                 <h3><?php echo esc_html(__('API Integration', 'wp-security-by-made-it')); ?></h3>
                                 <table class="form-table">
                                     <tbody>

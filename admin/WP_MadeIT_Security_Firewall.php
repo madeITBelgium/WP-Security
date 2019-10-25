@@ -65,6 +65,7 @@ class WP_MadeIT_Security_Firewall
 
         $adminURL = network_admin_url('admin.php?page=madeit_security_firewall');
         $nonceInstall = wp_create_nonce('madeit_security_firewall_install');
+        $nonceBackupDownload = wp_create_nonce('madeit_security_firewall_backup');
         $nonceUninstall = wp_create_nonce('madeit_security_firewall_uninstall');
         include_once MADEIT_SECURITY_ADMIN.'/templates/firewall.php';
     }
