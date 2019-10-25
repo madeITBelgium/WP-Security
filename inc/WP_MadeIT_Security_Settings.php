@@ -63,9 +63,9 @@ class WP_MadeIT_Security_Settings
             'report' => [
                 'weekly' => [
                     'enabled' => get_option('madeit_security_report_weekly_enabled', false),
-                    'email' => get_option('madeit_security_report_weekly_email', get_option('admin_email')),
-                ]
-            ]
+                    'email'   => get_option('madeit_security_report_weekly_email', get_option('admin_email')),
+                ],
+            ],
         ];
 
         return $this->defaultSettings;
