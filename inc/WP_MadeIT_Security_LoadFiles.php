@@ -775,6 +775,7 @@ class WP_MadeIT_Security_LoadFiles
         $directory = ABSPATH;
         $files = [];
         $dir = dir($directory);
+        $scanOutsideWP = false;
 
         $wpHeadFiles = [
             'wp-admin',
@@ -808,7 +809,7 @@ class WP_MadeIT_Security_LoadFiles
                     } else {
                         $this->updateFileToDB($directory.$file, md5_file($directory.'/'.$file), 'CORE');
                     }
-                } elseif (false && $scanOutsideWP) {
+                } elseif ($scanOutsideWP) {
                     if (is_dir($directory.$file)) {
                         $this->fileLoadDirectory($directory.$file, 'OTHER');
                     } else {
