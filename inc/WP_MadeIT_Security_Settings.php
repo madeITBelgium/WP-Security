@@ -124,7 +124,9 @@ class WP_MadeIT_Security_Settings
 
     public function checkApiKey($key)
     {
-        $content = file_get_contents('https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/website/'.$key);
+        $url = 'https://www.madeit.be/wordpress-onderhoud/api/1.0/wp/website/'.$key;
+        $response = wp_remote_get($url);
+        $content = wp_remote_retrieve_body($response);
         $json = json_decode($content, true);
 
         return $json;
