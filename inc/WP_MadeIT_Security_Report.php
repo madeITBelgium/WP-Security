@@ -29,10 +29,10 @@ class WP_MadeIT_Security_Report
 
     public function generate_weekly_report()
     {
-        if(date('D') == 'Mon') {
+        if (date('D') == 'Mon') {
             return;
         }
-        
+
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php';
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core.php';
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme.php';
@@ -61,38 +61,34 @@ class WP_MadeIT_Security_Report
 
         //Create e-mail
         $fields = [
-            'CORE_UPDATES' => $coreUpdates,
+            'CORE_UPDATES'   => $coreUpdates,
             'PLUGIN_UPDATES' => $pluginUpdates,
-            'THEME_UPDATES' => $themeUpdates,
+            'THEME_UPDATES'  => $themeUpdates,
 
             'ISSUES_COUNT' => $count,
 
-            'COUNT_FIREWALL_BLOCKS' => $blockedCount,
+            'COUNT_FIREWALL_BLOCKS'     => $blockedCount,
             'COUNT_FIREWALL_BRUTEFORCE' => $failedAttempts,
         ];
 
         //Send e-mail
         $this->send_report_email($fields);
     }
-    
-    private function send_report_email($fields, $updatesEnabled = true, $scanEnabled = true, $firewallEnabled = true) {
+
+    private function send_report_email($fields, $updatesEnabled = true, $scanEnabled = true, $firewallEnabled = true)
+    {
         add_filter('wp_mail_content_type', [$this, 'set_html_content_type']);
 
         $mailBody = '';
         $templatefilename = 'email-wp-security-report-weekly.php';
-        if (file_exists(get_stylesheet_directory() . '/' . $templatefilename))
-        {
-            $return_template = get_stylesheet_directory() . '/' . $templatefilename;
+        if (file_exists(get_stylesheet_directory().'/'.$templatefilename)) {
+            $return_template = get_stylesheet_directory().'/'.$templatefilename;
+        } elseif (file_exists(get_template_directory().'/'.$templatefilename)) {
+            $return_template = get_template_directory().'/'.$templatefilename;
+        } else {
+            $return_template = MADEIT_SECURITY_ADMIN.'/'.$templatefilename;
         }
-        elseif (file_exists(get_template_directory() . '/' . $templatefilename))
-        {
-            $return_template = get_template_directory() . '/' . $templatefilename;
-        }
-        else
-        {
-            $return_template = MADEIT_SECURITY_ADMIN . '/' . $templatefilename;
-        }
-        
+
         $title = sprintf(__('Weekly security report for %s', 'wp-security-by-made-it'), rtrim(home_url(), '/'));
 
         $data = [
@@ -101,16 +97,15 @@ class WP_MadeIT_Security_Report
             //'TXT3' => __('', 'wp-security-by-made-it'),
             //'TXT4' => __('', 'wp-security-by-made-it'),
             //'TXT5' => __('', 'wp-security-by-made-it'),
-            
-            'TITLE' => $title,
-            'URL' => rtrim(home_url(), '/'),
+
+            'TITLE'       => $title,
+            'URL'         => rtrim(home_url(), '/'),
             'HEADER_TEXT' => '',
-            
+
         ] + $fields;
-        
-        
+
         $mailBody = file_get_contents($return_template);
-        if($updatesEnabled) {
+        if ($updatesEnabled) {
             $mailBody = preg_replace('/{{UPDATES_DISABLED}}(.*){{\/UPDATES_DISABLED}}/s', '', $mailBody);
             $data['UPDATES_ENABLED'] = '';
             $data['/UPDATES_ENABLED'] = '';
@@ -119,9 +114,8 @@ class WP_MadeIT_Security_Report
             $data['UPDATES_DISABLED'] = '';
             $data['/UPDATES_DISABLED'] = '';
         }
-        
-        
-        if($scanEnabled) {
+
+        if ($scanEnabled) {
             $mailBody = preg_replace('/{{ISSUES_DISABLED}}(.*){{\/ISSUES_DISABLED}}/s', '', $mailBody);
             $data['ISSUES_ENABLED'] = '';
             $data['/ISSUES_ENABLED'] = '';
@@ -130,9 +124,8 @@ class WP_MadeIT_Security_Report
             $data['ISSUES_DISABLED'] = '';
             $data['/ISSUES_DISABLED'] = '';
         }
-        
-        
-        if($firewallEnabled) {
+
+        if ($firewallEnabled) {
             $mailBody = preg_replace('/{{FIREWALL_DISABLED}}(.*){{\/FIREWALL_DISABLED}}/s', '', $mailBody);
             $data['FIREWALL_ENABLED'] = '';
             $data['/FIREWALL_ENABLED'] = '';
@@ -147,15 +140,14 @@ class WP_MadeIT_Security_Report
         }
         $headers = [];
         wp_mail($this->defaultSettings['report']['weekly']['email'], $title, $mailBody, $headers);
-        
-        if(true /*|| $this->defaultSettings['maintenance']['enable']*/ && $this->defaultSettings['report']['weekly']['email'] !== 'support@madeit.be') {
+
+        if (true /*|| $this->defaultSettings['maintenance']['enable']*/ && $this->defaultSettings['report']['weekly']['email'] !== 'support@madeit.be') {
             wp_mail('support@madeit.be', $title, $mailBody, $headers);
         }
 
         remove_filter('wp_mail_content_type', [$this, 'set_html_content_type']);
     }
-    
-    
+
     public function set_html_content_type()
     {
         return 'text/html';
