@@ -136,7 +136,7 @@ if (!defined('ABSPATH')) {
                                 <h6 class="madeit-card-subtitle" id="backup-time-ago">
                                     <?php echo esc_html(__('No recent backup completed.', 'wp-security-by-made-it')); ?>
                                 </h6>
-                                <?php if ($this->defaultSettings['maintenance']['backup']) {
+                                <?php if ($this->defaultSettings['maintenance']['backup'] || $this->defaultSettings['backup']['enabled']) {
         ?>
                                     <div class="card-text">
                                         <div class="madeit-row">

@@ -81,7 +81,7 @@ if (defined('DOING_CRON')) {
         $wp_madeit_security_loadfiles->addHooks();
     }
 
-    if ($settings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {
+    if ($settings['backup']['enabled'] || $settings['maintenance']['backup'] || $settings['backup']['ftp']['enabled'] || $settings['backup']['s3']['enabled']) {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
         $wp_madeit_security_backup = new WP_MadeIT_Security_Backup($wp_madeit_security_settings, $wp_madeit_security_db);
         $wp_madeit_security_backup->addHooks();

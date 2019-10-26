@@ -186,6 +186,7 @@ class WP_MadeIT_Security_Admin
             }
 
             //Backup settings
+            $this->settings->checkCheckbox('madeit_security_backup_enabled');
             $this->settings->checkTextbox('madeit_security_backup_files');
             update_option('madeit_security_backup_ftp_enable', $ftp);
             $this->settings->checkTextbox('madeit_security_backup_ftp_username');
@@ -228,7 +229,7 @@ class WP_MadeIT_Security_Admin
 
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup.php';
             $wpBackup = new WP_MadeIT_Security_Backup($this->settings, $this->db);
-            if ($this->defaultSettings['maintenance']['backup'] === true || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
+            if ($this->defaultSettings['backup']['enabled'] === true || $this->defaultSettings['maintenance']['backup'] === true || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
                 $wpBackup->activateSechduler(false);
             } else {
                 $wpBackup->activateSechduler(true);

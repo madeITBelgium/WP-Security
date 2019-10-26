@@ -164,6 +164,16 @@ if (!defined('ABSPATH')) {
                                     <tbody>
                                         <tr>
                                             <th scope="row">
+                                                <label for=""><?php echo esc_html(__('Enable Backup', 'wp-security-by-made-it')); ?></label>
+                                            </th>
+                                            <td>
+                                                <input type="checkbox" name="madeit_security_backup_enabled" class="" value="1" <?php if ($this->defaultSettings['backup']['enabled']) {
+            echo 'CHECKED';
+        } ?> />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">
                                                 <label for=""><?php echo esc_html(__('Files to backup at once', 'wp-security-by-made-it')); ?></label>
                                             </th>
                                             <td>

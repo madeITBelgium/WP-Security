@@ -74,7 +74,7 @@ class WP_MadeIT_Security_Backup
                 'result_db'     => null,
                 'url'           => null,
                 'runtime'       => null,
-                'backup_action' => str_replace('http', '', str_replace('https', '', sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
+                'backup_action' => str_replace('http-', '', str_replace('https-', '', sanitize_title(home_url('/')))).'-'.date('Y_m_d-H_i_s'),
                 'total_files'   => 0,
                 'files'         => 0,
                 'file_size'     => 0,
@@ -600,7 +600,7 @@ class WP_MadeIT_Security_Backup
         add_action('madeit_security_backup', [$this, 'startBackup']);
         add_action('madeit_security_backup_run', [$this, 'backup']);
 
-        if ($this->defaultSettings['maintenance']['backup'] || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
+        if ($this->defaultSettings['backup']['enabled'] || $this->defaultSettings['maintenance']['backup'] || $this->defaultSettings['backup']['ftp']['enabled'] || $this->defaultSettings['backup']['s3']['enabled']) {
             $this->activateSechduler(false);
         } else {
             $this->activateSechduler(true);
