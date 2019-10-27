@@ -5,7 +5,7 @@ Tags: security, maintenance, secure, security plugin, wordpress security, mainte
 Requires at least: 4.0
 Tested up to: 5.3
 Requires PHP: 7.0
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GNU GPL v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,10 @@ When Plugin, Theme or Core scanning is enabled we first do a quick scan. This qu
 
 
 == Changelog ==
+= 1.8.1 =
+* Fixed bug in firewall
+* Fixed bug in weekly report
+
 = 1.8.0 =
 * Fix bug in saving settings
 * Fix bug in enabling firewall

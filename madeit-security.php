@@ -87,7 +87,7 @@ if (defined('DOING_CRON')) {
         $wp_madeit_security_backup->addHooks();
     }
 
-    if ($settings['report']['weekly']['enabled']) {
+    if (true || $settings['report']['weekly']['enabled']) {
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Report.php';
         $wp_madeit_security_report = new WP_MadeIT_Security_Report($wp_madeit_security_settings, $wp_madeit_security_db);
         $wp_madeit_security_report->addHooks();

@@ -242,7 +242,6 @@ class WP_MadeIT_Security_Admin
             } else {
                 $wpReport->activateSechduler(true);
             }
-            //$wpReport->generate_weekly_report();
 
             $success = true;
         }

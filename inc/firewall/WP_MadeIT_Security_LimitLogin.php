@@ -46,7 +46,7 @@ class WP_MadeIT_Security_LimitLogin
         $failedAttemptsUsernameDB = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_login_attempts WHERE login_failed = 1 AND ipaddress = %s AND reasonNr = 1 AND created_at >= %d', $this->ip, time() - $this->attempts_delay_time);
         $failedAttemptsUsername = isset($failedAttemptsUsernameDB['aantal']) ? $failedAttemptsUsernameDB['aantal'] : 0;
 
-        $blockedDB = $this->db->querySingleRecord('SELECT * FROM '.$this->db->prefix().'madeit_sec_blockip WHERE ipaddress = %s AND start_block >= %d AND (end_block <= %d OR end_block IS NULL) AND blocked = 1', $this->ip, time(), time());
+        $blockedDB = $this->db->querySingleRecord('SELECT * FROM '.$this->db->prefix().'madeit_sec_blockip WHERE ipaddress = %s AND start_block <= %d AND (end_block >= %d OR end_block IS NULL) AND blocked = 1 ORDER BY id DESC', $this->ip, time(), time());
         if (isset($blockedDB['id'])) {
             return new WP_Error('blocked_to_many_failed', 'To many failed logins.');
         }

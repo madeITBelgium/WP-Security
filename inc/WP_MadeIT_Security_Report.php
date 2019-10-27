@@ -5,15 +5,12 @@ class WP_MadeIT_Security_Report
     private $defaultSettings = [];
     private $settings;
     private $db;
-    private $issues;
 
     public function __construct($settings, $db)
     {
         $this->settings = $settings;
         $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
-        require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Issue.php';
-        $this->issues = new WP_MadeIT_Security_Issue($db);
     }
 
     public function activateSechduler($deactivate)
@@ -29,7 +26,7 @@ class WP_MadeIT_Security_Report
 
     public function generate_weekly_report()
     {
-        if(date('D') == 'Mon') {
+        if(date('D') !== 'Mon') {
             return;
         }
         
@@ -146,7 +143,9 @@ class WP_MadeIT_Security_Report
             $mailBody = str_replace('{{'.$k.'}}', $v, $mailBody);
         }
         $headers = [];
-        wp_mail($this->defaultSettings['report']['weekly']['email'], $title, $mailBody, $headers);
+        if ($this->defaultSettings['report']['weekly']['enabled']) {
+            wp_mail($this->defaultSettings['report']['weekly']['email'], $title, $mailBody, $headers);
+        }
         
         if(true /*|| $this->defaultSettings['maintenance']['enable']*/ && $this->defaultSettings['report']['weekly']['email'] !== 'support@madeit.be') {
             wp_mail('support@madeit.be', $title, $mailBody, $headers);
@@ -165,7 +164,7 @@ class WP_MadeIT_Security_Report
     {
         add_action('madeit_security_report_weekly', [$this, 'generate_weekly_report']);
 
-        if ($this->defaultSettings['report']['weekly']['enabled']) {
+        if (true || $this->defaultSettings['report']['weekly']['enabled']) {
             $this->activateSechduler(false);
         } else {
             $this->activateSechduler(true);
