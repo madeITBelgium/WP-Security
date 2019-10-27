@@ -36,8 +36,8 @@ class WP_MadeIT_Security_Settings
             ],
             'backup' => [
                 'enabled' => get_option('madeit_security_backup_enabled', 500),
-                'files' => get_option('madeit_security_backup_files', 500),
-                'ftp'   => [
+                'files'   => get_option('madeit_security_backup_files', 500),
+                'ftp'     => [
                     'enabled'         => get_option('madeit_security_backup_ftp_enable', false),
                     'server'          => get_option('madeit_security_backup_ftp_server', ''),
                     'username'        => get_option('madeit_security_backup_ftp_username', ''),
@@ -64,9 +64,9 @@ class WP_MadeIT_Security_Settings
             'report' => [
                 'weekly' => [
                     'enabled' => get_option('madeit_security_report_weekly_enabled', false),
-                    'email' => get_option('madeit_security_report_weekly_email', get_option('admin_email')),
-                ]
-            ]
+                    'email'   => get_option('madeit_security_report_weekly_email', get_option('admin_email')),
+                ],
+            ],
         ];
 
         return $this->defaultSettings;

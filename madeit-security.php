@@ -62,8 +62,8 @@ function wp_security_by_madeit_cron_schedules($schedules)
     }
     if (!isset($schedules['weekly'])) {
         $schedules['weekly'] = [
-            'interval' => 60 * 60 * 24 * 7, # 604,800, seconds in a week
-            'display' => __( 'Weekly' )
+            'interval' => 60 * 60 * 24 * 7, // 604,800, seconds in a week
+            'display'  => __('Weekly'),
         ];
     }
 
