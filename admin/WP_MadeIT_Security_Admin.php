@@ -99,7 +99,7 @@ class WP_MadeIT_Security_Admin
             }
 
             //Check API Key
-            if(!empty($_POST['madeit_security_maintenance_api_key'])) {
+            if (!empty($_POST['madeit_security_maintenance_api_key'])) {
                 $newKey = sanitize_text_field($_POST['madeit_security_maintenance_api_key']);
                 $checkApiKey = $this->settings->checkApiKey($newKey);
                 if (!isset($checkApiKey['success']) || (isset($checkApiKey['success']) && !$checkApiKey['success'])) {
@@ -207,11 +207,10 @@ class WP_MadeIT_Security_Admin
             //Maintenance settings
             $this->settings->checkCheckbox('madeit_security_scan_update');
             $this->settings->checkCheckbox('madeit_security_maintenance_backup');
-            
+
             //report
             $this->settings->checkCheckbox('madeit_security_report_weekly_enabled');
             $this->settings->checkTextbox('madeit_security_report_weekly_email');
-            
 
             $this->defaultSettings = $this->settings->loadDefaultSettings();
 
@@ -234,7 +233,7 @@ class WP_MadeIT_Security_Admin
             } else {
                 $wpBackup->activateSechduler(true);
             }
-            
+
             require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Report.php';
             $wpReport = new WP_MadeIT_Security_Report($this->settings, $this->db);
             if ($this->defaultSettings['report']['weekly']['enabled'] === true || $this->defaultSettings['report']['weekly']['email']) {
