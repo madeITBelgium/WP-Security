@@ -38,6 +38,7 @@ class Tests_WP_MadeIT_Security extends WP_UnitTestCase
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin_Installer.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin_Scan.php');
+        $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Report.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Scan.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Settings.php');
         $this->assertFileExists(MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_SystemInfo.php');

@@ -1,45 +1,67 @@
-language: php
 sudo: false
+dist: trusty
 
-php:
-- '5.6'
-- '7.0'
+language: php
 
-env:
-- WP_VERSION=latest WP_MULTISITE=1
-- WP_VERSION=latest WP_MULTISITE=0
-- WP_VERSION=4.9 WP_MULTISITE=0
-- WP_VERSION=4.8 WP_MULTISITE=0
-- WP_VERSION=4.7 WP_MULTISITE=0
-- WP_VERSION=4.6 WP_MULTISITE=0
-- WP_VERSION=4.5 WP_MULTISITE=0
-- WP_VERSION=4.4 WP_MULTISITE=0
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 matrix:
   include:
-  - php: 7.1
-    env: WP_VERSION=latest WP_MULTISITE=1
-  - php: 7.1
-    env: WP_VERSION=latest WP_MULTISITE=0
-  - php: 7.1
-    env: WP_VERSION=4.9 WP_MULTISITE=0
-  - php: 7.1
-    env: WP_VERSION=4.8 WP_MULTISITE=0
-  - php: 7.1
-    env: WP_VERSION=4.7 WP_MULTISITE=0
+    - php: 7.2
+      env: WP_VERSION=latest
+    - php: 7.1
+      env: WP_VERSION=latest
+    - php: 7.0
+      env: WP_VERSION=latest
+    - php: 5.6
+      env: WP_VERSION=4.0
+    - php: 5.6
+      env: WP_VERSION=latest
+    - php: 5.6
+      env: WP_VERSION=trunk
+    - php: 5.6
+      env: WP_TRAVISCI=phpcs
+    - php: 5.3
+      env: WP_VERSION=latest
+      dist: precise
 
 before_script:
-- bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-- composer require phpunit/phpunit:5.* satooshi/php-coveralls:1.*
-- composer install --dev
-  
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - |
+    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
+      phpenv config-rm xdebug.ini
+    else
+      echo "xdebug.ini does not exist"
+    fi
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      composer global require wp-coding-standards/wpcs
+      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
+    fi
+
 script:
-- find . \( -name '*.php' \) -exec php -lf {} \;
-- ./vendor/bin/phpunit --coverage-clover ./tests/logs/clover.xml
-
-after_script:
-- php vendor/bin/coveralls -v
-
-notifications:
-  slack:
-    secure: SYtCbt9jgk+tdWxLMGlF876YNDMdDAWF7xqUlyFeS5Pvkg1lWXT+oAupQn2F6GjS9UECZ8V1dm17Jne0zrj7LsxCHgQM0/YRYe4nDWBZZRuuwBiK33pmbqCVWrUreo3whR3sx1tUJz6Y3pIFgfEmamBtrzEUAvYTE+/0wlgSrZG5cqS/DssmirUUBgUQ0e/fkSJgRBOEZkIFA5eyvo3+Lj2wZjzsb9/M9Tij6g/qmz2ULU8W5yS16B38eUgScQXZM+WKgl2Zab06Y3eejQoKtpQSNspC2gJ4rbO1oWR518qxx9LXSh1OMDBAOJat3SOP2sLhM3wijWxqorojkSSdRwYbT9eoCDjVSsZFxTapyntPO2xqJ7U0iLFOMpdmdf1mSLxOhD4ouyurgznZOlmnLGFhJCicp1CeDtfh+zzDX8Z8Lk9YO5Tody59OW+9PkcJFzRoYtRplyr439MJ+UgMzEo8ciRdyR0tGvi5ZXDIn7CG2uEoGotwRpcdPw8LKAKecM4WuZFqRh9B3AN4y8hF4nkMlnRtoszvUbuHbiE3gML0pKx0axD8VaSyBnnHCFdqjBBwOkivWopWqfErRGSsLs6ErMg/X9uYCsPUm/8b08kb/SCSnAW5APw1sSUA9WoNb8OenTs9vqZjn0hNGRawEQJ68S+bUpB6eLqV4WWv5Xg=
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      phpunit
+      WP_MULTISITE=1 phpunit
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      phpcs
+    fi
