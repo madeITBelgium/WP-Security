@@ -119,7 +119,7 @@ class WP_MadeIT_Security_DB_Schema
 
         $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_filelist WHERE filename LIKE %s AND plugin_file = 0', ['%wp-content/plugins%']);
         if ($count != null && $count['aantal'] > 0) {
-            $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_filelist WHERE plugin_file >= 0');
+            $this->db->queryWrite('DELETE FROM '.$this->db->prefix().'madeit_sec_filelist WHERE plugin_file >= 0');
         }
     }
 }
