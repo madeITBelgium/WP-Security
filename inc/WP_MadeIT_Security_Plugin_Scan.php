@@ -247,6 +247,15 @@ class WP_MadeIT_Security_Plugin_Scan
             $this->issues->deleteIssue($fileNameMd5);
         }
     }
+    
+    private function isSafeFile($file)
+    {
+        /*$content = file_get_contents($file);
+        if(strpos($content, 'eval') !== false) {
+            return false;
+        }*/
+        return true;
+    }
 
     private function postInfoToMadeIT($pluginInfo, $changedFiles, $deletedFiles)
     {

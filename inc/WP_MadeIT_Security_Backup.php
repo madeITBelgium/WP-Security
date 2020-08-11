@@ -27,9 +27,17 @@ class WP_MadeIT_Security_Backup
             }
         }
     }
+    
+    public function logDebug($string)
+    {
+        if(MADEIT_SECURITY_DEBUG) {
+            error_log('WP_MadeIT_Security_Backup: ' . $string);
+        }
+    }
 
     public function startBackup()
     {
+        $this->logDebug('Starting backup');
         $scanResult = get_site_transient('madeit_security_scan');
         $backupResult = get_site_transient('madeit_security_backup');
 
@@ -88,6 +96,7 @@ class WP_MadeIT_Security_Backup
 
     public function stopBackup()
     {
+        $this->logDebug('stopBackup');
         $result = get_site_transient('madeit_security_backup');
         $result['stop'] = true;
         set_site_transient('madeit_security_backup', $result);
@@ -95,6 +104,7 @@ class WP_MadeIT_Security_Backup
 
     public function backup()
     {
+        $this->logDebug('running backup');
         ignore_user_abort(true);
         ini_set('max_execution_time', $this->timeLimit);
         ini_set('memory_limit', '1024M');
@@ -104,7 +114,7 @@ class WP_MadeIT_Security_Backup
             $backupResult['running'] = false;
             $backupResult['done'] = true;
             set_site_transient('madeit_security_backup', $backupResult);
-            exit;
+            return;
         }
 
         $this->startTime = $backupResult['time'];
@@ -115,36 +125,42 @@ class WP_MadeIT_Security_Backup
 
         if ($backupResult['step'] == 0) {
             //Check if loading files is recent
+            
+            $this->logDebug('Check if loading files is recent');
 
             $scanResult = get_site_transient('madeit_security_scan');
             if (!$scanResult['done'] && !$scanResult['stop']) {
+                $this->logDebug('Wait until website scan is completed, reschedule backup runner in 5min');
                 //schedule event in 5 min
                 $backupResult['last_con_time'] = time();
                 $backupResult['step'] = 0;
                 set_site_transient('madeit_security_backup', $backupResult);
                 wp_schedule_single_event((time() + 60 * 5), 'madeit_security_backup_run');
-                exit;
+                return;
             } elseif ($scanResult['start_time'] < (time() - 60 * 60)) {
                 //Start loading files and schedule event in 5 min
                 require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_LoadFiles.php';
                 $scan = new WP_MadeIT_Security_LoadFiles($this->settings, $this->db);
+                $this->logDebug('startLoadingFiles');
                 $scan->startLoadingFiles();
 
                 $backupResult['last_con_time'] = time();
                 $backupResult['step'] = 0;
                 set_site_transient('madeit_security_backup', $backupResult);
                 wp_schedule_single_event((time() + 60 * 10), 'madeit_security_backup_run');
-                exit;
+                return;
             }
 
             $this->deleteOlderBackups();
             $valid = $this->canICreateABackup();
             $backupResult['preCheck'] = $valid;
 
+            $this->logDebug('Reset database');
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET in_backup = 0 WHERE need_backup = 1 AND in_backup = 1');
 
             $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_filelist WHERE need_backup = 1 AND in_backup = 0');
             if (isset($count['aantal'])) {
+                $this->logDebug('Files to backup: ' . $count['aantal']);
                 $backupResult['total_files'] = $count['aantal'];
             }
 
@@ -163,7 +179,10 @@ class WP_MadeIT_Security_Backup
                 $backupResult['check_error'] = $valid;
                 set_site_transient('madeit_security_backup', $backupResult);
             }
-        } elseif ($backupResult['step'] == 1) { //Backup files
+        }
+        elseif ($backupResult['step'] == 1) { //Backup files
+            $this->logDebug('Backup files');
+            
             if ($backupResult['total_files'] > $backupResult['files']) {
                 $donefiles = $this->backupFiles();
                 if ($donefiles > 0) {
@@ -185,7 +204,10 @@ class WP_MadeIT_Security_Backup
                 wp_schedule_single_event(time(), 'madeit_security_backup_run');
                 exit;
             }
-        } elseif ($backupResult['step'] == 2) { //Backup database
+        }
+        elseif ($backupResult['step'] == 2) { //Backup database
+            $this->logDebug('Backup database');
+            
             $resultDb = $this->backupDatabase();
 
             //Backup database done
@@ -195,7 +217,9 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        } elseif ($backupResult['step'] == 3) { //Create full zip
+        }
+        elseif ($backupResult['step'] == 3) { //Create full zip
+            $this->logDebug('Create full zip');
             $zipPath = $this->backups_dir_location().'/'.$this->getZipName();
 
             if ($this->createCompleteZip($zipPath)) {
@@ -216,10 +240,20 @@ class WP_MadeIT_Security_Backup
                 wp_schedule_single_event(time(), 'madeit_security_backup_run');
                 exit;
             }
-        } elseif ($backupResult['step'] == 4) { //Upload zip to Made I.T.
+        }
+        elseif ($backupResult['step'] == 4) { //Upload zip to Made I.T.
+            $this->logDebug('Uploading zip');
             $zipPath = $this->backups_dir_location().'/'.$this->getZipName();
             if ($this->defaultSettings['maintenance']['backup']) {
                 $uploaded = $this->uploadBackupToMadeIT($this->getZipName(), $this->backups_dir_location(), 'FULL');
+            } else {
+                $backupResult['last_con_time'] = time();
+                $backupResult['step'] = 5;
+                $backupResult['file'] = $zipPath;
+                $backupResult['url'] = str_replace(ABSPATH, home_url('/'), $zipPath);
+                set_site_transient('madeit_security_backup', $backupResult);
+                $this->backup();
+                exit;
             }
 
             $backupResult['last_con_time'] = time();
@@ -229,10 +263,18 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        } elseif ($backupResult['step'] == 5) { //Upload zip to FTP
+        }
+        elseif ($backupResult['step'] == 5) { //Upload zip to FTP
+            $this->logDebug('Uploading zip FTP');
             if ($this->defaultSettings['backup']['ftp']['enabled']) {
                 //Upload backup to FTP server
                 $this->uploadBackupToFTP($this->getZipName(), $this->backups_dir_location());
+            } else {
+                $backupResult['last_con_time'] = time();
+                $backupResult['step'] = 6;
+                set_site_transient('madeit_security_backup', $backupResult);
+                $this->backup();
+                exit;
             }
 
             $backupResult['last_con_time'] = time();
@@ -240,17 +282,27 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        } elseif ($backupResult['step'] == 6) { //Upload zip to S3
+        }
+        elseif ($backupResult['step'] == 6) { //Upload zip to S3
+            $this->logDebug('Uploading zip S3');
             if ($this->defaultSettings['backup']['s3']['enabled']) {
                 $this->uploadBackupToS3Bucket($this->getZipName(), $this->backups_dir_location());
+            } else {
+                $backupResult['last_con_time'] = time();
+                $backupResult['step'] = 7;
+                set_site_transient('madeit_security_backup', $backupResult);
+                $this->backup();
+                exit;
             }
             $backupResult['last_con_time'] = time();
             $backupResult['step'] = 7;
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        } elseif ($backupResult['step'] == 7) { //Backup done
-
+        }
+        elseif ($backupResult['step'] == 7) { //Backup done
+            $this->logDebug('Backup done');
+            
             $backupResult['done'] = true;
             $backupResult['running'] = false;
             $backupResult['stop'] = false;
@@ -291,6 +343,7 @@ class WP_MadeIT_Security_Backup
 
     private function backupFiles()
     {
+        $this->logDebug('backupFiles()');
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup_Files.php';
         $backupFiles = new WP_MadeIT_Security_Backup_Files($this->settings, $this->db);
 
@@ -302,6 +355,7 @@ class WP_MadeIT_Security_Backup
 
     private function backupDatabase()
     {
+        $this->logDebug('backupDatabase()');
         require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Backup_Database.php';
         $backupDatabase = new WP_MadeIT_Security_Backup_Database('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD);
 
@@ -418,6 +472,8 @@ class WP_MadeIT_Security_Backup
             }
         }
 
+        $this->logDebug('Is backup possible: ' . ($error == null ? 'Yes' : $error));
+        
         return $error == null ? true : $error;
     }
 

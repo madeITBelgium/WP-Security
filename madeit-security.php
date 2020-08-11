@@ -5,7 +5,7 @@
  * Description: Secure your WordPress Website.
  * Author: Made I.T.
  * Author URI: https://www.madeit.be
- * Version: 1.8.2
+ * Version: 1.8.3
  * Text Domain: wp-security-by-made-it
  * Domain Path: /languages
  * License: GPLv3.
@@ -32,6 +32,9 @@ if (!defined('MADEIT_SECURITY_API')) {
 }
 if (!defined('MADEIT_SECURITY_SUBDIRECTORY_INSTALL')) {
     define('MADEIT_SECURITY_SUBDIRECTORY_INSTALL', class_exists('WP_MadeIT_Security_Init') && !in_array(realpath(dirname(__FILE__).'/inc/firewall/WP_MadeIT_Security_Init.php'), get_included_files()));
+}
+if (!defined('MADEIT_SECURITY_DEBUG')) {
+    define('MADEIT_SECURITY_DEBUG', false); // Is debug mode enabled
 }
 
 function wp_security_by_madeit_load_plugin_textdomain()

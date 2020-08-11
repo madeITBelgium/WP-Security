@@ -67,6 +67,13 @@ class WP_MadeIT_Security_LoadFiles
             }
         }
     }
+    
+    public function logDebug($string)
+    {
+        if(MADEIT_SECURITY_DEBUG) {
+            error_log('WP_MadeIT_Security_LoadFiles: ' . $string);
+        }
+    }
 
     public function startLoadingFiles()
     {
@@ -91,12 +98,18 @@ class WP_MadeIT_Security_LoadFiles
             ];
             set_site_transient('madeit_security_scan', $result);
         }
+        
+        $this->logDebug('Start loading files');
+        
 
         if ($result['stop'] == false && $result['done'] == false && $result['start_time'] >= time() - 60 * 30) {
             //Stop existing running job
+            $this->logDebug('Stop existing running job');
             $result['stop'] = true;
             set_site_transient('madeit_security_scan', $result);
         } else {
+            $this->logDebug('Setup new scan data');
+            
             $initRun = true;
             $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_filelist');
             if ($count != null && $count['aantal'] > 0) {
@@ -112,12 +125,14 @@ class WP_MadeIT_Security_LoadFiles
             set_site_transient('madeit_security_scan', $result);
 
             //start job
+            $this->logDebug('schedule madeit_security_loadfiles_run');
             wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
         }
     }
 
     public function stopLoadingFiles()
     {
+        $this->logDebug('stopLoadingFiles function called');
         $result = get_site_transient('madeit_security_scan');
         $result['stop'] = true;
         set_site_transient('madeit_security_scan', $result);
@@ -134,6 +149,8 @@ class WP_MadeIT_Security_LoadFiles
 
     public function loadfiles()
     {
+        $this->logDebug('loadfiles function called');
+        
         set_time_limit($this->timeLimit);
         ini_set('max_execution_time', $this->timeLimit);
 
@@ -155,6 +172,7 @@ class WP_MadeIT_Security_LoadFiles
 
         if ($result['done'] == false && $result['stop'] == false) {
             if ($result['stop'] == true) {
+                $this->logDebug('Stopping this request');
                 return;
             }
 
@@ -164,6 +182,9 @@ class WP_MadeIT_Security_LoadFiles
                 //Set database
                 $run = true;
 
+                
+                $this->logDebug('Cleaning database');
+                
                 //Update db md5 codes
                 $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET old_md5 = new_md5 WHERE old_md5 <> new_md5');
                 $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_loaded = null, changed = 0');
@@ -188,6 +209,8 @@ class WP_MadeIT_Security_LoadFiles
             //Load core files
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 1) {
                 $run = true;
+                
+                $this->logDebug('Step 1: Load core files');
 
                 $this->loadCore();
 
@@ -210,6 +233,9 @@ class WP_MadeIT_Security_LoadFiles
             //Load plugin files
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 2) {
                 $run = true;
+                
+                $this->logDebug('Step 2: Load plugin files');
+                
                 $this->loadPlugin();
 
                 $result['step'] = 3;
@@ -231,6 +257,9 @@ class WP_MadeIT_Security_LoadFiles
             //Load theme files
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 3) {
                 $run = true;
+                
+                $this->logDebug('Step 3: Load theme files');
+                
                 $this->loadTheme();
 
                 $result['step'] = 4;
@@ -252,6 +281,9 @@ class WP_MadeIT_Security_LoadFiles
             //Loading files completed
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 4) {
                 $run = true;
+                
+                $this->logDebug('Step 4: Loading files completed. Update database records');
+                
                 //Change changed files
                 if (!$scanForBackup) {
                     $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist SET file_changed = %s, file_checked = null, changed = 1 WHERE old_md5 <> new_md5 AND old_md5 IS NOT NULL', time());
@@ -283,6 +315,9 @@ class WP_MadeIT_Security_LoadFiles
             //Scan core
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 5) {
                 $run = true;
+                
+                $this->logDebug('Step 5: Scan core files');
+                
                 $count = 1;
                 while ($count > 0 && $count != null) {
                     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Core_Scan.php';
@@ -326,6 +361,9 @@ class WP_MadeIT_Security_LoadFiles
             //plugin core
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 6) {
                 $run = true;
+                
+                $this->logDebug('Step 6: Scan plugin files');
+                
                 $count = 1;
                 while ($count > 0 && $count != null) {
                     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Plugin_Scan.php';
@@ -391,6 +429,9 @@ class WP_MadeIT_Security_LoadFiles
             //theme core
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 7) {
                 $run = true;
+                
+                $this->logDebug('Step 7: Scan theme files');
+                
                 $count = 1;
                 while ($count > 0 && $count != null) {
                     require_once MADEIT_SECURITY_DIR.'/inc/WP_MadeIT_Security_Theme_Scan.php';
@@ -401,12 +442,15 @@ class WP_MadeIT_Security_LoadFiles
                     if ($this->checkToStop()) {
                         return;
                     }
-                    if ($count != null && $count['aantal'] > 0 && !$bigRun && !$this->checkCanDoNextJob()) {
+                    $count = isset($count['aantal']) ? $count['aantal'] : 0;
+                    
+                    $this->logDebug('Step 7: Todo files: ' . $count);
+                    
+                    if ($count > 0 && !$bigRun && !$this->checkCanDoNextJob()) {
                         $this->startNextJob();
 
                         return;
                     }
-                    $count = isset($count['aantal']) ? $count['aantal'] : 0;
                 }
                 $resultAgain = get_site_transient('madeit_security_scan_again');
                 if (!class_exists('WP_MadeIT_Security_Theme')) {
@@ -417,18 +461,26 @@ class WP_MadeIT_Security_LoadFiles
                 $i = 0;
                 foreach ($themes as $theme => $value) {
                     if (isset($resultAgain[$value['theme']])) {
+                        
+                        $this->logDebug('Step 7: Set check again for : ' . count($resultAgain[$value['theme']]));
+                        
                         foreach ($resultAgain[$value['theme']] as $file => $hash) {
                             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_filelist set file_checked = NULL WHERE filename_md5 = %s', $hash);
                             unset($resultAgain[$value['theme']][$file]);
                             $i++;
 
                             set_site_transient('madeit_security_scan_again', $resultAgain);
-
+                            
                             if ($i % 1000 == 0 && !$bigRun && !$this->checkCanDoNextJob()) {
+                                set_site_transient('madeit_security_scan_again', $resultAgain);
+                                /*
                                 $this->startNextJob();
 
                                 return;
+                                */
                             }
+                            
+                            set_site_transient('madeit_security_scan_again', $resultAgain);
                         }
                     }
                 }
@@ -458,6 +510,8 @@ class WP_MadeIT_Security_LoadFiles
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 8) {
                 $run = true;
 
+                $this->logDebug('Step 8: Core WPVulndb');
+                
                 try {
                     $coreResult = $this->scanCoreWPVulndb();
                 } catch (\Exception $e) {
@@ -491,6 +545,9 @@ class WP_MadeIT_Security_LoadFiles
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 9) {
                 $run = true;
 
+                $this->logDebug('Step 9: plugin WPVulndb');
+                
+
                 //try {
                 $pluginResult = $this->scanPluginWPVulndb();
                 /*} catch (\Exception $e) {
@@ -523,6 +580,8 @@ class WP_MadeIT_Security_LoadFiles
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 10) {
                 $run = true;
 
+                $this->logDebug('Step 10: Theme WPVulndb');
+                
                 try {
                     $pluginResult = $this->scanThemeWPVulndb();
                 } catch (\Exception $e) {
@@ -553,6 +612,10 @@ class WP_MadeIT_Security_LoadFiles
 
             //finish
             if (($bigRun || !$run || $this->checkCanDoNextJob()) && $result['step'] == 11) {
+                
+                $this->logDebug('Step 11: Complete scan');
+                
+                
                 $result['step'] = 12;
                 $result['result']['content']['completed'] = true;
                 $result['done'] = true;
@@ -564,8 +627,10 @@ class WP_MadeIT_Security_LoadFiles
 
     public function checkToStop()
     {
+        $this->logDebug('checkToStop');
         $result = get_site_transient('madeit_security_scan');
         if ($result['stop'] == true) {
+            $this->logDebug('Stopping');
             return true;
         }
 
@@ -574,8 +639,10 @@ class WP_MadeIT_Security_LoadFiles
 
     public function startNextJob()
     {
+        $this->logDebug('Try schedule next event');
         if (false === wp_next_scheduled('madeit_security_loadfiles_run')) {
             wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
+            $this->logDebug('OK');
         }
     }
 
@@ -592,7 +659,7 @@ class WP_MadeIT_Security_LoadFiles
         $dir = dir($directory);
 
         while (false !== ($file = $dir->read())) {
-            if ($file != '.' and $file != '..') {
+            if ($file != '.' && $file != '..' && $file != '.git') {
                 if ($type == 'WP_CONTENT' && ($directory.'/'.$file == $pluginDir || $directory.'/'.$file == $themeDir)) {
                     continue;
                 } else {
@@ -830,6 +897,9 @@ class WP_MadeIT_Security_LoadFiles
         $plugins = new WP_MadeIT_Security_Plugin();
         $plugins = $plugins->getPlugins(false);
         foreach ($plugins as $plugin => $value) {
+            
+            $this->logDebug('loadPlugin -> ' . $plugin);
+            
             $startDir = WP_PLUGIN_DIR;
             if (strpos($plugin, '/') > 0) {
                 $pluginDir = $startDir.'/'.substr($plugin, 0, strpos($plugin, '/'));
@@ -855,6 +925,10 @@ class WP_MadeIT_Security_LoadFiles
 
         foreach ($themes as $key => $value) {
             $theme = $value['theme'];
+            
+            
+            $this->logDebug('loadTheme -> ' . $key);
+            
 
             $startDir = WP_CONTENT_DIR.'/themes';
             if (strpos($theme, '/') > 0) {
@@ -902,7 +976,24 @@ class WP_MadeIT_Security_LoadFiles
     {
         $duration = time() - $this->startTime;
 
-        return $duration < $this->limit;
+        $result = $duration < $this->limit;
+        
+        
+        $this->logDebug('checkCanDoNextJob -> ' . ($result ? 'Yes' : 'No'));
+        
+        return $result;
+    }
+    
+    private function checkHangingJobs()
+    {
+        //$this->logDebug('checkHangingJobs');
+        
+        $result = get_site_transient('madeit_security_scan');
+        if(is_array($result) && $result['done'] == false && $result['start_time'] < time() - (60 * 60) && false === wp_next_scheduled('madeit_security_loadfiles_run')) {
+            
+            $this->logDebug('checkHangingJobs: Restart hanging event');
+            wp_schedule_single_event(time(), 'madeit_security_loadfiles_run');
+        }
     }
 
     public function addHooks()
@@ -915,5 +1006,7 @@ class WP_MadeIT_Security_LoadFiles
         } else {
             $this->activateSechduler(true);
         }
+        
+        $this->checkHangingJobs();
     }
 }
