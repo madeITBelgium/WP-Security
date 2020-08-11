@@ -29,15 +29,15 @@ if (!defined('ABSPATH')) {
                         <div class="card-text">
                             <div class="madeit-row">
                                 <?php foreach ([
-                                     __('Scan repo changes', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_loadfiles') ? 'OK' : 'NOK',
-                                     __('Fast scan', 'wp-security-by-made-it') => $this->defaultSettings['scan']['fast'] ? 'OK' : 'NOK',
-                                     __('Scan core changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['core'] ? 'OK' : 'NOK',
-                                     __('Scan plugin changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['plugin'] ? 'OK' : 'NOK',
-                                     __('Scan theme changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['theme'] ? 'OK' : 'NOK',
-                                     __('Scan updates', 'wp-security-by-made-it') => $this->defaultSettings['scan']['update'] ? 'OK' : 'NOK',
-                                     __('Maintenance by Made I.T.', 'wp-security-by-made-it') => $this->defaultSettings['maintenance']['enable'] ? 'OK' : 'NOK',
-                                     __('Scan plugin updates', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_check_plugin_updates') ? 'OK' : 'NOK',
-                                     __('Backup', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_backup') ? 'OK' : 'NOK',
+                                    __('Scan repo changes', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_loadfiles') ? 'OK' : 'NOK',
+                                    __('Fast scan', 'wp-security-by-made-it') => $this->defaultSettings['scan']['fast'] ? 'OK' : 'NOK',
+                                    __('Scan core changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['core'] ? 'OK' : 'NOK',
+                                    __('Scan plugin changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['plugin'] ? 'OK' : 'NOK',
+                                    __('Scan theme changes', 'wp-security-by-made-it') => $this->defaultSettings['scan']['repo']['theme'] ? 'OK' : 'NOK',
+                                    __('Scan updates', 'wp-security-by-made-it') => $this->defaultSettings['scan']['update'] ? 'OK' : 'NOK',
+                                    __('Maintenance by Made I.T.', 'wp-security-by-made-it') => $this->defaultSettings['maintenance']['enable'] ? 'OK' : 'NOK',
+                                    __('Scan plugin updates', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_check_plugin_updates') ? 'OK' : 'NOK',
+                                    __('Backup', 'wp-security-by-made-it') => wp_next_scheduled('madeit_security_backup') ? 'OK' : 'NOK',
                                 ] as $feature => $status) {
     ?>
                                     <div class="madeit-col-3">

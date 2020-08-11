@@ -179,8 +179,8 @@ function backSlash($str)
 
 function checkDBSettings($dbhost, $dbname, $dbuser, $dbpass)
 {
-    $link = @mysqli_connect($dbhost, $dbuser, $dbpass) or die(json_encode(['success' => false, 'error' => 'Cannot connect to the database server.']));
-    @mysqli_select_db($link, $dbname) or die(json_encode(['success' => false, 'error' => 'Cannot open the database.']));
+    $link = @mysqli_connect($dbhost, $dbuser, $dbpass) or exit(json_encode(['success' => false, 'error' => 'Cannot connect to the database server.']));
+    @mysqli_select_db($link, $dbname) or exit(json_encode(['success' => false, 'error' => 'Cannot open the database.']));
 
     echo json_encode(['success' => true]);
     exit;

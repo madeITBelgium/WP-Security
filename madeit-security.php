@@ -11,7 +11,7 @@
  * License: GPLv3.
  */
 if (!defined('ABSPATH')) {
-    die('No direct access allowed');
+    exit('No direct access allowed');
 }
 
 // Defines

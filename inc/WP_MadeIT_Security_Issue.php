@@ -78,8 +78,19 @@ class WP_MadeIT_Security_Issue
 
         $issues = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_issues WHERE issue_fixed IS NULL AND filename_md5 = %s', $filename_md5);
         if (!isset($issues['aantal']) || (isset($issues['aantal']) && $issues['aantal'] == 0)) {
-            $this->db->queryWrite('INSERT INTO '.$this->db->prefix().'madeit_sec_issues (filename_md5, filename, old_md5, new_md5, type, severity, issue_created, shortMsg, longMsg, data) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)',
-                                  $filename_md5, $filename, $oldMd5, $newMd5, $type, $severity, time(), $shortMsg, $longMsg, json_encode($data));
+            $this->db->queryWrite(
+                'INSERT INTO '.$this->db->prefix().'madeit_sec_issues (filename_md5, filename, old_md5, new_md5, type, severity, issue_created, shortMsg, longMsg, data) VALUES (%s, %s, %s, %s,%s, %s, %s, %s, %s, %s)',
+                $filename_md5,
+                $filename,
+                $oldMd5,
+                $newMd5,
+                $type,
+                $severity,
+                time(),
+                $shortMsg,
+                $longMsg,
+                json_encode($data)
+            );
         }
     }
 
@@ -91,8 +102,15 @@ class WP_MadeIT_Security_Issue
             $shortMsg = $this->generateShortMessage($type, $issue['filename']);
             $longMsg = $this->generateLongMessage($type, $issue['filename']);
 
-            $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET type = %s, severity = %s, shortMsg = %s, longMsg = %s, data = %s WHERE id = %s',
-                $type, $severity, $shortMsg, $longMsg, json_encode($data), $issue['id']);
+            $this->db->queryWrite(
+                'UPDATE '.$this->db->prefix().'madeit_sec_issues SET type = %s, severity = %s, shortMsg = %s, longMsg = %s, data = %s WHERE id = %s',
+                $type,
+                $severity,
+                $shortMsg,
+                $longMsg,
+                json_encode($data),
+                $issue['id']
+            );
 
             $this->db->queryWrite('UPDATE '.$this->db->prefix().'madeit_sec_issues SET issue_created = %s, issue_fixed = NULL, issue_ignored = NULL, issue_readed = NULL, issue_remind = NULL WHERE id = %s AND new_md5 <> %s', time(), $issue['id'], $file['new_md5']);
         }

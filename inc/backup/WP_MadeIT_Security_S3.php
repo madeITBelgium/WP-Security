@@ -368,8 +368,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::listBuckets(): [%s] %s', $rest->error['code'],
-            $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::listBuckets(): [%s] %s',
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -380,8 +383,8 @@ class WP_MadeIT_Security_S3
         if ($detailed) {
             if (isset($rest->body->Owner, $rest->body->Owner->ID, $rest->body->Owner->DisplayName)) {
                 $results['owner'] = [
-                'id' => (string) $rest->body->Owner->ID, 'name' => (string) $rest->body->Owner->DisplayName,
-            ];
+                    'id' => (string) $rest->body->Owner->ID, 'name' => (string) $rest->body->Owner->DisplayName,
+                ];
             }
             $results['buckets'] = [];
             foreach ($rest->body->Buckets->Bucket as $b) {
@@ -437,8 +440,11 @@ class WP_MadeIT_Security_S3
             $response->error = ['code' => $response->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($response->error !== false) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::getBucket(): [%s] %s',
-            $response->error['code'], $response->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::getBucket(): [%s] %s',
+                $response->error['code'],
+                $response->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -447,11 +453,11 @@ class WP_MadeIT_Security_S3
         if (isset($response->body, $response->body->Contents)) {
             foreach ($response->body->Contents as $c) {
                 $results[(string) $c->Key] = [
-                'name' => (string) $c->Key,
-                'time' => strtotime((string) $c->LastModified),
-                'size' => (int) $c->Size,
-                'hash' => substr((string) $c->ETag, 1, -1),
-            ];
+                    'name' => (string) $c->Key,
+                    'time' => strtotime((string) $c->LastModified),
+                    'size' => (int) $c->Size,
+                    'hash' => substr((string) $c->ETag, 1, -1),
+                ];
                 $nextMarker = (string) $c->Key;
             }
         }
@@ -484,11 +490,11 @@ class WP_MadeIT_Security_S3
                 if (isset($response->body, $response->body->Contents)) {
                     foreach ($response->body->Contents as $c) {
                         $results[(string) $c->Key] = [
-                    'name' => (string) $c->Key,
-                    'time' => strtotime((string) $c->LastModified),
-                    'size' => (int) $c->Size,
-                    'hash' => substr((string) $c->ETag, 1, -1),
-                ];
+                            'name' => (string) $c->Key,
+                            'time' => strtotime((string) $c->LastModified),
+                            'size' => (int) $c->Size,
+                            'hash' => substr((string) $c->ETag, 1, -1),
+                        ];
                         $nextMarker = (string) $c->Key;
                     }
                 }
@@ -534,8 +540,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::putBucket({$bucket}, {$acl}, {$location}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::putBucket({$bucket}, {$acl}, {$location}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -558,8 +567,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::deleteBucket({$bucket}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::deleteBucket({$bucket}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -641,9 +653,9 @@ class WP_MadeIT_Security_S3
         $rest = new S3Request('PUT', $bucket, $uri, self::$endpoint);
         if (!is_array($input)) {
             $input = [
-            'data'   => $input, 'size' => strlen($input),
-            'md5sum' => base64_encode(md5($input, true)),
-        ];
+                'data'   => $input, 'size' => strlen($input),
+                'md5sum' => base64_encode(md5($input, true)),
+            ];
         }
         // Data
         if (isset($input['fp'])) {
@@ -706,8 +718,11 @@ class WP_MadeIT_Security_S3
             $rest->response->error = ['code' => $rest->response->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->response->error !== false) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::putObject(): [%s] %s',
-            $rest->response->error['code'], $rest->response->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::putObject(): [%s] %s',
+                $rest->response->error['code'],
+                $rest->response->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -777,8 +792,11 @@ class WP_MadeIT_Security_S3
             $rest->response->error = ['code' => $rest->response->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->response->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getObject({$bucket}, {$uri}): [%s] %s",
-            $rest->response->error['code'], $rest->response->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getObject({$bucket}, {$uri}): [%s] %s",
+                $rest->response->error['code'],
+                $rest->response->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -803,8 +821,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getObjectInfo({$bucket}, {$uri}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getObjectInfo({$bucket}, {$uri}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -849,8 +870,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::copyObject({$srcBucket}, {$srcUri}, {$bucket}, {$uri}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::copyObject({$srcBucket}, {$srcUri}, {$bucket}, {$uri}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -893,8 +917,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::setBucketRedirect({$bucket}, {$location}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::setBucketRedirect({$bucket}, {$location}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -929,13 +956,13 @@ class WP_MadeIT_Security_S3
             }
             if (!$aclWriteSet) {
                 $acp['acl'][] = [
-                'type' => 'Group', 'uri' => 'http://acs.amazonaws.com/groups/s3/LogDelivery', 'permission' => 'WRITE',
-            ];
+                    'type' => 'Group', 'uri' => 'http://acs.amazonaws.com/groups/s3/LogDelivery', 'permission' => 'WRITE',
+                ];
             }
             if (!$aclReadSet) {
                 $acp['acl'][] = [
-                'type' => 'Group', 'uri' => 'http://acs.amazonaws.com/groups/s3/LogDelivery', 'permission' => 'READ_ACP',
-            ];
+                    'type' => 'Group', 'uri' => 'http://acs.amazonaws.com/groups/s3/LogDelivery', 'permission' => 'READ_ACP',
+                ];
             }
             if (!$aclReadSet || !$aclWriteSet) {
                 self::setAccessControlPolicy($targetBucket, '', $acp);
@@ -965,8 +992,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::setBucketLogging({$bucket}, {$targetBucket}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::setBucketLogging({$bucket}, {$targetBucket}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -993,14 +1023,18 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getBucketLogging({$bucket}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getBucketLogging({$bucket}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
         if (!isset($rest->body->LoggingEnabled)) {
             return false;
         } // No logging
+
         return [
             'targetBucket' => (string) $rest->body->LoggingEnabled->TargetBucket,
             'targetPrefix' => (string) $rest->body->LoggingEnabled->TargetPrefix,
@@ -1035,8 +1069,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getBucketLocation({$bucket}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getBucketLocation({$bucket}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1094,8 +1131,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::setAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::setAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1120,8 +1160,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getAccessControlPolicy({$bucket}, {$uri}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1180,8 +1223,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::deleteObject(): [%s] %s',
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::deleteObject(): [%s] %s',
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1205,10 +1251,15 @@ class WP_MadeIT_Security_S3
         $expires = self::__getTime() + $lifetime;
         $uri = str_replace(['%2F', '%2B'], ['/', '+'], rawurlencode($uri));
 
-        return sprintf(($https ? 'https' : 'http').'://%s/%s?AWSAccessKeyId=%s&Expires=%u&Signature=%s',
+        return sprintf(
+            ($https ? 'https' : 'http').'://%s/%s?AWSAccessKeyId=%s&Expires=%u&Signature=%s',
         // $hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
-        $hostBucket ? $bucket : self::$endpoint.'/'.$bucket, $uri, self::$__accessKey, $expires,
-        urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
+        $hostBucket ? $bucket : self::$endpoint.'/'.$bucket,
+            $uri,
+            self::$__accessKey,
+            $expires,
+            urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}"))
+        );
     }
 
     /**
@@ -1269,9 +1320,17 @@ class WP_MadeIT_Security_S3
      *
      * @return object
      */
-    public static function getHttpUploadPostParams($bucket, $uriPrefix = '', $acl = self::ACL_PRIVATE, $lifetime = 3600,
-    $maxFileSize = 5242880, $successRedirect = '201', $amzHeaders = [], $headers = [], $flashVars = false)
-    {
+    public static function getHttpUploadPostParams(
+        $bucket,
+        $uriPrefix = '',
+        $acl = self::ACL_PRIVATE,
+        $lifetime = 3600,
+        $maxFileSize = 5242880,
+        $successRedirect = '201',
+        $amzHeaders = [],
+        $headers = [],
+        $flashVars = false
+    ) {
         // Create policy object
         $policy = new stdClass();
         $policy->expiration = gmdate('Y-m-d\TH:i:s\Z', (self::__getTime() + $lifetime));
@@ -1345,8 +1404,10 @@ class WP_MadeIT_Security_S3
     public static function createDistribution($bucket, $enabled = true, $cnames = [], $comment = null, $defaultRootObject = null, $originAccessIdentity = null, $trustedSigners = [])
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::createDistribution({$bucket}, ".(int) $enabled.", [], '$comment'): %s",
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::createDistribution({$bucket}, ".(int) $enabled.", [], '$comment'): %s",
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1371,8 +1432,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::createDistribution({$bucket}, ".(int) $enabled.", [], '$comment'): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::createDistribution({$bucket}, ".(int) $enabled.", [], '$comment'): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         } elseif ($rest->body instanceof SimpleXMLElement) {
@@ -1392,8 +1456,10 @@ class WP_MadeIT_Security_S3
     public static function getDistribution($distributionId)
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getDistribution($distributionId): %s",
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getDistribution($distributionId): %s",
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1406,8 +1472,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::getDistribution($distributionId): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::getDistribution($distributionId): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         } elseif ($rest->body instanceof SimpleXMLElement) {
@@ -1431,8 +1500,10 @@ class WP_MadeIT_Security_S3
     public static function updateDistribution($dist)
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::updateDistribution({$dist['id']}): %s",
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::updateDistribution({$dist['id']}): %s",
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1457,8 +1528,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::updateDistribution({$dist['id']}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::updateDistribution({$dist['id']}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         } else {
@@ -1481,8 +1555,10 @@ class WP_MadeIT_Security_S3
     public static function deleteDistribution($dist)
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::deleteDistribution({$dist['id']}): %s",
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::deleteDistribution({$dist['id']}): %s",
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1496,8 +1572,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf("WP_MadeIT_Security_S3::deleteDistribution({$dist['id']}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                "WP_MadeIT_Security_S3::deleteDistribution({$dist['id']}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1513,8 +1592,10 @@ class WP_MadeIT_Security_S3
     public static function listDistributions()
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::listDistributions(): [%s] %s',
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::listDistributions(): [%s] %s',
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1527,8 +1608,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::listDistributions(): [%s] %s',
-            $rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::listDistributions(): [%s] %s',
+                $rest->error['code'],
+                $rest->error['message']
+            ), __FILE__, __LINE__);
 
             return false;
         } elseif ($rest->body instanceof SimpleXMLElement && isset($rest->body->DistributionSummary)) {
@@ -1556,8 +1640,10 @@ class WP_MadeIT_Security_S3
     public static function listOriginAccessIdentities()
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::listOriginAccessIdentities(): [%s] %s',
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::listOriginAccessIdentities(): [%s] %s',
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1569,8 +1655,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            trigger_error(sprintf('WP_MadeIT_Security_S3::listOriginAccessIdentities(): [%s] %s',
-            $rest->error['code'], $rest->error['message']), E_USER_WARNING);
+            trigger_error(sprintf(
+                'WP_MadeIT_Security_S3::listOriginAccessIdentities(): [%s] %s',
+                $rest->error['code'],
+                $rest->error['message']
+            ), E_USER_WARNING);
 
             return false;
         }
@@ -1601,8 +1690,10 @@ class WP_MadeIT_Security_S3
     public static function invalidateDistribution($distributionId, $paths)
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::invalidateDistribution(): [%s] %s',
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::invalidateDistribution(): [%s] %s',
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1617,8 +1708,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            trigger_error(sprintf("WP_MadeIT_Security_S3::invalidate('{$distributionId}',{$paths}): [%s] %s",
-            $rest->error['code'], $rest->error['message']), E_USER_WARNING);
+            trigger_error(sprintf(
+                "WP_MadeIT_Security_S3::invalidate('{$distributionId}',{$paths}): [%s] %s",
+                $rest->error['code'],
+                $rest->error['message']
+            ), E_USER_WARNING);
 
             return false;
         }
@@ -1670,8 +1764,10 @@ class WP_MadeIT_Security_S3
     public static function getDistributionInvalidationList($distributionId)
     {
         if (!extension_loaded('openssl')) {
-            self::__triggerError(sprintf('WP_MadeIT_Security_S3::getDistributionInvalidationList(): [%s] %s',
-            'CloudFront functionality requires SSL'), __FILE__, __LINE__);
+            self::__triggerError(sprintf(
+                'WP_MadeIT_Security_S3::getDistributionInvalidationList(): [%s] %s',
+                'CloudFront functionality requires SSL'
+            ), __FILE__, __LINE__);
 
             return false;
         }
@@ -1684,8 +1780,11 @@ class WP_MadeIT_Security_S3
             $rest->error = ['code' => $rest->code, 'message' => 'Unexpected HTTP status'];
         }
         if ($rest->error !== false) {
-            trigger_error(sprintf("WP_MadeIT_Security_S3::getDistributionInvalidationList('{$distributionId}'): [%s]",
-            $rest->error['code'], $rest->error['message']), E_USER_WARNING);
+            trigger_error(sprintf(
+                "WP_MadeIT_Security_S3::getDistributionInvalidationList('{$distributionId}'): [%s]",
+                $rest->error['code'],
+                $rest->error['message']
+            ), E_USER_WARNING);
 
             return false;
         } elseif ($rest->body instanceof SimpleXMLElement && isset($rest->body->InvalidationSummary)) {
@@ -1936,9 +2035,10 @@ class WP_MadeIT_Security_S3
     {
         return base64_encode(extension_loaded('hash') ?
         hash_hmac('sha1', $string, self::$__secretKey, true) : pack('H*', sha1(
-        (str_pad(self::$__secretKey, 64, chr(0x00)) ^ (str_repeat(chr(0x5c), 64))).
+            (str_pad(self::$__secretKey, 64, chr(0x00)) ^ (str_repeat(chr(0x5c), 64))).
         pack('H*', sha1((str_pad(self::$__secretKey, 64, chr(0x00)) ^
-        (str_repeat(chr(0x36), 64))).$string)))));
+        (str_repeat(chr(0x36), 64))).$string))
+        )));
     }
 }
 /**

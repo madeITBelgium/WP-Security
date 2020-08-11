@@ -49,7 +49,7 @@ class WP_MadeIT_Security_AutoPrependHelper
             $backupFileName = ltrim(basename($backups[$index]), '.');
             header('Content-Disposition: attachment; filename="'.$backupFileName.'_Backup_for_'.$url.'.txt"');
             readfile($backups[$index]);
-            die();
+            exit();
         }
     }
 
@@ -64,7 +64,8 @@ if (file_exists(%1$s)) {
 }', var_export($currentAutoPrependedFile, true), date('r'));
         }
 
-        return sprintf('<?php
+        return sprintf(
+            '<?php
 // Before removing this file, please verify the PHP ini setting `auto_prepend_file` does not point to this.
 %3$s
 if (file_exists(%1$s)) {
@@ -72,9 +73,10 @@ if (file_exists(%1$s)) {
 	include_once %1$s;
 }
 ?>',
-        var_export(MADEIT_SECURITY_DIR.'/inc/firewall/WP_MadeIT_Security_Init.php', true),
-        var_export(!MADEIT_SECURITY_SUBDIRECTORY_INSTALL ? WP_CONTENT_DIR.'/madeit-security-backup/' : MADEIT_SECURITY_LOG_PATH, true),
-        $currentAutoPrepend);
+            var_export(MADEIT_SECURITY_DIR.'/inc/firewall/WP_MadeIT_Security_Init.php', true),
+            var_export(!MADEIT_SECURITY_SUBDIRECTORY_INSTALL ? WP_CONTENT_DIR.'/madeit-security-backup/' : MADEIT_SECURITY_LOG_PATH, true),
+            $currentAutoPrepend
+        );
     }
 
     public function performInstallation($serverConfig, $wp_filesystem, $currentAutoPrependedFile)
@@ -318,8 +320,14 @@ file because of file permissions. Please verify the permissions are correct and 
         $homePath = dirname($htaccessPath);
 
         ob_start();
-        if (false === ($credentials = request_filesystem_credentials($adminURL, '', false, $homePath,
-                ['version', 'locale'], $allow_relaxed_file_ownership))
+        if (false === ($credentials = request_filesystem_credentials(
+            $adminURL,
+            '',
+            false,
+            $homePath,
+            ['version', 'locale'],
+            $allow_relaxed_file_ownership
+        ))
         ) {
             ob_end_clean();
 
@@ -328,8 +336,14 @@ file because of file permissions. Please verify the permissions are correct and 
 
         if (!WP_Filesystem($credentials, $homePath, $allow_relaxed_file_ownership)) {
             // Failed to connect, Error and request again
-            request_filesystem_credentials($adminURL, '', true, ABSPATH, ['version', 'locale'],
-                $allow_relaxed_file_ownership);
+            request_filesystem_credentials(
+                $adminURL,
+                '',
+                true,
+                ABSPATH,
+                ['version', 'locale'],
+                $allow_relaxed_file_ownership
+            );
             ob_end_clean();
 
             return false;

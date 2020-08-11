@@ -12,11 +12,11 @@ class WP_MadeIT_Security_Backup_Files
         $this->defaultSettings = $this->settings->loadDefaultSettings();
         $this->db = $db;
     }
-    
+
     public function logDebug($string)
     {
-        if(MADEIT_SECURITY_DEBUG) {
-            error_log('WP_MadeIT_Security_Backup_Files: ' . $string);
+        if (MADEIT_SECURITY_DEBUG) {
+            error_log('WP_MadeIT_Security_Backup_Files: '.$string);
         }
     }
 
@@ -24,7 +24,7 @@ class WP_MadeIT_Security_Backup_Files
     {
         $fileToBackup = $this->defaultSettings['backup']['files'];
         $files = $this->db->querySelect('SELECT * FROM '.$this->db->prefix().'madeit_sec_filelist WHERE need_backup = 1 AND in_backup = 0 LIMIT %d', $fileToBackup);
-        $this->logDebug('Starting adding files to zip (' . count($files) . ')');
+        $this->logDebug('Starting adding files to zip ('.count($files).')');
         if (count($files) > 0) {
             if (extension_loaded('zip')) {
                 // Initialize archive object
@@ -80,7 +80,8 @@ class WP_MadeIT_Security_Backup_Files
                     set_site_transient('madeit_security_backup', $backupResult);
                     wp_schedule_single_event(time(), 'madeit_security_backup_run');
 
-                    $this->logDebug('Ending adding files to zip (' . $filesDoneNow . ')');
+                    $this->logDebug('Ending adding files to zip ('.$filesDoneNow.')');
+
                     return $filesDoneNow;
                 }
             }

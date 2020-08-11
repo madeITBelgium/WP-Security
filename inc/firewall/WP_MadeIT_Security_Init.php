@@ -86,11 +86,11 @@ if ($madeit_security_firewall_init->isBlockedIpBlocked($ipaddress)) {
 
 if ($requestData['blocked']) {
     header('HTTP/1.1 403 Forbidden');
-    die('You are not allowed to visit this page.');
+    exit('You are not allowed to visit this page.');
 }
 
 if ($ipaddress == $serverIpaddress) {
     if (isset($_GET['firewall_action']) && $_GET['firewall_action'] == 'install_status') {
-        die(json_encode(['success' => true]));
+        exit(json_encode(['success' => true]));
     }
 }

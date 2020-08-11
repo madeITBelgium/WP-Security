@@ -15,11 +15,11 @@ class WP_MadeIT_Security_Theme_Scan
 
         return $result;
     }
-    
+
     public function logDebug($string)
     {
-        if(MADEIT_SECURITY_DEBUG) {
-            error_log('WP_MadeIT_Security_LoadFiles: ' . $string);
+        if (MADEIT_SECURITY_DEBUG) {
+            error_log('WP_MadeIT_Security_LoadFiles: '.$string);
         }
     }
 
@@ -68,9 +68,9 @@ class WP_MadeIT_Security_Theme_Scan
                 $result = get_site_transient('madeit_security_scan');
                 $result['result']['theme']['files_checked'] = $result['result']['theme']['files_checked'] + ($i - $lastI);
                 $lastI = $i;
-                
+
                 set_site_transient('madeit_security_scan', $result);
-                $this->logDebug('Update result scanned ' . $i . ' files');
+                $this->logDebug('Update result scanned '.$i.' files');
 
                 $this->db->queryWrite('UPDATE '.$this->db->prefix()."madeit_sec_filelist set file_checked = %s WHERE filename_md5 IN ('".implode("', '", $fileList)."')", time());
                 $fileList = [];
@@ -96,9 +96,9 @@ class WP_MadeIT_Security_Theme_Scan
         }
         if (count($themeInfo) > 0) {
             $result = $this->postInfoToMadeIT($themeInfo, $fileData, $deletedFiles);
-            
+
             $this->logDebug(print_r($result, true));
-            
+
             if (isset($result['success']) && $result['success'] == true) {
                 if (isset($result['changedFiles'])) {
                     foreach ($result['changedFiles'] as $file => $result) {
