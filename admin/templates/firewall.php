@@ -316,14 +316,14 @@ if (!defined('ABSPATH')) {
                                                                 'backupIndex'         => $index,
                                                                 'serverConfiguration' => $option,
                                                                 'firewallnonce'       => $nonceBackupDownload,
-                                                                ], $adminURL)).'">'.sprintf(__('Download %s', 'wp-security-by-made-it'), esc_html(basename($backup))).'</a></li>';
+                                                            ], $adminURL)).'">'.sprintf(__('Download %s', 'wp-security-by-made-it'), esc_html(basename($backup))).'</a></li>';
                                                         } ?>
                                                     </ul><br>
                                                     <a class="madeit-btn madeit-btn-outline-primary install-firewall" style="display: none;" href="<?php echo esc_url(add_query_arg([
-                                                                'action'              => 'installFirewall',
-                                                                'serverConfiguration' => $option,
-                                                                'firewallnonce'       => $nonceInstall,
-                                                                ], $adminURL)); ?>"><?php _e('Enable Firewall', 'wp-security-by-made-it'); ?></a>
+                                                        'action'              => 'installFirewall',
+                                                        'serverConfiguration' => $option,
+                                                        'firewallnonce'       => $nonceInstall,
+                                                    ], $adminURL)); ?>"><?php _e('Enable Firewall', 'wp-security-by-made-it'); ?></a>
                                             <?php
                                                 } ?>
                                                 

@@ -27,11 +27,11 @@ class WP_MadeIT_Security_Backup
             }
         }
     }
-    
+
     public function logDebug($string)
     {
-        if(MADEIT_SECURITY_DEBUG) {
-            error_log('WP_MadeIT_Security_Backup: ' . $string);
+        if (MADEIT_SECURITY_DEBUG) {
+            error_log('WP_MadeIT_Security_Backup: '.$string);
         }
     }
 
@@ -114,6 +114,7 @@ class WP_MadeIT_Security_Backup
             $backupResult['running'] = false;
             $backupResult['done'] = true;
             set_site_transient('madeit_security_backup', $backupResult);
+
             return;
         }
 
@@ -125,7 +126,7 @@ class WP_MadeIT_Security_Backup
 
         if ($backupResult['step'] == 0) {
             //Check if loading files is recent
-            
+
             $this->logDebug('Check if loading files is recent');
 
             $scanResult = get_site_transient('madeit_security_scan');
@@ -136,6 +137,7 @@ class WP_MadeIT_Security_Backup
                 $backupResult['step'] = 0;
                 set_site_transient('madeit_security_backup', $backupResult);
                 wp_schedule_single_event((time() + 60 * 5), 'madeit_security_backup_run');
+
                 return;
             } elseif ($scanResult['start_time'] < (time() - 60 * 60)) {
                 //Start loading files and schedule event in 5 min
@@ -148,6 +150,7 @@ class WP_MadeIT_Security_Backup
                 $backupResult['step'] = 0;
                 set_site_transient('madeit_security_backup', $backupResult);
                 wp_schedule_single_event((time() + 60 * 10), 'madeit_security_backup_run');
+
                 return;
             }
 
@@ -160,7 +163,7 @@ class WP_MadeIT_Security_Backup
 
             $count = $this->db->querySingleRecord('SELECT count(*) as aantal FROM '.$this->db->prefix().'madeit_sec_filelist WHERE need_backup = 1 AND in_backup = 0');
             if (isset($count['aantal'])) {
-                $this->logDebug('Files to backup: ' . $count['aantal']);
+                $this->logDebug('Files to backup: '.$count['aantal']);
                 $backupResult['total_files'] = $count['aantal'];
             }
 
@@ -179,10 +182,9 @@ class WP_MadeIT_Security_Backup
                 $backupResult['check_error'] = $valid;
                 set_site_transient('madeit_security_backup', $backupResult);
             }
-        }
-        elseif ($backupResult['step'] == 1) { //Backup files
+        } elseif ($backupResult['step'] == 1) { //Backup files
             $this->logDebug('Backup files');
-            
+
             if ($backupResult['total_files'] > $backupResult['files']) {
                 $donefiles = $this->backupFiles();
                 if ($donefiles > 0) {
@@ -204,10 +206,9 @@ class WP_MadeIT_Security_Backup
                 wp_schedule_single_event(time(), 'madeit_security_backup_run');
                 exit;
             }
-        }
-        elseif ($backupResult['step'] == 2) { //Backup database
+        } elseif ($backupResult['step'] == 2) { //Backup database
             $this->logDebug('Backup database');
-            
+
             $resultDb = $this->backupDatabase();
 
             //Backup database done
@@ -217,8 +218,7 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        }
-        elseif ($backupResult['step'] == 3) { //Create full zip
+        } elseif ($backupResult['step'] == 3) { //Create full zip
             $this->logDebug('Create full zip');
             $zipPath = $this->backups_dir_location().'/'.$this->getZipName();
 
@@ -240,8 +240,7 @@ class WP_MadeIT_Security_Backup
                 wp_schedule_single_event(time(), 'madeit_security_backup_run');
                 exit;
             }
-        }
-        elseif ($backupResult['step'] == 4) { //Upload zip to Made I.T.
+        } elseif ($backupResult['step'] == 4) { //Upload zip to Made I.T.
             $this->logDebug('Uploading zip');
             $zipPath = $this->backups_dir_location().'/'.$this->getZipName();
             if ($this->defaultSettings['maintenance']['backup']) {
@@ -263,8 +262,7 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        }
-        elseif ($backupResult['step'] == 5) { //Upload zip to FTP
+        } elseif ($backupResult['step'] == 5) { //Upload zip to FTP
             $this->logDebug('Uploading zip FTP');
             if ($this->defaultSettings['backup']['ftp']['enabled']) {
                 //Upload backup to FTP server
@@ -282,8 +280,7 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        }
-        elseif ($backupResult['step'] == 6) { //Upload zip to S3
+        } elseif ($backupResult['step'] == 6) { //Upload zip to S3
             $this->logDebug('Uploading zip S3');
             if ($this->defaultSettings['backup']['s3']['enabled']) {
                 $this->uploadBackupToS3Bucket($this->getZipName(), $this->backups_dir_location());
@@ -299,10 +296,9 @@ class WP_MadeIT_Security_Backup
             set_site_transient('madeit_security_backup', $backupResult);
             wp_schedule_single_event(time(), 'madeit_security_backup_run');
             exit;
-        }
-        elseif ($backupResult['step'] == 7) { //Backup done
+        } elseif ($backupResult['step'] == 7) { //Backup done
             $this->logDebug('Backup done');
-            
+
             $backupResult['done'] = true;
             $backupResult['running'] = false;
             $backupResult['stop'] = false;
@@ -472,8 +468,8 @@ class WP_MadeIT_Security_Backup
             }
         }
 
-        $this->logDebug('Is backup possible: ' . ($error == null ? 'Yes' : $error));
-        
+        $this->logDebug('Is backup possible: '.($error == null ? 'Yes' : $error));
+
         return $error == null ? true : $error;
     }
 
