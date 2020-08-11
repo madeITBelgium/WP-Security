@@ -1330,8 +1330,7 @@ class WP_MadeIT_Security_S3
         $amzHeaders = [],
         $headers = [],
         $flashVars = false
-    )
-    {
+    ) {
         // Create policy object
         $policy = new stdClass();
         $policy->expiration = gmdate('Y-m-d\TH:i:s\Z', (self::__getTime() + $lifetime));
